@@ -5,8 +5,6 @@ import avila.daniel.domain.model.Character
 import avila.daniel.domain.model.Episode
 import avila.daniel.domain.model.Location
 import avila.daniel.repository.remote.IDataRemote
-import io.reactivex.Completable
-import io.reactivex.Observable
 import io.reactivex.Single
 
 class RepositoryImp(

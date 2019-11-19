@@ -1,4 +1,4 @@
-package avila.daniel.rickmorty.ui.characters
+package avila.daniel.rickmorty.ui.locations
 
 
 import android.os.Bundle
@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseFragment
+import avila.daniel.rickmorty.ui.characters.CharactersAdapter
 import avila.daniel.rickmorty.ui.data.ResourceState
 import avila.daniel.rickmorty.ui.episodes.EpisodesFragment
 import avila.daniel.rickmorty.ui.episodes.EpisodesViewModel
@@ -14,9 +15,9 @@ import avila.daniel.rickmorty.ui.model.CharacterUI
 import kotlinx.android.synthetic.main.fragment_characters.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class CharactersFragment : BaseFragment() {
+class LocationsFragment : BaseFragment() {
 
-    private val charactersViewModel: CharactersViewModel by viewModel()
+    private val charactersViewModel: LocationsViewModel by viewModel()
 
     private val characterList = mutableListOf<CharacterUI>()
     private val adapter = CharactersAdapter(characterList)
@@ -24,7 +25,7 @@ class CharactersFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        setListener()
+        setListener()
 
     }
 
@@ -61,7 +62,7 @@ class CharactersFragment : BaseFragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = CharactersFragment()
+        fun newInstance() = LocationsFragment()
 
         const val TAG = "charactersFragment"
     }

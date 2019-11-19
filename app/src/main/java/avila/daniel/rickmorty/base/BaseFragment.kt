@@ -17,7 +17,6 @@ import kotlinx.android.synthetic.main.activity_base.view_progress
 import kotlinx.android.synthetic.main.fragment_base.view.*
 import kotlinx.android.synthetic.main.view_error.*
 
-
 abstract class BaseFragment : Fragment() {
 
     private lateinit var fragmentView: View

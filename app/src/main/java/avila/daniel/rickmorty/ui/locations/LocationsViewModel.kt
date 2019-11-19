@@ -1,4 +1,4 @@
-package avila.daniel.rickmorty.ui.characters
+package avila.daniel.rickmorty.ui.locations
 
 import avila.daniel.domain.interactor.GetCharactersUseCase
 import avila.daniel.rickmorty.base.BaseViewModel
@@ -8,7 +8,7 @@ import avila.daniel.rickmorty.ui.model.CharacterUI
 import avila.daniel.rickmorty.ui.model.mapper.CharacterUIMapper
 import avila.daniel.rickmorty.util.SingleLiveEvent
 
-class CharactersViewModel(
+class LocationsViewModel(
     private val getCharactersUseCase: GetCharactersUseCase,
     private val scheduleProvider: IScheduleProvider,
     private val characterUIMapper: CharacterUIMapper

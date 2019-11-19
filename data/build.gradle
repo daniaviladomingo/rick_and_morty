@@ -6,9 +6,11 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    // Rx
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
+
+    // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
-    implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
 
     testImplementation 'junit:junit:4.12'
 }

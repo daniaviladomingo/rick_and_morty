@@ -10,5 +10,10 @@ class CustomPagerAdapter(
 ) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     override fun getItem(position: Int): Fragment = fragmentList[position]
     override fun getCount(): Int = fragmentList.size
-    override fun getPageTitle(position: Int): CharSequence = "Position $position"
+    override fun getPageTitle(position: Int): CharSequence = when (position) {
+        0 -> "CHARACTERS"
+        1 -> "LOCATIONS"
+        2 -> "EPISODES"
+        else -> "UNKNOWN"
+    }
 }

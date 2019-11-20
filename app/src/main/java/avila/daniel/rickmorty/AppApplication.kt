@@ -13,6 +13,7 @@ class AppApplication : Application() {
             androidContext(this@AppApplication)
             androidLogger()
             modules(
+                activityModule,
                 mapperModule,
                 scheduleModule,
                 repositoryModule,

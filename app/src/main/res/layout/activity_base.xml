@@ -15,13 +15,13 @@
             android:layout_gravity="center"
             android:visibility="gone"/>
 
-    <avila.daniel.rickmorty.ui.custom.EmptyView
+    <avila.daniel.rickmorty.ui.util.custom.EmptyView
             android:id="@+id/view_empty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"/>
 
-    <avila.daniel.rickmorty.ui.custom.ErrorView
+    <avila.daniel.rickmorty.ui.util.custom.ErrorView
             android:id="@+id/view_error"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

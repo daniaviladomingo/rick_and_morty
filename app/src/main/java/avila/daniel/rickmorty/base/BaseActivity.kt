@@ -9,11 +9,10 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import avila.daniel.rickmorty.R
-import avila.daniel.rickmorty.ui.data.ResourceState
+import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.activity_base.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_error.*
-import org.koin.android.ext.android.inject
-import org.koin.core.parameter.parametersOf
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -29,7 +28,10 @@ abstract class BaseActivity : AppCompatActivity() {
         setContentView(R.layout.activity_base)
 
         activityView = layoutInflater.inflate(getLayoutId(), null)
-        (view as FrameLayout).addView(activityView, LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT))
+        (view as FrameLayout).addView(
+            activityView,
+            LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+        )
 
         view_empty.emptyListener = checkAgain()
         view_error.errorListener = tryAgain()
@@ -37,7 +39,9 @@ abstract class BaseActivity : AppCompatActivity() {
         initializeToolbar()
     }
 
-    private fun initializeToolbar() {}
+    private fun initializeToolbar() {
+        setSupportActionBar(toolbar)
+    }
 
     protected abstract fun getLayoutId(): Int
 

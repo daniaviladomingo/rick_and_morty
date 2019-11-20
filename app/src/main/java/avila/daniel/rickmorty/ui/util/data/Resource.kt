@@ -1,4 +1,4 @@
-package avila.daniel.rickmorty.ui.data
+package avila.daniel.rickmorty.ui.util.data
 
 class Resource<out T> private constructor(val status: ResourceState, val data: T?, val message: String?) {
 

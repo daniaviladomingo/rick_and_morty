@@ -8,9 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseFragment
 import avila.daniel.rickmorty.ui.characters.CharactersAdapter
-import avila.daniel.rickmorty.ui.data.ResourceState
-import avila.daniel.rickmorty.ui.episodes.EpisodesFragment
-import avila.daniel.rickmorty.ui.episodes.EpisodesViewModel
+import avila.daniel.rickmorty.ui.util.data.ResourceState
 import avila.daniel.rickmorty.ui.model.CharacterUI
 import kotlinx.android.synthetic.main.fragment_characters.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -22,15 +20,10 @@ class LocationsFragment : BaseFragment() {
     private val characterList = mutableListOf<CharacterUI>()
     private val adapter = CharactersAdapter(characterList)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setListener()
-
-    }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        setListener()
 
         list_characters.adapter = adapter
         list_characters.addOnScrollListener(object : RecyclerView.OnScrollListener() {

@@ -1,4 +1,4 @@
-package avila.daniel.rickmorty.ui.custom
+package avila.daniel.rickmorty.ui.util.custom
 
 import android.content.Context
 import android.util.AttributeSet

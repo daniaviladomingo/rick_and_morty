@@ -24,7 +24,7 @@ private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     fun bin(character: CharacterUI) {
         itemView.run {
             name.text = character.name
-            specie.text = character.name
+            specie.text = character.specie
             Glide.with(itemView).load(character.photo).into(photo)
         }
     }

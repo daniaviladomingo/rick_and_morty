@@ -1,38 +1,58 @@
 package avila.daniel.rickmorty.ui
 
 import android.os.Bundle
+import android.view.Menu
+import androidx.appcompat.widget.SearchView
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseActivity
 import avila.daniel.rickmorty.ui.characters.CharactersFragment
 import avila.daniel.rickmorty.ui.episodes.EpisodesFragment
+import avila.daniel.rickmorty.ui.locations.LocationsFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 
 class MainActivity : BaseActivity() {
+
+    private val lifecycleObserver: Unit by inject { parametersOf(this.lifecycle) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-//            override fun onTabReselected(tab: TabLayout.Tab) {}
-//
-//            override fun onTabUnselected(tab: TabLayout.Tab) {}
-//
-//            override fun onTabSelected(tab: TabLayout.Tab) {
-//                viewpager.currentItem = tab.position
-//            }
-//        })
+        lifecycleObserver.run { }
 
         viewpager.run {
             adapter = CustomPagerAdapter(
                 listOf(
-                    CharactersFragment.newInstance()
-//                    EpisodesFragment.newInstance(),
-//                    EpisodesFragment.newInstance()
+                    CharactersFragment.newInstance(),
+                    LocationsFragment.newInstance(),
+                    EpisodesFragment.newInstance()
                 ), supportFragmentManager
             )
         }
 
         tabs.setupWithViewPager(viewpager)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
+
+        val mSearch = menu.findItem(R.id.action_search)
+
+        val mSearchView = mSearch.actionView as SearchView
+        mSearchView.queryHint = "Search"
+
+        mSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                return true
+            }
+        })
+
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun getLayoutId(): Int = R.layout.activity_main

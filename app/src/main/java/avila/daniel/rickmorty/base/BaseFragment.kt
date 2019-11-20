@@ -10,7 +10,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import avila.daniel.rickmorty.R
-import avila.daniel.rickmorty.ui.data.ResourceState
+import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.activity_base.view_empty
 import kotlinx.android.synthetic.main.activity_base.view_error
 import kotlinx.android.synthetic.main.activity_base.view_progress

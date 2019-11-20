@@ -3,7 +3,7 @@ package avila.daniel.rickmorty.ui.locations
 import avila.daniel.domain.interactor.GetCharactersUseCase
 import avila.daniel.rickmorty.base.BaseViewModel
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
-import avila.daniel.rickmorty.ui.data.Resource
+import avila.daniel.rickmorty.ui.util.data.Resource
 import avila.daniel.rickmorty.ui.model.CharacterUI
 import avila.daniel.rickmorty.ui.model.mapper.CharacterUIMapper
 import avila.daniel.rickmorty.util.SingleLiveEvent

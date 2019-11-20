@@ -9,23 +9,24 @@ import avila.daniel.repository.remote.model.LocationResponse
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface IDataRemote {
 
-    @GET("character/?page={page}")
-    fun getCharacters(@Path("page") page: Int): Single<CharacterResponse>
+    @GET("character/?")
+    fun getCharacters(@Query("page") page: Int): Single<CharacterResponse>
 
     @GET("character/{id}")
     fun getCharacter(@Path("id") id: Int): Single<Character>
 
-    @GET("location/?page={page}")
-    fun getLocations(@Path("page") page: Int): Single<LocationResponse>
+    @GET("location/?")
+    fun getLocations(@Query("page") page: Int): Single<LocationResponse>
 
     @GET("location/{id}")
     fun getLocation(@Path("id") id: Int): Single<Location>
 
-    @GET("episode/?page={page}")
-    fun getEpisodies(@Path("page") page: Int): Single<EpisodeResponse>
+    @GET("episode/?")
+    fun getEpisodies(@Query("page") page: Int): Single<EpisodeResponse>
 
     @GET("episode/{id}")
     fun getEpisode(@Path("id") id: Int): Single<Episode>

@@ -1,5 +1,6 @@
 package avila.daniel.repository
 
+import avila.daniel.domain.ILifecycleObserver
 import avila.daniel.domain.IRepository
 import avila.daniel.domain.model.Character
 import avila.daniel.domain.model.Episode
@@ -9,10 +10,10 @@ import io.reactivex.Single
 
 class RepositoryImp(
     private val dataRemote: IDataRemote,
-    initialPageCharacters: Int,
-    initialPageLocation: Int,
-    initialPageEpisode: Int
-) : IRepository {
+    private val initialPageCharacters: Int,
+    private val initialPageLocation: Int,
+    private val initialPageEpisode: Int
+) : IRepository, ILifecycleObserver {
 
     private var currentPageCharacters = initialPageCharacters
     private var currentPageLocations = initialPageLocation
@@ -23,8 +24,9 @@ class RepositoryImp(
             if (currentPageCharacters <= it.info.pages) {
                 currentPageCharacters++
                 it.results
+            } else {
+                null
             }
-            null
         }
 
     override fun getCharacter(id: Int): Single<Character> = dataRemote.getCharacter(id)
@@ -34,8 +36,9 @@ class RepositoryImp(
             if (currentPageLocations <= it.info.pages) {
                 currentPageLocations++
                 it.results
+            } else {
+                null
             }
-            null
         }
 
     override fun getLocation(id: Int): Single<Location> = dataRemote.getLocation(id)
@@ -45,9 +48,16 @@ class RepositoryImp(
             if (currentPagePageEpisode <= it.info.pages) {
                 currentPagePageEpisode++
                 it.results
+            } else {
+                null
             }
-            null
         }
 
     override fun getEpisode(id: Int): Single<Episode> = dataRemote.getEpisode(id)
+
+    override fun onDestroy() {
+        currentPageCharacters = initialPageCharacters
+        currentPageLocations = initialPageLocation
+        currentPagePageEpisode = initialPageEpisode
+    }
 }

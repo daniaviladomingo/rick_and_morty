@@ -2,16 +2,17 @@ package avila.daniel.rickmorty.ui.characters
 
 
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseFragment
-import avila.daniel.rickmorty.ui.util.data.ResourceState
 import avila.daniel.rickmorty.ui.model.CharacterUI
+import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.fragment_characters.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 
 class CharactersFragment : BaseFragment() {
 
@@ -28,6 +29,7 @@ class CharactersFragment : BaseFragment() {
         charactersViewModel.loadMoreCharacteres()
 
         list_characters.adapter = adapter
+        list_characters.addItemDecoration(DividerItemDecoration(activity, HORIZONTAL))
         list_characters.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -36,7 +38,6 @@ class CharactersFragment : BaseFragment() {
                 }
             }
         })
-
     }
 
     private fun setListener() {
@@ -60,7 +61,5 @@ class CharactersFragment : BaseFragment() {
     companion object {
         @JvmStatic
         fun newInstance() = CharactersFragment()
-
-        const val TAG = "charactersFragment"
     }
 }

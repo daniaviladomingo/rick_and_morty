@@ -18,8 +18,8 @@ class AppApplication : Application() {
                 scheduleModule,
                 repositoryModule,
                 useCaseModule,
-                viewModelModule
-
+                viewModelModule,
+                dateFormatModule
             )
         }
     }

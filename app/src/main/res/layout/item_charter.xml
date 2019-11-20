@@ -18,24 +18,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/name"
+            style="@style/Title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Monalisa Octocat"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/specie"
+            style="@style/Content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="GitHub"
-            android:textSize="16sp" />
+            android:layout_marginTop="10dp" />
 
 
     </LinearLayout>

@@ -1,31 +1,43 @@
 package avila.daniel.rickmorty.ui.episodes
 
-import avila.daniel.domain.interactor.GetCharactersUseCase
+import avila.daniel.domain.interactor.GetEpisodesUseCase
 import avila.daniel.rickmorty.base.BaseViewModel
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
-import avila.daniel.rickmorty.ui.util.data.Resource
-import avila.daniel.rickmorty.ui.model.CharacterUI
+import avila.daniel.rickmorty.ui.model.EpisodeUI
 import avila.daniel.rickmorty.ui.model.mapper.CharacterUIMapper
+import avila.daniel.rickmorty.ui.model.mapper.EpisodeUIMapper
+import avila.daniel.rickmorty.ui.util.data.Resource
 import avila.daniel.rickmorty.util.SingleLiveEvent
 
 class EpisodesViewModel(
-    private val getCharactersUseCase: GetCharactersUseCase,
+    private val getEpisodesUseCase: GetEpisodesUseCase,
     private val scheduleProvider: IScheduleProvider,
-    private val characterUIMapper: CharacterUIMapper
+    private val episodesUIMapper: EpisodeUIMapper
 ) : BaseViewModel() {
 
-    val charactersLiveData = SingleLiveEvent<Resource<List<CharacterUI>?>>()
+    val episodesLiveData = SingleLiveEvent<Resource<List<EpisodeUI>?>>()
 
-    fun loadMoreCharacteres() {
-        charactersLiveData.value = Resource.loading()
-        addDisposable(getCharactersUseCase.execute()
+    private var isLoading = false
+
+    fun listScrolled(visibleItemCount: Int, lastVisibleItemPosition: Int, totalItemCount: Int) {
+        if (!isLoading) {
+            if (visibleItemCount + lastVisibleItemPosition >= totalItemCount) {
+                isLoading = true
+                loadMoreEpisodes()
+            }
+        }
+    }
+
+    fun loadMoreEpisodes() {
+        episodesLiveData.value = Resource.loading()
+        addDisposable(getEpisodesUseCase.execute()
             .observeOn(scheduleProvider.ui())
             .subscribeOn(scheduleProvider.io())
             .subscribe({ characters ->
-                charactersLiveData.value =
-                    Resource.success(characters?.run { characterUIMapper.map(this) })
+                episodesLiveData.value =
+                    Resource.success(characters?.run { episodesUIMapper.map(this) })
             }) {
-                charactersLiveData.value = Resource.error(it.localizedMessage)
+                episodesLiveData.value = Resource.error(it.localizedMessage)
             })
     }
 }

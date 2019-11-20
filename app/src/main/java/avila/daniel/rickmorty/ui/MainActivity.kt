@@ -16,6 +16,8 @@ class MainActivity : BaseActivity() {
 
     private val lifecycleObserver: Unit by inject { parametersOf(this.lifecycle) }
 
+    private lateinit var searchView: SearchView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,12 +39,9 @@ class MainActivity : BaseActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_toolbar, menu)
 
-        val mSearch = menu.findItem(R.id.action_search)
+        searchView = menu.findItem(R.id.action_search).actionView as SearchView
 
-        val mSearchView = mSearch.actionView as SearchView
-        mSearchView.queryHint = "Search"
-
-        mSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return false
             }
@@ -54,6 +53,14 @@ class MainActivity : BaseActivity() {
 
         return super.onCreateOptionsMenu(menu)
     }
+
+//    override fun onBackPressed() {
+//        if (searchView.isShown) {
+//            searchView.)
+//        } else {
+//            super.onBackPressed()
+//        }
+//    }
 
     override fun getLayoutId(): Int = R.layout.activity_main
 

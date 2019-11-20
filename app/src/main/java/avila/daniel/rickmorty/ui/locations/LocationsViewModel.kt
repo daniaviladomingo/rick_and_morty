@@ -1,31 +1,42 @@
 package avila.daniel.rickmorty.ui.locations
 
-import avila.daniel.domain.interactor.GetCharactersUseCase
+import avila.daniel.domain.interactor.GetLocationsUseCase
 import avila.daniel.rickmorty.base.BaseViewModel
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
+import avila.daniel.rickmorty.ui.model.LocationUI
+import avila.daniel.rickmorty.ui.model.mapper.LocationUIMapper
 import avila.daniel.rickmorty.ui.util.data.Resource
-import avila.daniel.rickmorty.ui.model.CharacterUI
-import avila.daniel.rickmorty.ui.model.mapper.CharacterUIMapper
 import avila.daniel.rickmorty.util.SingleLiveEvent
 
 class LocationsViewModel(
-    private val getCharactersUseCase: GetCharactersUseCase,
+    private val getLocationsUseCase: GetLocationsUseCase,
     private val scheduleProvider: IScheduleProvider,
-    private val characterUIMapper: CharacterUIMapper
+    private val locationUIMapper: LocationUIMapper
 ) : BaseViewModel() {
 
-    val charactersLiveData = SingleLiveEvent<Resource<List<CharacterUI>?>>()
+    val locationsLiveData = SingleLiveEvent<Resource<List<LocationUI>?>>()
 
-    fun loadMoreCharacteres() {
-        charactersLiveData.value = Resource.loading()
-        addDisposable(getCharactersUseCase.execute()
+    private var isLoading = false
+
+    fun listScrolled(visibleItemCount: Int, lastVisibleItemPosition: Int, totalItemCount: Int) {
+        if (!isLoading) {
+            if (visibleItemCount + lastVisibleItemPosition >= totalItemCount) {
+                isLoading = true
+                loadMoreLocations()
+            }
+        }
+    }
+
+    fun loadMoreLocations() {
+        locationsLiveData.value = Resource.loading()
+        addDisposable(getLocationsUseCase.execute()
             .observeOn(scheduleProvider.ui())
             .subscribeOn(scheduleProvider.io())
             .subscribe({ characters ->
-                charactersLiveData.value =
-                    Resource.success(characters?.run { characterUIMapper.map(this) })
+                locationsLiveData.value =
+                    Resource.success(characters?.run { locationUIMapper.map(this) })
             }) {
-                charactersLiveData.value = Resource.error(it.localizedMessage)
+                locationsLiveData.value = Resource.error(it.localizedMessage)
             })
     }
 }

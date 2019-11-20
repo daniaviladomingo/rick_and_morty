@@ -1,7 +1,7 @@
-package avila.daniel.domain.model
+package avila.daniel.repository.remote.model
 
-data class Episode(
-    val airDate: String,
+data class EpisodeApi(
+    val air_date: String,
     val characters: List<String>,
     val created: String,
     val episode: String,

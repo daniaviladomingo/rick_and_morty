@@ -4,19 +4,22 @@ import androidx.lifecycle.Lifecycle
 import avila.daniel.domain.ILifecycleObserver
 import avila.daniel.domain.IRepository
 import avila.daniel.domain.interactor.GetCharactersUseCase
+import avila.daniel.domain.interactor.GetEpisodesUseCase
+import avila.daniel.domain.interactor.GetLocationsUseCase
 import avila.daniel.repository.RepositoryImp
 import avila.daniel.repository.remote.IDataRemote
+import avila.daniel.repository.remote.model.mapper.EpisodeApiMapper
 import avila.daniel.rickmorty.BuildConfig
 import avila.daniel.rickmorty.LifecycleManager
-import avila.daniel.rickmorty.di.qualifiers.InitialPageCharacters
-import avila.daniel.rickmorty.di.qualifiers.InitialPageEpisodes
-import avila.daniel.rickmorty.di.qualifiers.InitialPageLocation
+import avila.daniel.rickmorty.di.qualifiers.*
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
 import avila.daniel.rickmorty.schedulers.ScheduleProviderImp
 import avila.daniel.rickmorty.ui.characters.CharactersViewModel
 import avila.daniel.rickmorty.ui.episodes.EpisodesViewModel
 import avila.daniel.rickmorty.ui.locations.LocationsViewModel
 import avila.daniel.rickmorty.ui.model.mapper.CharacterUIMapper
+import avila.daniel.rickmorty.ui.model.mapper.EpisodeUIMapper
+import avila.daniel.rickmorty.ui.model.mapper.LocationUIMapper
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -27,6 +30,8 @@ import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 val activityModule = module {
@@ -44,6 +49,8 @@ val viewModelModule = module {
 
 val useCaseModule = module {
     single { GetCharactersUseCase(get()) }
+    single { GetLocationsUseCase(get()) }
+    single { GetEpisodesUseCase(get()) }
 }
 
 val repositoryModule = module {
@@ -52,17 +59,18 @@ val repositoryModule = module {
             get(),
             get(InitialPageCharacters),
             get(InitialPageLocation),
-            get(InitialPageEpisodes)
+            get(InitialPageEpisodes),
+            get()
         )
-    }  bind ILifecycleObserver::class
-    
+    } bind ILifecycleObserver::class
+
     single(InitialPageCharacters) { 1 }
     single(InitialPageLocation) { 1 }
     single(InitialPageEpisodes) { 1 }
 
     single<IDataRemote> {
         Retrofit.Builder()
-            .baseUrl(get() as String)
+            .baseUrl(get(EndPoint) as String)
             .client(get())
             .addConverterFactory(get())
             .addCallAdapterFactory(get())
@@ -90,7 +98,7 @@ val repositoryModule = module {
             .build()
     }
 
-    single { "https://rickandmortyapi.com/api/" }
+    single(EndPoint) { "https://rickandmortyapi.com/api/" }
 }
 
 val scheduleModule = module {
@@ -99,4 +107,19 @@ val scheduleModule = module {
 
 val mapperModule = module {
     single { CharacterUIMapper() }
+    single { LocationUIMapper() }
+    single { EpisodeUIMapper(get(RangeSeason), get(RangeEpisode)) }
+    single { EpisodeApiMapper() }
+
+    single(RangeSeason) { (1..2) }
+    single(RangeEpisode) { (4..5) }
+}
+
+val dateFormatModule = module {
+    single {
+        SimpleDateFormat(get(DatePattern), Locale.getDefault()).apply {
+            timeZone = TimeZone.getTimeZone("UTC")
+        }
+    }
+    single(DatePattern) { "dd MMM yyyy" }
 }

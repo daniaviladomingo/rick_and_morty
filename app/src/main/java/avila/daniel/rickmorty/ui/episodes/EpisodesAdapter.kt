@@ -1,15 +1,14 @@
 package avila.daniel.rickmorty.ui.episodes
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
-import avila.daniel.rickmorty.ui.model.CharacterUI
-import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.item_charter.view.*
+import avila.daniel.rickmorty.ui.model.EpisodeUI
+import kotlinx.android.synthetic.main.item_episode.view.*
 
-class EpisodesAdapter(private val userList: List<CharacterUI>) :
+class EpisodesAdapter(private val userList: List<EpisodeUI>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemCount(): Int = userList.size
 
@@ -21,11 +20,14 @@ class EpisodesAdapter(private val userList: List<CharacterUI>) :
 }
 
 private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bin(character: CharacterUI) {
+    fun bin(episode: EpisodeUI) {
         itemView.run {
-            name.text = character.name
-            specie.text = character.name
-            Glide.with(itemView).load(character.photo).into(photo)
+            name.text = episode.name
+            season.text =
+                "${episode.season}"
+            this.episode.text = "${episode.number}"
+            on_air.text = episode.airDate
+            characters.text = "${episode.characters}"
         }
     }
 
@@ -33,7 +35,7 @@ private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         fun create(parent: ViewGroup): UserViewHolder =
             UserViewHolder(
                 LayoutInflater.from(parent.context).inflate(
-                    R.layout.item_charter,
+                    R.layout.item_episode,
                     parent,
                     false
                 )

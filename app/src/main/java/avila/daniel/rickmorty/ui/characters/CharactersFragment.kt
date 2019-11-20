@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.fragment_characters.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
+import androidx.recyclerview.widget.RecyclerView.VERTICAL
 
 class CharactersFragment : BaseFragment() {
 
@@ -29,7 +30,7 @@ class CharactersFragment : BaseFragment() {
         charactersViewModel.loadMoreCharacteres()
 
         list_characters.adapter = adapter
-        list_characters.addItemDecoration(DividerItemDecoration(activity, HORIZONTAL))
+        list_characters.addItemDecoration(DividerItemDecoration(activity, VERTICAL))
         list_characters.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)

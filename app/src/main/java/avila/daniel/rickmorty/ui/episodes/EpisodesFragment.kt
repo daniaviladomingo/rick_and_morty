@@ -5,7 +5,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
+import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseFragment
 import avila.daniel.rickmorty.ui.model.EpisodeUI
@@ -28,7 +28,7 @@ class EpisodesFragment : BaseFragment() {
         episodesViewModel.loadMoreEpisodes()
 
         list_episodes.adapter = adapter
-        list_episodes.addItemDecoration(DividerItemDecoration(activity, HORIZONTAL))
+        list_episodes.addItemDecoration(DividerItemDecoration(activity, VERTICAL))
         list_episodes.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)

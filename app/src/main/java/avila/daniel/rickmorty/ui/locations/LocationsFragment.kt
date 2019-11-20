@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseFragment
 import avila.daniel.rickmorty.ui.model.LocationUI
@@ -28,7 +29,7 @@ class LocationsFragment : BaseFragment() {
         locationsViewModel.loadMoreLocations()
 
         list_locations.adapter = adapter
-        list_locations.addItemDecoration(DividerItemDecoration(activity, RecyclerView.HORIZONTAL))
+        list_locations.addItemDecoration(DividerItemDecoration(activity, VERTICAL))
         list_locations.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)

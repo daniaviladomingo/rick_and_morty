@@ -7,13 +7,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import avila.daniel.rickmorty.R
-import avila.daniel.rickmorty.base.BaseFragment
+import avila.daniel.rickmorty.base.InitialLoadFragment
 import avila.daniel.rickmorty.ui.model.EpisodeUI
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.fragment_episodes.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class EpisodesFragment : BaseFragment() {
+class EpisodesFragment : InitialLoadFragment() {
 
     private val episodesViewModel: EpisodesViewModel by viewModel()
 
@@ -24,8 +24,6 @@ class EpisodesFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
 
         setListener()
-
-        episodesViewModel.loadMoreEpisodes()
 
         list_episodes.adapter = adapter
         list_episodes.addItemDecoration(DividerItemDecoration(activity, VERTICAL))
@@ -55,6 +53,10 @@ class EpisodesFragment : BaseFragment() {
                 }
             }
         })
+    }
+
+    override fun initialLoad() {
+        episodesViewModel.loadMoreEpisodes()
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_episodes

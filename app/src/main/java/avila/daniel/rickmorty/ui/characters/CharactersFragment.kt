@@ -3,19 +3,18 @@ package avila.daniel.rickmorty.ui.characters
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import avila.daniel.rickmorty.R
-import avila.daniel.rickmorty.base.BaseFragment
+import avila.daniel.rickmorty.base.InitialLoadFragment
 import avila.daniel.rickmorty.ui.model.CharacterUI
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.fragment_characters.*
 import org.koin.android.viewmodel.ext.android.viewModel
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
-import androidx.recyclerview.widget.RecyclerView.VERTICAL
 
-class CharactersFragment : BaseFragment() {
+class CharactersFragment : InitialLoadFragment() {
 
     private val charactersViewModel: CharactersViewModel by viewModel()
 
@@ -26,8 +25,6 @@ class CharactersFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
 
         setListener()
-
-        charactersViewModel.loadMoreCharacteres()
 
         list_characters.adapter = adapter
         list_characters.addItemDecoration(DividerItemDecoration(activity, VERTICAL))
@@ -53,6 +50,10 @@ class CharactersFragment : BaseFragment() {
                 }
             }
         })
+    }
+
+    override fun initialLoad() {
+        charactersViewModel.loadMoreCharacteres()
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_characters

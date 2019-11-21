@@ -35,12 +35,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
         view_empty.emptyListener = checkAgain()
         view_error.errorListener = tryAgain()
-
-        initializeToolbar()
-    }
-
-    private fun initializeToolbar() {
-        setSupportActionBar(toolbar)
     }
 
     protected abstract fun getLayoutId(): Int

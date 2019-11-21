@@ -26,7 +26,7 @@ interface IDataRemote {
     fun getLocation(@Path("id") id: Int): Single<Location>
 
     @GET("episode/?")
-    fun getEpisodies(@Query("page") page: Int): Single<EpisodeResponse>
+    fun getEpisodes(@Query("page") page: Int): Single<EpisodeResponse>
 
     @GET("episode/{id}")
     fun getEpisode(@Path("id") id: Int): Single<Episode>

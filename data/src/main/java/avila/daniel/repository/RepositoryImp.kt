@@ -46,7 +46,7 @@ class RepositoryImp(
     override fun getLocation(id: Int): Single<Location> = dataRemote.getLocation(id)
 
     override fun getEpisodes(): Single<List<Episode>?> =
-        dataRemote.getEpisodies(currentPagePageEpisode).map {
+        dataRemote.getEpisodes(currentPagePageEpisode).map {
             if (currentPagePageEpisode <= it.info.pages) {
                 currentPagePageEpisode++
                 episodeApiMapper.map(it.results)

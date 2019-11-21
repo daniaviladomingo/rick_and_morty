@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import avila.daniel.rickmorty.R
-import avila.daniel.rickmorty.base.BaseFragment
+import avila.daniel.rickmorty.base.InitialLoadFragment
 import avila.daniel.rickmorty.ui.model.LocationUI
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.fragment_locations.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class LocationsFragment : BaseFragment() {
+class LocationsFragment : InitialLoadFragment() {
 
     private val locationsViewModel: LocationsViewModel by viewModel()
 
@@ -26,7 +26,6 @@ class LocationsFragment : BaseFragment() {
 
         setListener()
 
-        locationsViewModel.loadMoreLocations()
 
         list_locations.adapter = adapter
         list_locations.addItemDecoration(DividerItemDecoration(activity, VERTICAL))
@@ -56,6 +55,10 @@ class LocationsFragment : BaseFragment() {
                 }
             }
         })
+    }
+
+    override fun initialLoad() {
+        locationsViewModel.loadMoreLocations()
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_locations

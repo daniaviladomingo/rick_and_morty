@@ -9,10 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <FrameLayout
-            android:id="@+id/toolbar_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+<!--        <FrameLayout-->
+<!--            android:id="@+id/toolbar_container"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -24,18 +24,20 @@
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:title="@string/app_name" />
 
-            <com.ferfalk.simplesearchview.SimpleSearchView
-                android:id="@+id/search_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimary" />
-        </FrameLayout>
+<!--            <avila.daniel.searchview_test.SimpleSearchView-->
+<!--                android:id="@+id/search_view"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:background="@color/colorPrimary" />-->
+<!--        </FrameLayout>-->
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:tabGravity="fill"
             app:tabIndicatorColor="@android:color/white"
+            app:tabMode="fixed"
             app:tabTextColor="@android:color/white" />
 
     </com.google.android.material.appbar.AppBarLayout>

@@ -1,49 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_vertical"
-    android:layout_marginStart="5dp"
-    android:layout_marginLeft="5dp"
-    android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/name"
-        style="@style/Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    android:layout_marginStart="4dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginTop="4dp"
+    app:cardCornerRadius="2dp"
+    app:cardElevation="3dp"
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
+        android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/type"
-            style="@style/Content"
+            android:id="@+id/name"
+            style="@style/LocationName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/dimension"
-            style="@style/Content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp" />
 
-        <TextView
-            android:id="@+id/residents"
-            style="@style/Content"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp" />
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
+            <TextView
+                style="@style/Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Type: " />
+
+            <TextView
+                android:id="@+id/type"
+                style="@style/Content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dimension: " />
+
+            <TextView
+                android:id="@+id/dimension"
+                style="@style/Content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Population: " />
+
+            <TextView
+                android:id="@+id/population"
+                style="@style/Content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </LinearLayout>
 
 
-</LinearLayout>
+</androidx.cardview.widget.CardView>
 
 

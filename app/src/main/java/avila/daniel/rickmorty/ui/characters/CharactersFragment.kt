@@ -1,12 +1,10 @@
 package avila.daniel.rickmorty.ui.characters
 
-
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.InitialLoadFragment
 import avila.daniel.rickmorty.ui.model.CharacterUI
@@ -27,12 +25,16 @@ class CharactersFragment : InitialLoadFragment() {
         setListener()
 
         list_characters.adapter = adapter
-        list_characters.addItemDecoration(DividerItemDecoration(activity, VERTICAL))
+        list_characters.layoutManager = GridLayoutManager(activity, 3)
         list_characters.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 (list_characters.layoutManager as LinearLayoutManager).run {
-                    charactersViewModel.listScrolled(childCount, findFirstVisibleItemPosition(), itemCount)
+                    charactersViewModel.listScrolled(
+                        childCount,
+                        findFirstVisibleItemPosition(),
+                        itemCount
+                    )
                 }
             }
         })

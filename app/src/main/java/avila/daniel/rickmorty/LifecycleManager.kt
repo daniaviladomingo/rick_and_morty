@@ -14,7 +14,7 @@ class LifecycleManager(
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun resume() {
+    fun destroy() {
         lifecycleObserver.onDestroy()
     }
 }

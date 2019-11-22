@@ -9,17 +9,25 @@
     </style>
 
 
-    <style name="Title" parent="android:TextAppearance.Medium">
-        <item name="android:textSize">18sp</item>
+    <style name="CharacterName" parent="android:TextAppearance.Medium">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="LocationName" parent="android:TextAppearance.Medium">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
 
     <style name="Label" parent="android:TextAppearance.Medium">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="Content" parent="android:TextAppearance.Medium">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
 </resources>

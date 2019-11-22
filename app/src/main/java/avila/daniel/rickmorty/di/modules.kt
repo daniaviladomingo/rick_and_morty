@@ -8,6 +8,7 @@ import avila.daniel.domain.interactor.GetEpisodesUseCase
 import avila.daniel.domain.interactor.GetLocationsUseCase
 import avila.daniel.repository.RepositoryImp
 import avila.daniel.repository.remote.IDataRemote
+import avila.daniel.repository.remote.model.mapper.CharacterApiMapper
 import avila.daniel.repository.remote.model.mapper.EpisodeApiMapper
 import avila.daniel.rickmorty.BuildConfig
 import avila.daniel.rickmorty.LifecycleManager
@@ -60,6 +61,7 @@ val repositoryModule = module {
             get(InitialPageCharacters),
             get(InitialPageLocation),
             get(InitialPageEpisodes),
+            get(),
             get()
         )
     } bind ILifecycleObserver::class
@@ -106,13 +108,17 @@ val scheduleModule = module {
 }
 
 val mapperModule = module {
-    single { CharacterUIMapper() }
+    single { CharacterUIMapper(get(MaxLenghtName)) }
     single { LocationUIMapper() }
     single { EpisodeUIMapper(get(RangeSeason), get(RangeEpisode)) }
+
+    single { CharacterApiMapper() }
     single { EpisodeApiMapper() }
 
     single(RangeSeason) { (1..2) }
     single(RangeEpisode) { (4..5) }
+
+    single(MaxLenghtName) { 20 }
 }
 
 val dateFormatModule = module {

@@ -25,7 +25,7 @@ private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
             name.text = location.name
             type.text = location.type
             dimension.text = location.dimension
-            residents.text = "${location.residents}"
+            population.text = "${location.population}"
         }
     }
 

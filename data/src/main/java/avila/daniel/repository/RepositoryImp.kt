@@ -6,6 +6,7 @@ import avila.daniel.domain.model.Character
 import avila.daniel.domain.model.Episode
 import avila.daniel.domain.model.Location
 import avila.daniel.repository.remote.IDataRemote
+import avila.daniel.repository.remote.model.mapper.CharacterApiMapper
 import avila.daniel.repository.remote.model.mapper.EpisodeApiMapper
 import io.reactivex.Single
 
@@ -14,7 +15,8 @@ class RepositoryImp(
     private val initialPageCharacters: Int,
     private val initialPageLocation: Int,
     private val initialPageEpisode: Int,
-    private val episodeApiMapper: EpisodeApiMapper
+    private val episodeApiMapper: EpisodeApiMapper,
+    private val characterApiMapper: CharacterApiMapper
 ) : IRepository, ILifecycleObserver {
 
     private var currentPageCharacters = initialPageCharacters
@@ -25,7 +27,7 @@ class RepositoryImp(
         dataRemote.getCharacters(currentPageCharacters).map {
             if (currentPageCharacters <= it.info.pages) {
                 currentPageCharacters++
-                it.results
+                characterApiMapper.map(it.results)
             } else {
                 null
             }

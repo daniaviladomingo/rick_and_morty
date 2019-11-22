@@ -4,9 +4,13 @@ import avila.daniel.domain.model.Character
 import avila.daniel.domain.model.mapper.Mapper
 import avila.daniel.rickmorty.ui.model.CharacterUI
 
-class CharacterUIMapper: Mapper<Character, CharacterUI>() {
+class CharacterUIMapper(
+    private val maxNameLenght: Int
+) : Mapper<Character, CharacterUI>() {
     override fun map(model: Character): CharacterUI = model.run {
-        CharacterUI(name, image, species, status)
+        val fname =
+            name.run { if (length > maxNameLenght) substring(0..maxNameLenght) + "..." else this }
+        CharacterUI(fname, image, species)
     }
 
     override fun inverseMap(model: CharacterUI): Character {

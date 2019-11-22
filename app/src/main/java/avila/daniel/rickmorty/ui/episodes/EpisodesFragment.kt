@@ -26,7 +26,6 @@ class EpisodesFragment : InitialLoadFragment() {
         setListener()
 
         list_episodes.adapter = adapter
-        list_episodes.addItemDecoration(DividerItemDecoration(activity, VERTICAL))
         list_episodes.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)

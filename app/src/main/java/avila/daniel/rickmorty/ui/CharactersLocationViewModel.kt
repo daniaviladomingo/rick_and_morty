@@ -1,5 +1,6 @@
 package avila.daniel.rickmorty.ui
 
+import android.util.Log
 import avila.daniel.domain.interactor.GetCharactersUseCase
 import avila.daniel.domain.interactor.GetEpisodeCharactersUseCase
 import avila.daniel.domain.interactor.GetLocationCharactersUseCase
@@ -22,6 +23,7 @@ class CharactersLocationViewModel(
     val charactersLiveData = SingleLiveEvent<Resource<List<CharacterUI>>>()
 
     fun loadCharacters(charactersSource: CharactersSource, id: Int) {
+        Log.d("aaa", "characterSource: $charactersSource id: $id")
         charactersLiveData.value = Resource.loading()
         addDisposable(
             when (charactersSource) {

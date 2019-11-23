@@ -49,11 +49,7 @@ class RepositoryImp(
 
     override fun getLocationCharacters(idLocation: Int): Single<List<Character>> =
         getLocation(idLocation).flatMap { location ->
-            var ids = ""
-            location.residents.forEach { urlResident ->
-                ids += urlResident.substringAfterLast('/')
-            }
-            dataRemote.getCharacters(ids)
+            dataRemote.getCharacters(extractIdsCharacters(location.residents))
         }
 
     override fun getEpisodes(): Single<List<Episode>?> =
@@ -70,16 +66,23 @@ class RepositoryImp(
 
     override fun getEpisodeCharacters(idEpisode: Int): Single<List<Character>> =
         getEpisode(idEpisode).flatMap { episode ->
-            var ids = ""
-            episode.characters.forEach { urlCharacter ->
-                ids += urlCharacter.substringAfterLast('/')
-            }
-            dataRemote.getCharacters(ids)
+            dataRemote.getCharacters(extractIdsCharacters(episode.characters))
         }
 
     override fun onDestroy() {
         currentPageCharacters = initialPageCharacters
         currentPageLocations = initialPageLocation
         currentPagePageEpisode = initialPageEpisode
+    }
+
+    private fun extractIdsCharacters(urlCharactersList: List<String>): String {
+        var ids = ""
+        urlCharactersList.forEach { urlCharacter ->
+            if (ids.isNotEmpty()) {
+                ids += ","
+            }
+            ids += urlCharacter.substringAfterLast('/')
+        }
+        return ids
     }
 }

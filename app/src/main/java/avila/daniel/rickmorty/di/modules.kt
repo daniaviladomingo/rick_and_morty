@@ -13,6 +13,7 @@ import avila.daniel.rickmorty.LifecycleManager
 import avila.daniel.rickmorty.di.qualifiers.*
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
 import avila.daniel.rickmorty.schedulers.ScheduleProviderImp
+import avila.daniel.rickmorty.ui.CharactersLocationViewModel
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersViewModel
 import avila.daniel.rickmorty.ui.fragment.episodes.EpisodesViewModel
 import avila.daniel.rickmorty.ui.fragment.locations.LocationsViewModel
@@ -44,6 +45,7 @@ val viewModelModule = module {
     viewModel { CharactersViewModel(get(), get(), get()) }
     viewModel { LocationsViewModel(get(), get(), get()) }
     viewModel { EpisodesViewModel(get(), get(), get()) }
+    viewModel { CharactersLocationViewModel(get(), get(), get(), get(), get()) }
 
 }
 

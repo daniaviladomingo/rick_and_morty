@@ -8,7 +8,10 @@ import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.ui.model.EpisodeUI
 import kotlinx.android.synthetic.main.item_episode.view.*
 
-class EpisodesAdapter(private val userList: List<EpisodeUI>) :
+class EpisodesAdapter(
+    private val userList: List<EpisodeUI>,
+    private val onClickListener: (Int) -> Unit
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemCount(): Int = userList.size
 
@@ -16,11 +19,11 @@ class EpisodesAdapter(private val userList: List<EpisodeUI>) :
         UserViewHolder.create(parent)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-        (holder as UserViewHolder).bin(userList[position])
+        (holder as UserViewHolder).bin(userList[position], onClickListener)
 }
 
 private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bin(episode: EpisodeUI) {
+    fun bin(episode: EpisodeUI, onClickListener: (Int) -> Unit) {
         itemView.run {
             name.text = episode.name
             season.text =
@@ -28,6 +31,9 @@ private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
             this.episode.text = "${episode.number}"
             on_air.text = episode.airDate
             characters.text = "${episode.characters}"
+            setOnClickListener {
+                onClickListener(episode.id)
+            }
         }
     }
 

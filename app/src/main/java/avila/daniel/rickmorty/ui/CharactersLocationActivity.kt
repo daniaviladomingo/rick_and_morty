@@ -10,6 +10,10 @@ import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.activity_characters.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
+const val ID = "id"
+const val CHARACTERS_SOURCE = "characters.source"
+
+
 class CharactersLocationActivity : BaseActivity() {
 
     private val charactersLocationViewModel: CharactersLocationViewModel by viewModel()
@@ -25,7 +29,9 @@ class CharactersLocationActivity : BaseActivity() {
         list_characters.adapter = adapter
 
         intent.extras?.run {
-
+            charactersLocationViewModel.loadCharacters(
+                getParcelable(CHARACTERS_SOURCE)!!, getInt(ID, 7)
+            )
         }
     }
 

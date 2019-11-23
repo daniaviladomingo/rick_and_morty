@@ -1,11 +1,18 @@
 package avila.daniel.rickmorty.ui.fragment.episodes
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.InitialLoadFragment
+import avila.daniel.rickmorty.ui.CHARACTERS_SOURCE
+import avila.daniel.rickmorty.ui.CharactersLocationActivity
+import avila.daniel.rickmorty.ui.ID
+import avila.daniel.rickmorty.ui.model.CharactersSource
 import avila.daniel.rickmorty.ui.model.EpisodeUI
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.fragment_episodes.*
@@ -16,7 +23,16 @@ class EpisodesFragment : InitialLoadFragment() {
     private val episodesViewModel: EpisodesViewModel by viewModel()
 
     private val episodesList = mutableListOf<EpisodeUI>()
-    private val adapter = EpisodesAdapter(episodesList)
+    private val adapter = EpisodesAdapter(episodesList) { id ->
+        startActivity(Intent(
+            activity,
+            CharactersLocationActivity::class.java
+        ).apply {
+            Log.d("aaa", "Id: $id")
+            putExtra(CHARACTERS_SOURCE, CharactersSource.EPISODE as Parcelable)
+            putExtra(ID, id)
+        })
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

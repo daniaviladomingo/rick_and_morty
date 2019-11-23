@@ -1,13 +1,10 @@
-package avila.daniel.rickmorty.ui.locations
+package avila.daniel.rickmorty.ui.fragment.locations
 
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.InitialLoadFragment
 import avila.daniel.rickmorty.ui.model.LocationUI

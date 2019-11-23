@@ -1,18 +1,17 @@
-package avila.daniel.rickmorty.ui.episodes
+package avila.daniel.rickmorty.ui.fragment.episodes
 
 import avila.daniel.domain.interactor.GetEpisodesUseCase
 import avila.daniel.rickmorty.base.BaseViewModel
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
 import avila.daniel.rickmorty.ui.model.EpisodeUI
-import avila.daniel.rickmorty.ui.model.mapper.CharacterUIMapper
 import avila.daniel.rickmorty.ui.model.mapper.EpisodeUIMapper
 import avila.daniel.rickmorty.ui.util.data.Resource
 import avila.daniel.rickmorty.util.SingleLiveEvent
 
 class EpisodesViewModel(
     private val getEpisodesUseCase: GetEpisodesUseCase,
-    private val scheduleProvider: IScheduleProvider,
-    private val episodesUIMapper: EpisodeUIMapper
+    private val episodesUIMapper: EpisodeUIMapper,
+    private val scheduleProvider: IScheduleProvider
 ) : BaseViewModel() {
 
     val episodesLiveData = SingleLiveEvent<Resource<List<EpisodeUI>?>>()

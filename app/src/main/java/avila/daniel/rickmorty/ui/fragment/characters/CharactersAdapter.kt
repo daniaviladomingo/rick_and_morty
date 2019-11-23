@@ -1,4 +1,4 @@
-package avila.daniel.rickmorty.ui.characters
+package avila.daniel.rickmorty.ui.fragment.characters
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater

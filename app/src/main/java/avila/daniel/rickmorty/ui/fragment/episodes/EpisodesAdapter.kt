@@ -1,4 +1,4 @@
-package avila.daniel.rickmorty.ui.episodes
+package avila.daniel.rickmorty.ui.fragment.episodes
 
 import android.view.LayoutInflater
 import android.view.View

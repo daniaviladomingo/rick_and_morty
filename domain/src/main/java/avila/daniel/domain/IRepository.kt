@@ -10,8 +10,12 @@ import io.reactivex.Single
 interface IRepository {
     fun getCharacters(): Single<List<Character>?>
     fun getCharacter(id: Int): Single<Character>
+
     fun getLocations(): Single<List<Location>?>
     fun getLocation(id: Int): Single<Location>
+    fun getLocationCharacters(idLocation: Int): Single<List<Character>>
+
     fun getEpisodes(): Single<List<Episode>?>
     fun getEpisode(id: Int): Single<Episode>
+    fun getEpisodeCharacters(idEpisode: Int): Single<List<Character>>
 }

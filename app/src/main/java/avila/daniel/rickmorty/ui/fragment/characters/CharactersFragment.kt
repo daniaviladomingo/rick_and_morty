@@ -1,4 +1,4 @@
-package avila.daniel.rickmorty.ui.characters
+package avila.daniel.rickmorty.ui.fragment.characters
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
@@ -25,7 +25,6 @@ class CharactersFragment : InitialLoadFragment() {
         setListener()
 
         list_characters.adapter = adapter
-        list_characters.layoutManager = GridLayoutManager(activity, 3)
         list_characters.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)

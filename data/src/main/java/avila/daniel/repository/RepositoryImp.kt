@@ -47,6 +47,15 @@ class RepositoryImp(
 
     override fun getLocation(id: Int): Single<Location> = dataRemote.getLocation(id)
 
+    override fun getLocationCharacters(idLocation: Int): Single<List<Character>> =
+        getLocation(idLocation).flatMap { location ->
+            var ids = ""
+            location.residents.forEach { urlResident ->
+                ids += urlResident.substringAfterLast('/')
+            }
+            dataRemote.getCharacters(ids)
+        }
+
     override fun getEpisodes(): Single<List<Episode>?> =
         dataRemote.getEpisodes(currentPagePageEpisode).map {
             if (currentPagePageEpisode <= it.info.pages) {
@@ -58,6 +67,15 @@ class RepositoryImp(
         }
 
     override fun getEpisode(id: Int): Single<Episode> = dataRemote.getEpisode(id)
+
+    override fun getEpisodeCharacters(idEpisode: Int): Single<List<Character>> =
+        getEpisode(idEpisode).flatMap { episode ->
+            var ids = ""
+            episode.characters.forEach { urlCharacter ->
+                ids += urlCharacter.substringAfterLast('/')
+            }
+            dataRemote.getCharacters(ids)
+        }
 
     override fun onDestroy() {
         currentPageCharacters = initialPageCharacters

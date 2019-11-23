@@ -1,15 +1,14 @@
-package avila.daniel.rickmorty.ui
+package avila.daniel.rickmorty.ui.fragment.locations
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
-import avila.daniel.rickmorty.ui.model.CharacterUI
-import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.item_charter.view.*
+import avila.daniel.rickmorty.ui.model.LocationUI
+import kotlinx.android.synthetic.main.item_location.view.*
 
-class CharactersInLocationAdapter(private val userList: List<CharacterUI>) :
+class LocationsAdapter(private val userList: List<LocationUI>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemCount(): Int = userList.size
 
@@ -21,10 +20,12 @@ class CharactersInLocationAdapter(private val userList: List<CharacterUI>) :
 }
 
 private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bin(character: CharacterUI) {
+    fun bin(location: LocationUI) {
         itemView.run {
-            name.text = character.name
-            Glide.with(itemView).load(character.photo).into(photo)
+            name.text = location.name
+            type.text = location.type
+            dimension.text = location.dimension
+            population.text = "${location.population}"
         }
     }
 
@@ -32,7 +33,7 @@ private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         fun create(parent: ViewGroup): UserViewHolder =
             UserViewHolder(
                 LayoutInflater.from(parent.context).inflate(
-                    R.layout.item_charter,
+                    R.layout.item_location,
                     parent,
                     false
                 )

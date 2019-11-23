@@ -3,9 +3,7 @@ package avila.daniel.rickmorty.di
 import androidx.lifecycle.Lifecycle
 import avila.daniel.domain.ILifecycleObserver
 import avila.daniel.domain.IRepository
-import avila.daniel.domain.interactor.GetCharactersUseCase
-import avila.daniel.domain.interactor.GetEpisodesUseCase
-import avila.daniel.domain.interactor.GetLocationsUseCase
+import avila.daniel.domain.interactor.*
 import avila.daniel.repository.RepositoryImp
 import avila.daniel.repository.remote.IDataRemote
 import avila.daniel.repository.remote.model.mapper.CharacterApiMapper
@@ -15,9 +13,9 @@ import avila.daniel.rickmorty.LifecycleManager
 import avila.daniel.rickmorty.di.qualifiers.*
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
 import avila.daniel.rickmorty.schedulers.ScheduleProviderImp
-import avila.daniel.rickmorty.ui.characters.CharactersViewModel
-import avila.daniel.rickmorty.ui.episodes.EpisodesViewModel
-import avila.daniel.rickmorty.ui.locations.LocationsViewModel
+import avila.daniel.rickmorty.ui.fragment.characters.CharactersViewModel
+import avila.daniel.rickmorty.ui.fragment.episodes.EpisodesViewModel
+import avila.daniel.rickmorty.ui.fragment.locations.LocationsViewModel
 import avila.daniel.rickmorty.ui.model.mapper.CharacterUIMapper
 import avila.daniel.rickmorty.ui.model.mapper.EpisodeUIMapper
 import avila.daniel.rickmorty.ui.model.mapper.LocationUIMapper
@@ -46,12 +44,15 @@ val viewModelModule = module {
     viewModel { CharactersViewModel(get(), get(), get()) }
     viewModel { LocationsViewModel(get(), get(), get()) }
     viewModel { EpisodesViewModel(get(), get(), get()) }
+
 }
 
 val useCaseModule = module {
     single { GetCharactersUseCase(get()) }
     single { GetLocationsUseCase(get()) }
+    single { GetLocationCharactersUseCase(get()) }
     single { GetEpisodesUseCase(get()) }
+    single { GetEpisodeCharactersUseCase(get()) }
 }
 
 val repositoryModule = module {

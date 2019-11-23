@@ -14,7 +14,7 @@ class CharacterActivity : BaseActivity() {
 
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_character
+    override fun getLayoutId(): Int = R.layout.activity_characters
 
     override fun checkAgain(): () -> Unit = {}
 

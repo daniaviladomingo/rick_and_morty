@@ -1,4 +1,4 @@
-package avila.daniel.rickmorty.ui.characters
+package avila.daniel.rickmorty.ui.fragment.characters
 
 import avila.daniel.domain.interactor.GetCharactersUseCase
 import avila.daniel.rickmorty.base.BaseViewModel
@@ -10,8 +10,8 @@ import avila.daniel.rickmorty.util.SingleLiveEvent
 
 class CharactersViewModel(
     private val getCharactersUseCase: GetCharactersUseCase,
-    private val scheduleProvider: IScheduleProvider,
-    private val characterUIMapper: CharacterUIMapper
+    private val characterUIMapper: CharacterUIMapper,
+    private val scheduleProvider: IScheduleProvider
 ) : BaseViewModel() {
 
     val charactersLiveData = SingleLiveEvent<Resource<List<CharacterUI>?>>()

@@ -16,6 +16,9 @@ interface IDataRemote {
     @GET("character/?")
     fun getCharacters(@Query("page") page: Int): Single<CharacterResponse>
 
+    @GET("character/{ids}")
+    fun getCharacters(@Path("ids") ids: String): Single<List<Character>>
+
     @GET("character/{id}")
     fun getCharacter(@Path("id") id: Int): Single<Character>
 

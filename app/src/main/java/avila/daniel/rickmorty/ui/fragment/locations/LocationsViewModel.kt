@@ -1,4 +1,4 @@
-package avila.daniel.rickmorty.ui.locations
+package avila.daniel.rickmorty.ui.fragment.locations
 
 import avila.daniel.domain.interactor.GetLocationsUseCase
 import avila.daniel.rickmorty.base.BaseViewModel
@@ -10,8 +10,8 @@ import avila.daniel.rickmorty.util.SingleLiveEvent
 
 class LocationsViewModel(
     private val getLocationsUseCase: GetLocationsUseCase,
-    private val scheduleProvider: IScheduleProvider,
-    private val locationUIMapper: LocationUIMapper
+    private val locationUIMapper: LocationUIMapper,
+    private val scheduleProvider: IScheduleProvider
 ) : BaseViewModel() {
 
     val locationsLiveData = SingleLiveEvent<Resource<List<LocationUI>?>>()

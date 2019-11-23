@@ -1,11 +1,14 @@
 package avila.daniel.rickmorty.ui
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseActivity
-import avila.daniel.rickmorty.ui.characters.CharactersFragment
-import avila.daniel.rickmorty.ui.episodes.EpisodesFragment
-import avila.daniel.rickmorty.ui.locations.LocationsFragment
+import avila.daniel.rickmorty.ui.fragment.characters.CharactersFragment
+import avila.daniel.rickmorty.ui.fragment.episodes.EpisodesFragment
+import avila.daniel.rickmorty.ui.fragment.locations.LocationsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
@@ -75,4 +78,20 @@ class MainActivity : BaseActivity() {
     override fun checkAgain(): () -> Unit = {}
 
     override fun tryAgain(): () -> Unit = {}
+
+    inner class CustomPagerAdapter(
+        private val fragmentList: List<Fragment>,
+        fragmentManager: FragmentManager
+    ) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+        override fun getItem(position: Int): Fragment = fragmentList[position]
+        override fun getCount(): Int = fragmentList.size
+        override fun getPageTitle(position: Int): CharSequence = when (position) {
+            0 -> "CHARACTERS"
+            1 -> "LOCATIONS"
+            2 -> "EPISODES"
+            else -> "UNKNOWN"
+        }
+    }
 }
+
+

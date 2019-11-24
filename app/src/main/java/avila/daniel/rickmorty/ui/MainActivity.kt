@@ -23,6 +23,7 @@ class MainActivity : BaseActivity() {
         lifecycleObserver.run { }
 
         setSupportActionBar(toolbar)
+        supportActionBar.setIcon()
 
         viewpager.run {
             adapter = CustomPagerAdapter(

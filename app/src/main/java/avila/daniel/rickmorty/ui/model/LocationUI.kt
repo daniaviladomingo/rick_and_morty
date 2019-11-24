@@ -3,6 +3,7 @@ package avila.daniel.rickmorty.ui.model
 import avila.daniel.rickmorty.ui.util.DynamicSearchAdapter
 
 data class LocationUI(
+    val id: Int,
     val name: String,
     val type: String,
     val dimension: String,

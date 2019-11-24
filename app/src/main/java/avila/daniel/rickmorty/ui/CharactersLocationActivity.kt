@@ -28,9 +28,9 @@ class CharactersLocationActivity : BaseActivity() {
 
         list_characters.adapter = adapter
 
-        intent.extras?.run {
+        intent.run {
             charactersLocationViewModel.loadCharacters(
-                getParcelable(CHARACTERS_SOURCE)!!, getInt(ID, 7)
+                getParcelableExtra(CHARACTERS_SOURCE)!!, getIntExtra(ID, 0)
             )
         }
     }

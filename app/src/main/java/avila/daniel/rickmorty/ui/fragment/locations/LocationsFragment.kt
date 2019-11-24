@@ -1,12 +1,17 @@
 package avila.daniel.rickmorty.ui.fragment.locations
 
-
+import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.InitialLoadFragment
+import avila.daniel.rickmorty.ui.CHARACTERS_SOURCE
+import avila.daniel.rickmorty.ui.CharactersLocationActivity
+import avila.daniel.rickmorty.ui.ID
+import avila.daniel.rickmorty.ui.model.CharactersSource
 import avila.daniel.rickmorty.ui.model.LocationUI
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.fragment_locations.*
@@ -17,7 +22,16 @@ class LocationsFragment : InitialLoadFragment() {
     private val locationsViewModel: LocationsViewModel by viewModel()
 
     private val locationsList = mutableListOf<LocationUI>()
-    private val adapter = LocationsAdapter(locationsList)
+    private val adapter = LocationsAdapter(locationsList) { id ->
+        startActivity(
+            Intent(
+                activity,
+                CharactersLocationActivity::class.java
+            ).apply {
+                putExtra(CHARACTERS_SOURCE, CharactersSource.LOCATION as Parcelable)
+                putExtra(ID, id)
+            })
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

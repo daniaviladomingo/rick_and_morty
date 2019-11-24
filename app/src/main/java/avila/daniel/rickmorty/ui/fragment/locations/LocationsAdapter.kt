@@ -8,7 +8,10 @@ import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.ui.model.LocationUI
 import kotlinx.android.synthetic.main.item_location.view.*
 
-class LocationsAdapter(private val userList: List<LocationUI>) :
+class LocationsAdapter(
+    private val userList: List<LocationUI>,
+    private val onClickListener: (Int) -> Unit
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemCount(): Int = userList.size
 
@@ -16,16 +19,19 @@ class LocationsAdapter(private val userList: List<LocationUI>) :
         UserViewHolder.create(parent)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-        (holder as UserViewHolder).bin(userList[position])
+        (holder as UserViewHolder).bin(userList[position], onClickListener)
 }
 
 private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bin(location: LocationUI) {
+    fun bin(location: LocationUI, onClickListener: (Int) -> Unit) {
         itemView.run {
             name.text = location.name
             type.text = location.type
             dimension.text = location.dimension
             population.text = "${location.population}"
+            setOnClickListener {
+                onClickListener(location.id)
+            }
         }
     }
 

@@ -6,7 +6,13 @@ import avila.daniel.rickmorty.ui.model.LocationUI
 
 class LocationUIMapper : Mapper<Location, LocationUI>() {
     override fun map(model: Location): LocationUI = model.run {
-        LocationUI(id, name, type, dimension, residents.size)
+        LocationUI(
+            id,
+            name,
+            type,
+            dimension.run { if (this == "unknown") "???" else this },
+            residents.size
+        )
     }
 
     override fun inverseMap(model: LocationUI): Location {

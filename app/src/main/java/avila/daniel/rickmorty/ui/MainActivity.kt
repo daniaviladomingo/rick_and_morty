@@ -1,6 +1,9 @@
 package avila.daniel.rickmorty.ui
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -13,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
+
 class MainActivity : BaseActivity() {
 
     private val lifecycleObserver: Unit by inject { parametersOf(this.lifecycle) }
@@ -23,7 +27,6 @@ class MainActivity : BaseActivity() {
         lifecycleObserver.run { }
 
         setSupportActionBar(toolbar)
-        supportActionBar.setIcon()
 
         viewpager.run {
             adapter = CustomPagerAdapter(
@@ -38,6 +41,20 @@ class MainActivity : BaseActivity() {
         tabs.setupWithViewPager(viewpager)
 
 //        search_view.tabLayout = tabs
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean { // Handle action bar item clicks here. The action bar will
+        val id: Int = item.itemId
+        if (id == R.id.action_settings) {
+            Toast.makeText(this@MainActivity, "Action clicked", Toast.LENGTH_LONG).show()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 //    override fun onCreateOptionsMenu(menu: Menu): Boolean {

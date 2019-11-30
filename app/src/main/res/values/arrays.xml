@@ -1,12 +1,33 @@
 <resources>
-    <!-- Reply Preference -->
-    <string-array name="reply_entries">
-        <item>Reply</item>
-        <item>Reply to all</item>
+    <!-- STATUS -->
+    <string-array name="status_entries">
+        <item>@string/all</item>
+        <item>@string/alive</item>
+        <item>@string/dead</item>
+        <item>@string/unknown</item>
     </string-array>
 
-    <string-array name="reply_values">
-        <item>reply</item>
-        <item>reply_all</item>
+    <string-array name="status_values">
+        <item>all</item>
+        <item>alive</item>
+        <item>dead</item>
+        <item>unknown</item>
+    </string-array>
+
+    <!-- GENDER -->
+    <string-array name="gender_entries">
+        <item>@string/all</item>
+        <item>@string/female</item>
+        <item>@string/male</item>
+        <item>@string/genderless</item>
+        <item>@string/unknown</item>
+    </string-array>
+
+    <string-array name="gender_values">
+        <item>all</item>
+        <item>female</item>
+        <item>male</item>
+        <item>genderless</item>
+        <item>unknown</item>
     </string-array>
 </resources>

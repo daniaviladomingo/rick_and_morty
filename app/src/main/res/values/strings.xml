@@ -1,13 +1,14 @@
 <resources>
     <string name="app_name">Rick &amp; Morty</string>
 
+    <string name="settings">Settings</string>
+    <string name="info">Info</string>
+    <string name="search">Search&#8230;</string>
+
     <string name="label_empty_result">Oops, there are no results to display</string>
     <string name="label_error_result">Oops, there was an error fetching the data</string>
     <string name="button_try_again">Try again</string>
     <string name="dialog_ok_button">OK</string>
-
-    <string name="search">Search&#8230;</string>
-    <string name="settings">Settings</string>
 
     <string name="season">Season:</string>
     <string name="episode">Episode:</string>
@@ -15,18 +16,34 @@
     <string name="characters">Nº Characters:</string>
     <string name="title_activity_settings">Settings</string>
 
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
+    <!-- Preferences -->
+    <string name="characters_header">Character search filtering</string>
+    <string name="locations_header">Location search filtering</string>
+    <string name="episodes_header">Episodes search filtering</string>
 
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
+    <string name="name">Name</string>
+    <string name="name_summary">Checked to search by name</string>
+    <string name="characters_list_status">Status</string>
+    <string name="characters_species">Species</string>
+    <string name="characters_species_summary">Checked to search by species</string>
+    <string name="type">Type</string>
+    <string name="type_summary">Checked to search by type</string>
+    <string name="characters_list_gender">Gender</string>
 
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="locations_dimension">Dimension</string>
+
+    <string name="alive">Alive</string>
+    <string name="dead">Dead</string>
+
+    <string name="female">Female</string>
+    <string name="male">Male</string>
+    <string name="genderless">Genderless</string>
+
+    <string name="all">All</string>
+    <string name="unknown">Unknown</string>
+
+
+
+
+
 </resources>

@@ -1,50 +1,77 @@
-<!--
-  ~ Copyright 2018 The app Open Source Project
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~      http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
-
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="@string/messages_header">
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/characters_header">
 
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
+        <CheckBoxPreference
+            app:defaultValue="true"
+            app:iconSpaceReserved="false"
+            app:key="name_characters"
+            app:summary="@string/name_summary"
+            app:title="@string/name" />
 
         <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
+            app:defaultValue="all"
+            app:entries="@array/status_entries"
+            app:entryValues="@array/status_values"
+            app:iconSpaceReserved="false"
+            app:key="status"
+            app:title="@string/characters_list_status"
+            app:useSimpleSummaryProvider="true" />
+
+        <CheckBoxPreference
+            app:iconSpaceReserved="false"
+            app:key="species"
+            app:summary="@string/characters_species_summary"
+            app:title="@string/characters_species" />
+
+        <CheckBoxPreference
+            app:iconSpaceReserved="false"
+            app:key="type_characters"
+            app:summary="@string/type_summary"
+            app:title="@string/type" />
+
+        <ListPreference
+            app:defaultValue="all"
+            app:entries="@array/gender_entries"
+            app:entryValues="@array/gender_values"
+            app:iconSpaceReserved="false"
+            app:key="gender"
+            app:title="@string/characters_list_gender"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/sync_header">
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/locations_header">
 
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
+        <CheckBoxPreference
+            app:defaultValue="true"
+            app:iconSpaceReserved="false"
+            app:key="name_location"
+            app:summary="@string/name_summary"
+            app:title="@string/name" />
 
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
+        <CheckBoxPreference
+            app:iconSpaceReserved="false"
+            app:key="type_location"
+            app:summary="@string/type_summary"
+            app:title="@string/type" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/episodes_header">
+
+        <CheckBoxPreference
+            app:defaultValue="true"
+            app:iconSpaceReserved="false"
+            app:key="name_episodes"
+            app:summary="@string/name_summary"
+            app:title="@string/name" />
 
     </PreferenceCategory>
 

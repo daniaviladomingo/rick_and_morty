@@ -3,8 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_menu_search"
+        android:title="@string/search"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_action_settings"
         android:title="@string/settings"
-        app:showAsAction="always" />
+        app:showAsAction="collapseActionView" />
+
+    <item
+        android:id="@+id/action_info"
+        android:icon="@android:drawable/ic_dialog_info"
+        android:title="@string/info"
+        app:showAsAction="collapseActionView" />
 </menu>

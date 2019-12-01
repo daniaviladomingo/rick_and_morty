@@ -17,6 +17,17 @@
     <string name="title_activity_settings">Settings</string>
 
     <!-- Preferences -->
+    <string name="key_name_characters">key_name_characters</string>
+    <string name="key_status">key_status</string>
+    <string name="key_specie">key_specie</string>
+    <string name="key_type_characters">key_type_characters</string>
+    <string name="key_gender">key_gender</string>
+
+    <string name="key_name_location">key_name_location</string>
+    <string name="key_type_location">key_type_location</string>
+
+    <string name="key_name_episode">key_name_episode</string>
+
     <string name="characters_header">Character search filtering</string>
     <string name="locations_header">Location search filtering</string>
     <string name="episodes_header">Episodes search filtering</string>

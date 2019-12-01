@@ -7,7 +7,7 @@
         <CheckBoxPreference
             app:defaultValue="true"
             app:iconSpaceReserved="false"
-            app:key="name_characters"
+            app:key="@string/key_name_characters"
             app:summary="@string/name_summary"
             app:title="@string/name" />
 
@@ -16,19 +16,19 @@
             app:entries="@array/status_entries"
             app:entryValues="@array/status_values"
             app:iconSpaceReserved="false"
-            app:key="status"
+            app:key="@string/key_status"
             app:title="@string/characters_list_status"
             app:useSimpleSummaryProvider="true" />
 
         <CheckBoxPreference
             app:iconSpaceReserved="false"
-            app:key="specie"
+            app:key="@string/key_specie"
             app:summary="@string/characters_species_summary"
             app:title="@string/characters_species" />
 
         <CheckBoxPreference
             app:iconSpaceReserved="false"
-            app:key="type_characters"
+            app:key="@string/key_type_characters"
             app:summary="@string/type_summary"
             app:title="@string/type" />
 
@@ -37,7 +37,7 @@
             app:entries="@array/gender_entries"
             app:entryValues="@array/gender_values"
             app:iconSpaceReserved="false"
-            app:key="gender"
+            app:key="@string/key_gender"
             app:title="@string/characters_list_gender"
             app:useSimpleSummaryProvider="true" />
 
@@ -50,13 +50,13 @@
         <CheckBoxPreference
             app:defaultValue="true"
             app:iconSpaceReserved="false"
-            app:key="name_location"
+            app:key="@string/key_name_location"
             app:summary="@string/name_summary"
             app:title="@string/name" />
 
         <CheckBoxPreference
             app:iconSpaceReserved="false"
-            app:key="type_location"
+            app:key="@string/key_type_location"
             app:summary="@string/type_summary"
             app:title="@string/type" />
 
@@ -69,7 +69,7 @@
         <CheckBoxPreference
             app:defaultValue="true"
             app:iconSpaceReserved="false"
-            app:key="name_episodes"
+            app:key="@string/key_name_characters"
             app:summary="@string/name_summary"
             app:title="@string/name" />
 

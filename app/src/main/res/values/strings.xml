@@ -24,8 +24,8 @@
     <string name="name">Name</string>
     <string name="name_summary">Checked to search by name</string>
     <string name="characters_list_status">Status</string>
-    <string name="characters_species">Species</string>
-    <string name="characters_species_summary">Checked to search by species</string>
+    <string name="characters_species">Specie</string>
+    <string name="characters_species_summary">Checked to search by specie</string>
     <string name="type">Type</string>
     <string name="type_summary">Checked to search by type</string>
     <string name="characters_list_gender">Gender</string>

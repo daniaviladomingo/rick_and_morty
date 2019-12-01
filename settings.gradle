@@ -1,2 +1,2 @@
-include ':app', ':domain', ':data', ':searchview_test'
+include ':app', ':domain', ':data', ':searchview_test', ':data_cache_preference'
 rootProject.name='Rick & Morty'

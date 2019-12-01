@@ -22,7 +22,7 @@
 
         <CheckBoxPreference
             app:iconSpaceReserved="false"
-            app:key="species"
+            app:key="specie"
             app:summary="@string/characters_species_summary"
             app:title="@string/characters_species" />
 

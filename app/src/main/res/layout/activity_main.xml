@@ -22,14 +22,15 @@
                 android:minHeight="?attr/actionBarSize"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:title="@string/app_name" />
 
             <avila.daniel.searchview_test.SimpleSearchView
                 android:id="@+id/search_view"
                 android:layout_width="match_parent"
-                android:hint="@string/search"
                 android:layout_height="match_parent"
-                android:background="@color/colorPrimary" />
+                android:background="@color/colorPrimary"
+                android:hint="@string/search" />
         </FrameLayout>
 
         <com.google.android.material.tabs.TabLayout

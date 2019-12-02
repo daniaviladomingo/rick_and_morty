@@ -1,5 +1,6 @@
 package avila.daniel.rickmorty.ui.fragment.characters
 
+import avila.daniel.domain.interactor.GetCharactersFilterSettingsUseCase
 import avila.daniel.domain.interactor.GetCharactersUseCase
 import avila.daniel.rickmorty.base.BaseViewModel
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
@@ -10,6 +11,7 @@ import avila.daniel.rickmorty.util.SingleLiveEvent
 
 class CharactersViewModel(
     private val getCharactersUseCase: GetCharactersUseCase,
+    private val getCharactersFilterSettingsUseCase: GetCharactersFilterSettingsUseCase,
     private val characterUIMapper: CharacterUIMapper,
     private val scheduleProvider: IScheduleProvider
 ) : BaseViewModel() {
@@ -40,5 +42,9 @@ class CharactersViewModel(
                 isLoading = false
                 charactersLiveData.value = Resource.error(it.localizedMessage)
             })
+    }
+
+    fun searchFilter(text: String) {
+
     }
 }

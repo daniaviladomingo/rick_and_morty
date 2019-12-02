@@ -39,4 +39,8 @@ class LocationsViewModel(
                 locationsLiveData.value = Resource.error(it.localizedMessage)
             })
     }
+
+    fun searchFilter(text: String) {
+
+    }
 }

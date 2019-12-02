@@ -5,6 +5,10 @@ import avila.daniel.domain.IRepository
 import avila.daniel.domain.model.Character
 import avila.daniel.domain.model.Episode
 import avila.daniel.domain.model.Location
+import avila.daniel.domain.model.settings.CharactersFilterSettings
+import avila.daniel.domain.model.settings.EpisodeFilterSettings
+import avila.daniel.domain.model.settings.LocationFilterSettings
+import avila.daniel.repository.cache.IDataCache
 import avila.daniel.repository.remote.IDataRemote
 import avila.daniel.repository.remote.model.mapper.CharacterApiMapper
 import avila.daniel.repository.remote.model.mapper.EpisodeApiMapper
@@ -12,6 +16,7 @@ import io.reactivex.Single
 
 class RepositoryImp(
     private val dataRemote: IDataRemote,
+    private val dataCache: IDataCache,
     private val initialPageCharacters: Int,
     private val initialPageLocation: Int,
     private val initialPageEpisode: Int,
@@ -35,6 +40,9 @@ class RepositoryImp(
 
     override fun getCharacter(id: Int): Single<Character> = dataRemote.getCharacter(id)
 
+    override fun getCharactersFilterSettings(): Single<CharactersFilterSettings> =
+        dataCache.getCharacterFilter()
+
     override fun getLocations(): Single<List<Location>?> =
         dataRemote.getLocations(currentPageLocations).map {
             if (currentPageLocations <= it.info.pages) {
@@ -51,6 +59,9 @@ class RepositoryImp(
         getLocation(idLocation).flatMap { location ->
             dataRemote.getCharacters(extractIdsCharacters(location.residents))
         }
+
+    override fun getLocationsFilterSettings(): Single<LocationFilterSettings> =
+        dataCache.getLocationFilter()
 
     override fun getEpisodes(): Single<List<Episode>?> =
         dataRemote.getEpisodes(currentPagePageEpisode).map {
@@ -69,11 +80,15 @@ class RepositoryImp(
             dataRemote.getCharacters(extractIdsCharacters(episode.characters))
         }
 
+    override fun getEpisodeFilterSettings(): Single<EpisodeFilterSettings> =
+        dataCache.getEpisodeFilter()
+
     override fun onDestroy() {
         currentPageCharacters = initialPageCharacters
         currentPageLocations = initialPageLocation
         currentPagePageEpisode = initialPageEpisode
     }
+
 
     private fun extractIdsCharacters(urlCharactersList: List<String>): String {
         var ids = ""

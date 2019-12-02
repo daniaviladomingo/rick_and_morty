@@ -13,11 +13,12 @@ import avila.daniel.rickmorty.ui.CharactersLocationActivity
 import avila.daniel.rickmorty.ui.ID
 import avila.daniel.rickmorty.ui.model.CharactersSource
 import avila.daniel.rickmorty.ui.model.LocationUI
+import avila.daniel.rickmorty.ui.util.ISearch
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.fragment_locations.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class LocationsFragment : InitialLoadFragment() {
+class LocationsFragment : InitialLoadFragment(), ISearch {
 
     private val locationsViewModel: LocationsViewModel by viewModel()
 
@@ -69,6 +70,10 @@ class LocationsFragment : InitialLoadFragment() {
 
     override fun initialLoad() {
         locationsViewModel.loadMoreLocations()
+    }
+
+    override fun updateFilterText(value: String) {
+        locationsViewModel.searchFilter(value)
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_locations

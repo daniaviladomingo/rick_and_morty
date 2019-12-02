@@ -2,7 +2,6 @@ package avila.daniel.rickmorty.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -14,15 +13,21 @@ import avila.daniel.rickmorty.base.BaseActivity
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersFragment
 import avila.daniel.rickmorty.ui.fragment.episodes.EpisodesFragment
 import avila.daniel.rickmorty.ui.fragment.locations.LocationsFragment
+import avila.daniel.rickmorty.ui.util.ISearch
 import avila.daniel.searchview_test.SimpleSearchView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
-
 class MainActivity : BaseActivity() {
 
     private val lifecycleObserver: Unit by inject { parametersOf(this.lifecycle) }
+
+    private val listFragmentTabs = listOf<Fragment>(
+        CharactersFragment.newInstance(),
+        LocationsFragment.newInstance(),
+        EpisodesFragment.newInstance()
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,13 +37,7 @@ class MainActivity : BaseActivity() {
         setSupportActionBar(toolbar)
 
         viewpager.run {
-            adapter = CustomPagerAdapter(
-                listOf(
-                    CharactersFragment.newInstance(),
-                    LocationsFragment.newInstance(),
-                    EpisodesFragment.newInstance()
-                ), supportFragmentManager
-            )
+            adapter = CustomPagerAdapter(listFragmentTabs, supportFragmentManager)
         }
 
         tabs.setupWithViewPager(viewpager)
@@ -46,7 +45,7 @@ class MainActivity : BaseActivity() {
         search_view.tabLayout = tabs
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean { // Handle action bar item clicks here. The action bar will
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> {
                 startActivity(Intent(this, SettingsActivity::class.java))
@@ -67,13 +66,13 @@ class MainActivity : BaseActivity() {
         search_view.setMenuItem(menu.findItem(R.id.action_search))
         search_view.setOnQueryTextListener(object : SimpleSearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                Log.d("fff", query)
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                Log.d("fff", "cambio")
-//                fragmentTabs[viewpager.currentItem].updateCriteria(newText)
+                if (!newText.isBlank()) {
+                    (listFragmentTabs[viewpager.currentItem] as ISearch).updateFilterText(newText)
+                }
                 return false
             }
 
@@ -107,10 +106,10 @@ class MainActivity : BaseActivity() {
         override fun getItem(position: Int): Fragment = fragmentList[position]
         override fun getCount(): Int = fragmentList.size
         override fun getPageTitle(position: Int): CharSequence = when (position) {
-            0 -> "CHARACTERS"
-            1 -> "LOCATIONS"
-            2 -> "EPISODES"
-            else -> "UNKNOWN"
+            0 -> getString(R.string.tab_characters)
+            1 -> getString(R.string.tab_locations)
+            2 -> getString(R.string.tab_episodes)
+            else -> getString(R.string.tab_unknown)
         }
     }
 }

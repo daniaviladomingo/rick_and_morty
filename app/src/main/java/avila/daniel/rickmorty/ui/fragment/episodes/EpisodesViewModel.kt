@@ -39,4 +39,8 @@ class EpisodesViewModel(
                 episodesLiveData.value = Resource.error(it.localizedMessage)
             })
     }
+
+    fun searchFilter(text: String) {
+
+    }
 }

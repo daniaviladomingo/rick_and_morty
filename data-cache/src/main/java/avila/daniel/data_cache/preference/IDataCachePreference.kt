@@ -1,4 +1,4 @@
-package avila.daniel.repository.cache.preference
+package avila.daniel.data_cache.preference
 
 import avila.daniel.domain.model.settings.CharactersFilterSettings
 import avila.daniel.domain.model.settings.EpisodeFilterSettings

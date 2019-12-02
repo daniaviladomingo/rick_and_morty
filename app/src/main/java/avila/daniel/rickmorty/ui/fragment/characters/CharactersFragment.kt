@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.InitialLoadFragment
 import avila.daniel.rickmorty.ui.model.CharacterUI
+import avila.daniel.rickmorty.ui.util.ISearch
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.fragment_characters.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class CharactersFragment : InitialLoadFragment() {
+class CharactersFragment : InitialLoadFragment(), ISearch {
 
     private val charactersViewModel: CharactersViewModel by viewModel()
 
@@ -55,6 +56,12 @@ class CharactersFragment : InitialLoadFragment() {
 
     override fun initialLoad() {
         charactersViewModel.loadMoreCharacteres()
+    }
+
+    override fun updateFilterText(value: String) {
+        characterList.clear()
+        adapter.notifyDataSetChanged()
+        charactersViewModel.searchFilter(value)
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_characters

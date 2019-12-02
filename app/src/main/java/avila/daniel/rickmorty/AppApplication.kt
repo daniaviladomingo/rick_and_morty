@@ -13,10 +13,14 @@ class AppApplication : Application() {
             androidContext(this@AppApplication)
             androidLogger()
             modules(
+                appModule,
                 activityModule,
                 mapperModule,
                 scheduleModule,
                 repositoryModule,
+                dataRemoteModule,
+                dataCacheModule,
+                dataCachePreferenceModule,
                 useCaseModule,
                 viewModelModule,
                 dateFormatModule

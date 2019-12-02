@@ -14,11 +14,12 @@ import avila.daniel.rickmorty.ui.CharactersLocationActivity
 import avila.daniel.rickmorty.ui.ID
 import avila.daniel.rickmorty.ui.model.CharactersSource
 import avila.daniel.rickmorty.ui.model.EpisodeUI
+import avila.daniel.rickmorty.ui.util.ISearch
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.fragment_episodes.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class EpisodesFragment : InitialLoadFragment() {
+class EpisodesFragment : InitialLoadFragment(), ISearch {
 
     private val episodesViewModel: EpisodesViewModel by viewModel()
 
@@ -70,6 +71,10 @@ class EpisodesFragment : InitialLoadFragment() {
 
     override fun initialLoad() {
         episodesViewModel.loadMoreEpisodes()
+    }
+
+    override fun updateFilterText(value: String) {
+        episodesViewModel.searchFilter(value)
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_episodes

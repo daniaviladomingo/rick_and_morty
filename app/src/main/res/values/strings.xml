@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Rick &amp; Morty</string>
 
+    <string name="tab_characters">CHARACTERS</string>
+    <string name="tab_locations">LOCATIONS</string>
+    <string name="tab_episodes">EPISODES</string>
+    <string name="tab_unknown">UNKNOWN</string>
+
     <string name="settings">Settings</string>
     <string name="info">Info</string>
     <string name="search">Search&#8230;</string>

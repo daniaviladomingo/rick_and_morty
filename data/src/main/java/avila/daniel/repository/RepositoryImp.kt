@@ -1,10 +1,10 @@
 package avila.daniel.repository
 
-import avila.daniel.domain.ILifecycleObserver
 import avila.daniel.domain.IRepository
 import avila.daniel.domain.model.Character
 import avila.daniel.domain.model.Episode
 import avila.daniel.domain.model.Location
+import avila.daniel.domain.model.ParameterCharacter
 import avila.daniel.domain.model.settings.CharactersFilterSettings
 import avila.daniel.domain.model.settings.EpisodeFilterSettings
 import avila.daniel.domain.model.settings.LocationFilterSettings
@@ -13,29 +13,28 @@ import avila.daniel.repository.remote.IDataRemote
 import avila.daniel.repository.remote.model.mapper.CharacterApiMapper
 import avila.daniel.repository.remote.model.mapper.EpisodeApiMapper
 import io.reactivex.Single
+import retrofit2.http.Query
 
 class RepositoryImp(
     private val dataRemote: IDataRemote,
     private val dataCache: IDataCache,
-    private val initialPageCharacters: Int,
-    private val initialPageLocation: Int,
-    private val initialPageEpisode: Int,
-    private val episodeApiMapper: EpisodeApiMapper,
-    private val characterApiMapper: CharacterApiMapper
-) : IRepository, ILifecycleObserver {
+    private val characterApiMapper: CharacterApiMapper,
+    private val episodeApiMapper: EpisodeApiMapper
+) : IRepository {
 
-    private var currentPageCharacters = initialPageCharacters
-    private var currentPageLocations = initialPageLocation
-    private var currentPagePageEpisode = initialPageEpisode
-
-    override fun getCharacters(): Single<List<Character>?> =
-        dataRemote.getCharacters(currentPageCharacters).map {
-            if (currentPageCharacters <= it.info.pages) {
-                currentPageCharacters++
+    override fun getCharacters(parameterCharacter: ParameterCharacter): Single<Pair<Int, List<Character>?>> =
+        dataRemote.getCharacters(
+            parameterCharacter.page,
+            parameterCharacter.name,
+            parameterCharacter.status,
+            parameterCharacter.species,
+            parameterCharacter.type,
+            parameterCharacter.gender
+        ).map {
+            Pair(
+                it.info.pages,
                 characterApiMapper.map(it.results)
-            } else {
-                null
-            }
+            )
         }
 
     override fun getCharacter(id: Int): Single<Character> = dataRemote.getCharacter(id)
@@ -43,14 +42,12 @@ class RepositoryImp(
     override fun getCharactersFilterSettings(): Single<CharactersFilterSettings> =
         dataCache.getCharacterFilter()
 
-    override fun getLocations(): Single<List<Location>?> =
-        dataRemote.getLocations(currentPageLocations).map {
-            if (currentPageLocations <= it.info.pages) {
-                currentPageLocations++
+    override fun getLocations(page: Int): Single<Pair<Int, List<Location>?>> =
+        dataRemote.getLocations(page).map {
+            Pair(
+                it.info.pages,
                 it.results
-            } else {
-                null
-            }
+            )
         }
 
     override fun getLocation(id: Int): Single<Location> = dataRemote.getLocation(id)
@@ -63,14 +60,12 @@ class RepositoryImp(
     override fun getLocationsFilterSettings(): Single<LocationFilterSettings> =
         dataCache.getLocationFilter()
 
-    override fun getEpisodes(): Single<List<Episode>?> =
-        dataRemote.getEpisodes(currentPagePageEpisode).map {
-            if (currentPagePageEpisode <= it.info.pages) {
-                currentPagePageEpisode++
+    override fun getEpisodes(page: Int): Single<Pair<Int, List<Episode>?>> =
+        dataRemote.getEpisodes(page).map {
+            Pair(
+                it.info.pages,
                 episodeApiMapper.map(it.results)
-            } else {
-                null
-            }
+            )
         }
 
     override fun getEpisode(id: Int): Single<Episode> = dataRemote.getEpisode(id)
@@ -82,13 +77,6 @@ class RepositoryImp(
 
     override fun getEpisodeFilterSettings(): Single<EpisodeFilterSettings> =
         dataCache.getEpisodeFilter()
-
-    override fun onDestroy() {
-        currentPageCharacters = initialPageCharacters
-        currentPageLocations = initialPageLocation
-        currentPagePageEpisode = initialPageEpisode
-    }
-
 
     private fun extractIdsCharacters(urlCharactersList: List<String>): String {
         var ids = ""

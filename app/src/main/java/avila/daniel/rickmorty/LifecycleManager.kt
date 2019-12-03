@@ -6,7 +6,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import avila.daniel.domain.ILifecycleObserver
 
 class LifecycleManager(
-    private val lifecycleObserver: ILifecycleObserver,
+    private val lifecycleObserver: Set<ILifecycleObserver>,
     lifecycle: Lifecycle
 ) : LifecycleObserver {
     init {
@@ -15,6 +15,6 @@ class LifecycleManager(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun destroy() {
-        lifecycleObserver.onDestroy()
+        lifecycleObserver.forEach { it.onDestroy() }
     }
 }

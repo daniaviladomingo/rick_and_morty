@@ -47,7 +47,7 @@ val appModule = module {
 
 val activityModule = module {
     factory { (lifecycle: Lifecycle) ->
-        LifecycleManager(get(), lifecycle)
+//        LifecycleManager(get(), lifecycle)
         Unit
     }
 }
@@ -55,7 +55,7 @@ val activityModule = module {
 val viewModelModule = module {
     viewModel { CharactersViewModel(get(), get(), get(), get()) }
     viewModel { LocationsViewModel(get(), get(), get()) }
-    viewModel { EpisodesViewModel(get(), get(), get()) }
+    viewModel { EpisodesViewModel(get(), get(), get(), get()) }
     viewModel { CharactersLocationViewModel(get(), get(), get(), get(), get()) }
 }
 
@@ -75,17 +75,10 @@ val repositoryModule = module {
         RepositoryImp(
             get(),
             get(),
-            get(InitialPageCharacters),
-            get(InitialPageLocation),
-            get(InitialPageEpisodes),
             get(),
             get()
         )
-    } bind ILifecycleObserver::class
-
-    single(InitialPageCharacters) { 1 }
-    single(InitialPageLocation) { 1 }
-    single(InitialPageEpisodes) { 1 }
+    }
 }
 
 val dataRemoteModule = module {

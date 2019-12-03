@@ -78,7 +78,13 @@ class LocationsFragment : InitialLoadFragment(), ISearch {
 
     override fun getLayoutId(): Int = R.layout.fragment_locations
 
-    override fun checkAgain(): () -> Unit = {}
+    override fun checkAgain(): () -> Unit = {
+        locationsViewModel.loadMoreLocations()
+    }
+
+    override fun tryAgain(): () -> Unit = {
+        locationsViewModel.loadMoreLocations()
+    }
 
     companion object {
         @JvmStatic

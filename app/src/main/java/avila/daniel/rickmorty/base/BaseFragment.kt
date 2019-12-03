@@ -79,5 +79,5 @@ abstract class BaseFragment : Fragment() {
 
     abstract fun checkAgain(): () -> Unit
 
-    protected open fun tryAgain(): () -> Unit = { revertResourceState() }
+    abstract fun tryAgain(): () -> Unit
 }

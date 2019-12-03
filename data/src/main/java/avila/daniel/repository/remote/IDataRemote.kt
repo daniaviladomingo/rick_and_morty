@@ -14,7 +14,12 @@ import retrofit2.http.Query
 interface IDataRemote {
 
     @GET("character/?")
-    fun getCharacters(@Query("page") page: Int): Single<CharacterResponse>
+    fun getCharacters(@Query("page") page: Int,
+                      @Query("name") name: String,
+                      @Query("status") status: String,
+                      @Query("species") species: String,
+                      @Query("type") type: String,
+                      @Query("gender") gender: String): Single<CharacterResponse>
 
     @GET("character/{ids}")
     fun getCharacters(@Path("ids") ids: String): Single<List<Character>>

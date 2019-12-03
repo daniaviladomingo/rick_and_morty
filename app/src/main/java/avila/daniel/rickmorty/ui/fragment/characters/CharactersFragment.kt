@@ -66,7 +66,13 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
 
     override fun getLayoutId(): Int = R.layout.fragment_characters
 
-    override fun checkAgain(): () -> Unit = {}
+    override fun checkAgain(): () -> Unit = {
+        charactersViewModel.loadMoreCharacteres()
+    }
+
+    override fun tryAgain(): () -> Unit = {
+        charactersViewModel.loadMoreCharacteres()
+    }
 
     companion object {
         @JvmStatic

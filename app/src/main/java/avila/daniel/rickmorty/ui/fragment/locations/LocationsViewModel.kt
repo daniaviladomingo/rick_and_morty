@@ -14,6 +14,9 @@ class LocationsViewModel(
     private val scheduleProvider: IScheduleProvider
 ) : BaseViewModel() {
 
+    private var currentPage = 1
+    private var totalPages = 1
+
     val locationsLiveData = SingleLiveEvent<Resource<List<LocationUI>?>>()
 
     private var isLoading = false
@@ -28,16 +31,22 @@ class LocationsViewModel(
     }
 
     fun loadMoreLocations() {
-        locationsLiveData.value = Resource.loading()
-        addDisposable(getLocationsUseCase.execute()
-            .observeOn(scheduleProvider.ui())
-            .subscribeOn(scheduleProvider.io())
-            .subscribe({ characters ->
-                locationsLiveData.value =
-                    Resource.success(characters?.run { locationUIMapper.map(this) })
-            }) {
-                locationsLiveData.value = Resource.error(it.localizedMessage)
-            })
+        if (currentPage <= totalPages) {
+            locationsLiveData.value = Resource.loading()
+            addDisposable(getLocationsUseCase.execute(currentPage)
+                .observeOn(scheduleProvider.ui())
+                .subscribeOn(scheduleProvider.io())
+                .subscribe({ locations ->
+                    locationsLiveData.value =
+                        Resource.success(locations.second?.run { locationUIMapper.map(this) })
+                    currentPage++
+                    totalPages = locations.first
+                    isLoading = false
+                }) {
+                    isLoading = false
+                    locationsLiveData.value = Resource.error(it.localizedMessage)
+                })
+        }
     }
 
     fun searchFilter(text: String) {

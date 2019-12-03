@@ -79,7 +79,13 @@ class EpisodesFragment : InitialLoadFragment(), ISearch {
 
     override fun getLayoutId(): Int = R.layout.fragment_episodes
 
-    override fun checkAgain(): () -> Unit = {}
+    override fun checkAgain(): () -> Unit = {
+        episodesViewModel.loadMoreEpisodes()
+    }
+
+    override fun tryAgain(): () -> Unit = {
+        episodesViewModel.loadMoreEpisodes()
+    }
 
     companion object {
         @JvmStatic

@@ -1,9 +1,11 @@
 package avila.daniel.domain.model.settings
 
+import avila.daniel.domain.model.settings.compose.CharacterFilterGenderParameter
+import avila.daniel.domain.model.settings.compose.CharacterFilterParameter
+import avila.daniel.domain.model.settings.compose.CharacterFilterStatusParameter
+
 data class CharactersFilterSettings(
-    val name: Boolean,
-    val status: String,
-    val specie: Boolean,
-    val type: Boolean,
-    val gender: String
+    val parameterFilter: CharacterFilterParameter,
+    val status: CharacterFilterStatusParameter,
+    val gender: CharacterFilterGenderParameter
 )

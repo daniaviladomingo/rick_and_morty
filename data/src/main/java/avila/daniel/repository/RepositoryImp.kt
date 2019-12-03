@@ -6,14 +6,12 @@ import avila.daniel.domain.model.Episode
 import avila.daniel.domain.model.Location
 import avila.daniel.domain.model.ParameterCharacter
 import avila.daniel.domain.model.settings.CharactersFilterSettings
-import avila.daniel.domain.model.settings.EpisodeFilterSettings
-import avila.daniel.domain.model.settings.LocationFilterSettings
+import avila.daniel.domain.model.settings.LocationFilterParameter
 import avila.daniel.repository.cache.IDataCache
 import avila.daniel.repository.remote.IDataRemote
 import avila.daniel.repository.remote.model.mapper.CharacterApiMapper
 import avila.daniel.repository.remote.model.mapper.EpisodeApiMapper
 import io.reactivex.Single
-import retrofit2.http.Query
 
 class RepositoryImp(
     private val dataRemote: IDataRemote,
@@ -57,7 +55,7 @@ class RepositoryImp(
             dataRemote.getCharacters(extractIdsCharacters(location.residents))
         }
 
-    override fun getLocationsFilterSettings(): Single<LocationFilterSettings> =
+    override fun getLocationsFilterSettings(): Single<LocationFilterParameter> =
         dataCache.getLocationFilter()
 
     override fun getEpisodes(page: Int): Single<Pair<Int, List<Episode>?>> =
@@ -75,8 +73,6 @@ class RepositoryImp(
             dataRemote.getCharacters(extractIdsCharacters(episode.characters))
         }
 
-    override fun getEpisodeFilterSettings(): Single<EpisodeFilterSettings> =
-        dataCache.getEpisodeFilter()
 
     private fun extractIdsCharacters(urlCharactersList: List<String>): String {
         var ids = ""

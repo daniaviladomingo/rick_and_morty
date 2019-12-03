@@ -3,7 +3,6 @@ package avila.daniel.data_cache_preference
 import android.content.SharedPreferences
 import avila.daniel.data_cache.preference.IDataCachePreference
 import avila.daniel.domain.model.settings.CharactersFilterSettings
-import avila.daniel.domain.model.settings.EpisodeFilterSettings
 import avila.daniel.domain.model.settings.LocationFilterSettings
 import io.reactivex.Single
 
@@ -15,8 +14,7 @@ class DataCachePreferenceImp(
     private val keyTypeCharacter: String,
     private val keyGender: String,
     private val keyNameLocation: String,
-    private val keyTypeLocation: String,
-    private val keyNameEpisode: String
+    private val keyTypeLocation: String
 ) : IDataCachePreference {
 
     override fun getCharacterFilter(): Single<CharactersFilterSettings> = Single.create {
@@ -37,12 +35,6 @@ class DataCachePreferenceImp(
                 sharedPreferences.getBoolean(keyNameLocation, true),
                 sharedPreferences.getBoolean(keyTypeLocation, true)
             )
-        )
-    }
-
-    override fun getEpisodeFilter(): Single<EpisodeFilterSettings> = Single.create {
-        it.onSuccess(
-            EpisodeFilterSettings(sharedPreferences.getBoolean(keyNameEpisode, true))
         )
     }
 }

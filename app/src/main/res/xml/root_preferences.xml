@@ -4,6 +4,7 @@
         app:iconSpaceReserved="false"
         app:title="@string/characters_header">
 
+
         <CheckBoxPreference
             app:defaultValue="true"
             app:iconSpaceReserved="false"
@@ -60,18 +61,11 @@
             app:summary="@string/type_summary"
             app:title="@string/type" />
 
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        app:iconSpaceReserved="false"
-        app:title="@string/episodes_header">
-
         <CheckBoxPreference
-            app:defaultValue="true"
             app:iconSpaceReserved="false"
-            app:key="@string/key_name_characters"
-            app:summary="@string/name_summary"
-            app:title="@string/name" />
+            app:key="@string/key_dimension"
+            app:summary="@string/location_dimension_summary"
+            app:title="@string/location" />
 
     </PreferenceCategory>
 

@@ -5,7 +5,6 @@ import androidx.preference.PreferenceManager
 import avila.daniel.data_cache.DataCacheImp
 import avila.daniel.data_cache.preference.IDataCachePreference
 import avila.daniel.data_cache_preference.DataCachePreferenceImp
-import avila.daniel.domain.ILifecycleObserver
 import avila.daniel.domain.IRepository
 import avila.daniel.domain.interactor.*
 import avila.daniel.repository.RepositoryImp
@@ -14,7 +13,6 @@ import avila.daniel.repository.remote.IDataRemote
 import avila.daniel.repository.remote.model.mapper.CharacterApiMapper
 import avila.daniel.repository.remote.model.mapper.EpisodeApiMapper
 import avila.daniel.rickmorty.BuildConfig
-import avila.daniel.rickmorty.LifecycleManager
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.di.qualifiers.*
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
@@ -31,7 +29,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
-import org.koin.dsl.bind
 import org.koin.dsl.module
 import retrofit2.CallAdapter
 import retrofit2.Converter
@@ -67,7 +64,6 @@ val useCaseModule = module {
     single { GetEpisodeCharactersUseCase(get()) }
     single { GetCharactersFilterSettingsUseCase(get()) }
     single { GetLocationsFilterSettingsUseCase(get()) }
-    single { GetEpisodesFilterSettingsUseCase(get()) }
 }
 
 val repositoryModule = module {
@@ -131,8 +127,9 @@ val dataCachePreferenceModule = module {
             get(KeyTypeCharacter),
             get(KeyGender),
             get(KeyNameLocation),
-            get(KeyTypeLocation),
-            get(KeyNameEpisode)
+            get(KeyTypeLocation)
+//            ,
+//            get(KeyDimension)
         )
     }
 
@@ -164,8 +161,8 @@ val dataCachePreferenceModule = module {
         androidContext().getString(R.string.key_type_location)
     }
 
-    single(KeyNameEpisode) {
-        androidContext().getString(R.string.key_name_episode)
+    single(KeyDimension) {
+        androidContext().getString(R.string.key_dimension)
     }
 }
 

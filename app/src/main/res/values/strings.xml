@@ -30,12 +30,10 @@
 
     <string name="key_name_location">key_name_location</string>
     <string name="key_type_location">key_type_location</string>
-
-    <string name="key_name_episode">key_name_episode</string>
+    <string name="key_dimension">key_dimension</string>
 
     <string name="characters_header">Character search filtering</string>
     <string name="locations_header">Location search filtering</string>
-    <string name="episodes_header">Episodes search filtering</string>
 
     <string name="name">Name</string>
     <string name="name_summary">Checked to search by name</string>
@@ -44,6 +42,8 @@
     <string name="characters_species_summary">Checked to search by specie</string>
     <string name="type">Type</string>
     <string name="type_summary">Checked to search by type</string>
+    <string name="location">Location</string>
+    <string name="location_dimension_summary">Checked to search by dimesion</string>
     <string name="characters_list_gender">Gender</string>
 
     <string name="locations_dimension">Dimension</string>

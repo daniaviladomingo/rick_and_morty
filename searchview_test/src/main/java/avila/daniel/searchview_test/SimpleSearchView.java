@@ -207,7 +207,8 @@ public class SimpleSearchView extends FrameLayout {
 
     private void initSearchEditText() {
         searchEditText.setOnEditorActionListener((v, actionId, event) -> {
-            onSubmitQuery();
+//            onSubmitQuery();
+            clearFocus();
             return true;
         });
 
@@ -309,6 +310,7 @@ public class SimpleSearchView extends FrameLayout {
         if (onQueryChangeListener != null) {
             onQueryChangeListener.onQueryTextCleared();
         }
+        ContextUtils.showKeyboard(searchEditText);
     }
 
     private void onTextChanged(CharSequence newText) {

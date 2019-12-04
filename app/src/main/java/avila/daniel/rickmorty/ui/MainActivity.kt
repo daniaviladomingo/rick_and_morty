@@ -2,6 +2,7 @@ package avila.daniel.rickmorty.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -64,23 +65,36 @@ class MainActivity : BaseActivity() {
         menuInflater.inflate(R.menu.menu_toolbar, menu)
 
         search_view.setMenuItem(menu.findItem(R.id.action_search))
+        search_view.setOnSearchViewListener(object : SimpleSearchView.SearchViewListener{
+            override fun onSearchViewShownAnimation() {
+
+            }
+
+            override fun onSearchViewClosed() {
+                searchFilter("")
+            }
+
+            override fun onSearchViewClosedAnimation() {
+                searchFilter("")
+            }
+
+            override fun onSearchViewShown() {
+
+            }
+        })
         search_view.setOnQueryTextListener(object : SimpleSearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                if (!newText.isBlank()) {
-                    (listFragmentTabs[viewpager.currentItem] as ISearch).updateFilterText(newText)
-                }
+                searchFilter(newText)
                 return false
             }
 
             override fun onQueryTextCleared(): Boolean {
-
                 return false
             }
-
         })
 
         return super.onCreateOptionsMenu(menu)
@@ -98,6 +112,10 @@ class MainActivity : BaseActivity() {
     override fun checkAgain(): () -> Unit = {}
 
     override fun tryAgain(): () -> Unit = {}
+
+    private fun searchFilter(filter: String){
+        (listFragmentTabs[viewpager.currentItem] as ISearch).updateFilterText(filter)
+    }
 
     inner class CustomPagerAdapter(
         private val fragmentList: List<Fragment>,

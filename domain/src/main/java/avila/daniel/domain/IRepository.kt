@@ -5,7 +5,7 @@ import avila.daniel.domain.model.Episode
 import avila.daniel.domain.model.Location
 import avila.daniel.domain.model.ParameterCharacter
 import avila.daniel.domain.model.settings.CharactersFilterSettings
-import avila.daniel.domain.model.settings.LocationFilterParameter
+import avila.daniel.domain.model.settings.LocationFilterSettings
 import io.reactivex.Single
 
 interface IRepository {
@@ -17,7 +17,7 @@ interface IRepository {
     fun getLocations(page: Int): Single<Pair<Int, List<Location>?>>
     fun getLocation(id: Int): Single<Location>
     fun getLocationCharacters(idLocation: Int): Single<List<Character>>
-    fun getLocationsFilterSettings(): Single<LocationFilterParameter>
+    fun getLocationsFilterSettings(): Single<LocationFilterSettings>
 
     fun getEpisodes(page: Int): Single<Pair<Int, List<Episode>?>>
     fun getEpisode(id: Int): Single<Episode>

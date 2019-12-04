@@ -4,7 +4,6 @@
         app:iconSpaceReserved="false"
         app:title="@string/characters_header">
 
-
         <CheckBoxPreference
             app:defaultValue="true"
             app:iconSpaceReserved="false"
@@ -13,7 +12,7 @@
             app:title="@string/name" />
 
         <ListPreference
-            app:defaultValue="all"
+            app:defaultValue="@string/any"
             app:entries="@array/status_entries"
             app:entryValues="@array/status_values"
             app:iconSpaceReserved="false"
@@ -34,7 +33,7 @@
             app:title="@string/type" />
 
         <ListPreference
-            app:defaultValue="all"
+            app:defaultValue="@string/any"
             app:entries="@array/gender_entries"
             app:entryValues="@array/gender_values"
             app:iconSpaceReserved="false"

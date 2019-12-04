@@ -6,7 +6,7 @@ import avila.daniel.domain.model.Episode
 import avila.daniel.domain.model.Location
 import avila.daniel.domain.model.ParameterCharacter
 import avila.daniel.domain.model.settings.CharactersFilterSettings
-import avila.daniel.domain.model.settings.LocationFilterParameter
+import avila.daniel.domain.model.settings.LocationFilterSettings
 import avila.daniel.repository.cache.IDataCache
 import avila.daniel.repository.remote.IDataRemote
 import avila.daniel.repository.remote.model.mapper.CharacterApiMapper
@@ -59,7 +59,7 @@ class RepositoryImp(
             dataRemote.getCharacters(extractIdsCharacters(location.residents))
         }
 
-    override fun getLocationsFilterSettings(): Single<LocationFilterParameter> =
+    override fun getLocationsFilterSettings(): Single<LocationFilterSettings> =
         dataCache.getLocationFilter()
 
     override fun getEpisodes(page: Int): Single<Pair<Int, List<Episode>?>> =

@@ -1,6 +1,6 @@
 package avila.daniel.domain.model.settings
 
-enum class LocationFilterParameter {
+enum class LocationFilterSettings {
     NAME,
     TYPE,
     DIMENSION

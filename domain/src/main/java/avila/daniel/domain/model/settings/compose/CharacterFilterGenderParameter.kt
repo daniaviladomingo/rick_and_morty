@@ -5,5 +5,5 @@ enum class CharacterFilterGenderParameter {
     FEMALE,
     GENDERLESS,
     UNKNOWN,
-    ALL
+    ANY
 }

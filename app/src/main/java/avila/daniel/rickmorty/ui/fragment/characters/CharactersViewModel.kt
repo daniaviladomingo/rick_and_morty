@@ -4,6 +4,9 @@ import android.util.Log
 import avila.daniel.domain.interactor.GetCharactersFilterSettingsUseCase
 import avila.daniel.domain.interactor.GetCharactersUseCase
 import avila.daniel.domain.model.ParameterCharacter
+import avila.daniel.domain.model.settings.compose.CharacterFilterGenderParameter
+import avila.daniel.domain.model.settings.compose.CharacterFilterParameter
+import avila.daniel.domain.model.settings.compose.CharacterFilterStatusParameter
 import avila.daniel.rickmorty.base.BaseViewModel
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
 import avila.daniel.rickmorty.ui.model.CharacterUI
@@ -20,7 +23,14 @@ class CharactersViewModel(
 
     private var totalPages = 1
 
-    private var parameterFilter = ParameterCharacter(1, "", "", "", "", "")
+    private var sendParameterFilter = ParameterCharacter(
+        1,
+        "",
+        CharacterFilterStatusParameter.ANY,
+        "",
+        "",
+        CharacterFilterGenderParameter.ANY
+    )
 
     val charactersLiveData = SingleLiveEvent<Resource<List<CharacterUI>?>>()
 
@@ -37,16 +47,16 @@ class CharactersViewModel(
     }
 
     fun loadMoreCharacteres() {
-        if (parameterFilter.page <= totalPages) {
+        if (sendParameterFilter.page <= totalPages) {
             charactersLiveData.value = Resource.loading()
-            Log.d("fff", "${parameterFilter.page}")
-            addDisposable(getCharactersUseCase.execute(parameterFilter)
+            Log.d("fff", "${sendParameterFilter.page}")
+            addDisposable(getCharactersUseCase.execute(sendParameterFilter)
                 .observeOn(scheduleProvider.ui())
                 .subscribeOn(scheduleProvider.io())
                 .subscribe({ characters ->
                     charactersLiveData.value =
                         Resource.success(characters.second?.run { characterUIMapper.map(this) })
-                    parameterFilter.page++
+                    sendParameterFilter.page++
                     totalPages = characters.first
                     isLoading = false
                 }) {
@@ -57,23 +67,21 @@ class CharactersViewModel(
     }
 
     fun searchFilter(text: String) {
-        parameterFilter.page = 0
+        sendParameterFilter.page = 0
         addDisposable(getCharactersFilterSettingsUseCase.execute()
             .observeOn(scheduleProvider.ui())
             .subscribeOn(scheduleProvider.io())
             .subscribe({ settings ->
                 settings.run {
-                    if (this.name) {
-                        parameterFilter.name = text
+                    when (this.parameterFilter) {
+                        CharacterFilterParameter.NAME -> sendParameterFilter.name = text
+                        CharacterFilterParameter.SPECIES -> sendParameterFilter.species = text
+                        CharacterFilterParameter.TYPE -> sendParameterFilter.type = text
                     }
 
-                    if (this.specie) {
-                        parameterFilter.species = text
-                    }
+                    sendParameterFilter.status = this.status
+                    sendParameterFilter.gender = this.gender
 
-                    if (this.type) {
-                        parameterFilter.type = text
-                    }
                     loadMoreCharacteres()
                 }
             }) {})

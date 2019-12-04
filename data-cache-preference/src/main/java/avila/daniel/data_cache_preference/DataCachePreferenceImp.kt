@@ -2,8 +2,11 @@ package avila.daniel.data_cache_preference
 
 import android.content.SharedPreferences
 import avila.daniel.data_cache.preference.IDataCachePreference
+import avila.daniel.data_cache_preference.model.mapper.PreferenceGenderMapper
+import avila.daniel.data_cache_preference.model.mapper.PreferenceStatusMapper
 import avila.daniel.domain.model.settings.CharactersFilterSettings
-import avila.daniel.domain.model.settings.LocationFilterSettings
+import avila.daniel.domain.model.settings.LocationFilterParameter
+import avila.daniel.domain.model.settings.compose.CharacterFilterParameter
 import io.reactivex.Single
 
 class DataCachePreferenceImp(
@@ -14,27 +17,51 @@ class DataCachePreferenceImp(
     private val keyTypeCharacter: String,
     private val keyGender: String,
     private val keyNameLocation: String,
-    private val keyTypeLocation: String
+    private val keyTypeLocation: String,
+    private val keyDimension: String,
+    private val preferenceGenderMapper: PreferenceGenderMapper,
+    private val preferenceStatusMapper: PreferenceStatusMapper
 ) : IDataCachePreference {
 
     override fun getCharacterFilter(): Single<CharactersFilterSettings> = Single.create {
         it.onSuccess(
             CharactersFilterSettings(
-                sharedPreferences.getBoolean(keyNameCharacter, true),
-                sharedPreferences.getString(keyStatus, "")!!,
-                sharedPreferences.getBoolean(keySpecie, true),
-                sharedPreferences.getBoolean(keyTypeCharacter, true),
-                sharedPreferences.getString(keyGender, "")!!
+                when {
+                    sharedPreferences.getBoolean(keyNameCharacter, true) -> {
+                        CharacterFilterParameter.NAME
+                    }
+                    sharedPreferences.getBoolean(keySpecie, true) -> {
+                        CharacterFilterParameter.SPECIES
+                    }
+                    sharedPreferences.getBoolean(keyTypeCharacter, true) -> {
+                        CharacterFilterParameter.TYPE
+                    }
+                    else -> {
+                        CharacterFilterParameter.NAME
+                    }
+                },
+                preferenceStatusMapper.map(sharedPreferences.getString(keyStatus, "") ?: ""),
+                preferenceGenderMapper.map(sharedPreferences.getString(keyGender, "") ?: "")
             )
         )
     }
 
-    override fun getLocationFilter(): Single<LocationFilterSettings> = Single.create {
+    override fun getLocationFilter(): Single<LocationFilterParameter> = Single.create {
         it.onSuccess(
-            LocationFilterSettings(
-                sharedPreferences.getBoolean(keyNameLocation, true),
-                sharedPreferences.getBoolean(keyTypeLocation, true)
-            )
+            when {
+                sharedPreferences.getBoolean(keyNameLocation, true) -> {
+                    LocationFilterParameter.NAME
+                }
+                sharedPreferences.getBoolean(keyDimension, true) -> {
+                    LocationFilterParameter.DIMENSION
+                }
+                sharedPreferences.getBoolean(keyTypeLocation, true) -> {
+                    LocationFilterParameter.TYPE
+                }
+                else -> {
+                    LocationFilterParameter.NAME
+                }
+            }
         )
     }
 }

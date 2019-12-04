@@ -5,6 +5,8 @@ import androidx.preference.PreferenceManager
 import avila.daniel.data_cache.DataCacheImp
 import avila.daniel.data_cache.preference.IDataCachePreference
 import avila.daniel.data_cache_preference.DataCachePreferenceImp
+import avila.daniel.data_cache_preference.model.mapper.PreferenceGenderMapper
+import avila.daniel.data_cache_preference.model.mapper.PreferenceStatusMapper
 import avila.daniel.domain.IRepository
 import avila.daniel.domain.interactor.*
 import avila.daniel.repository.RepositoryImp
@@ -12,6 +14,8 @@ import avila.daniel.repository.cache.IDataCache
 import avila.daniel.repository.remote.IDataRemote
 import avila.daniel.repository.remote.model.mapper.CharacterApiMapper
 import avila.daniel.repository.remote.model.mapper.EpisodeApiMapper
+import avila.daniel.repository.remote.model.mapper.GenderParameterMapper
+import avila.daniel.repository.remote.model.mapper.StatusParameterMapper
 import avila.daniel.rickmorty.BuildConfig
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.di.qualifiers.*
@@ -44,7 +48,7 @@ val appModule = module {
 
 val activityModule = module {
     factory { (lifecycle: Lifecycle) ->
-//        LifecycleManager(get(), lifecycle)
+        //        LifecycleManager(get(), lifecycle)
         Unit
     }
 }
@@ -69,6 +73,8 @@ val useCaseModule = module {
 val repositoryModule = module {
     single<IRepository> {
         RepositoryImp(
+            get(),
+            get(),
             get(),
             get(),
             get(),
@@ -127,9 +133,10 @@ val dataCachePreferenceModule = module {
             get(KeyTypeCharacter),
             get(KeyGender),
             get(KeyNameLocation),
-            get(KeyTypeLocation)
-//            ,
-//            get(KeyDimension)
+            get(KeyTypeLocation),
+            get(KeyDimension),
+            get(),
+            get()
         )
     }
 
@@ -177,6 +184,56 @@ val mapperModule = module {
 
     single { CharacterApiMapper() }
     single { EpisodeApiMapper() }
+
+    single { StatusParameterMapper("alive", "dead", "unknown", "") }
+    single { GenderParameterMapper("male", "female", "genderless", "unknown", "") }
+
+    single {
+        PreferenceStatusMapper(
+            get(StatusAlive),
+            get(StatusDead),
+            get(Unknown),
+            get(Any)
+        )
+    }
+
+    single {
+        PreferenceGenderMapper(
+            get(GenderMale),
+            get(GenderFemale),
+            get(GenderLess),
+            get(Unknown),
+            get(Any)
+        )
+    }
+
+    single(StatusAlive) {
+        androidContext().getString(R.string.alive)
+    }
+
+    single(StatusDead) {
+        androidContext().getString(R.string.dead)
+    }
+
+    single(GenderMale) {
+        androidContext().getString(R.string.male)
+    }
+
+    single(GenderFemale) {
+        androidContext().getString(R.string.female)
+    }
+
+    single(GenderLess) {
+        androidContext().getString(R.string.genderless)
+    }
+
+    single(Unknown) {
+        androidContext().getString(R.string.unknown)
+    }
+
+    single(Any) {
+        androidContext().getString(R.string.any)
+    }
 
     single(RangeSeason) { (1..2) }
     single(RangeEpisode) { (4..5) }

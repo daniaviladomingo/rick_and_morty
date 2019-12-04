@@ -11,23 +11,27 @@ import avila.daniel.repository.cache.IDataCache
 import avila.daniel.repository.remote.IDataRemote
 import avila.daniel.repository.remote.model.mapper.CharacterApiMapper
 import avila.daniel.repository.remote.model.mapper.EpisodeApiMapper
+import avila.daniel.repository.remote.model.mapper.GenderParameterMapper
+import avila.daniel.repository.remote.model.mapper.StatusParameterMapper
 import io.reactivex.Single
 
 class RepositoryImp(
     private val dataRemote: IDataRemote,
     private val dataCache: IDataCache,
     private val characterApiMapper: CharacterApiMapper,
-    private val episodeApiMapper: EpisodeApiMapper
+    private val episodeApiMapper: EpisodeApiMapper,
+    private val statusParameterMapper: StatusParameterMapper,
+    private val genderParameterMapper: GenderParameterMapper
 ) : IRepository {
 
     override fun getCharacters(parameterCharacter: ParameterCharacter): Single<Pair<Int, List<Character>?>> =
         dataRemote.getCharacters(
             parameterCharacter.page,
             parameterCharacter.name,
-            parameterCharacter.status,
+            statusParameterMapper.map(parameterCharacter.status),
             parameterCharacter.species,
             parameterCharacter.type,
-            parameterCharacter.gender
+            genderParameterMapper.map(parameterCharacter.gender)
         ).map {
             Pair(
                 it.info.pages,

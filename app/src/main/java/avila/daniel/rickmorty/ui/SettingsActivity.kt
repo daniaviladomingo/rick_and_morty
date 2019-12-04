@@ -41,9 +41,7 @@ class SettingsActivity : AppCompatActivity() {
                 findPreference<CheckBoxPreference>(getString(R.string.key_type_characters))
             val keySpecie = findPreference<CheckBoxPreference>(getString(R.string.key_specie))
 
-
-
-            keyNameCharacter?.setOnPreferenceChangeListener { preference, newValue ->
+            keyNameCharacter?.setOnPreferenceChangeListener { _, newValue ->
                 if (newValue as Boolean) {
                     keyTypeCharacter?.isChecked = false
                     keySpecie?.isChecked = false
@@ -51,7 +49,7 @@ class SettingsActivity : AppCompatActivity() {
                 true
             }
 
-            keyTypeCharacter?.setOnPreferenceChangeListener { preference, newValue ->
+            keyTypeCharacter?.setOnPreferenceChangeListener { _, newValue ->
                 if (newValue as Boolean) {
                     keyNameCharacter?.isChecked = false
                     keySpecie?.isChecked = false
@@ -59,7 +57,7 @@ class SettingsActivity : AppCompatActivity() {
                 true
             }
 
-            keySpecie?.setOnPreferenceChangeListener { preference, newValue ->
+            keySpecie?.setOnPreferenceChangeListener { _, newValue ->
                 if (newValue as Boolean) {
                     keyTypeCharacter?.isChecked = false
                     keyNameCharacter?.isChecked = false
@@ -74,7 +72,7 @@ class SettingsActivity : AppCompatActivity() {
             val keyDimension =
                 findPreference<CheckBoxPreference>(getString(R.string.key_dimension))
 
-            keyNameLocation?.setOnPreferenceChangeListener { preference, newValue ->
+            keyNameLocation?.setOnPreferenceChangeListener { _, newValue ->
                 if (newValue as Boolean) {
                     keyTypeLocation?.isChecked = false
                     keyDimension?.isChecked = false
@@ -82,7 +80,7 @@ class SettingsActivity : AppCompatActivity() {
                 true
             }
 
-            keyTypeLocation?.setOnPreferenceChangeListener { preference, newValue ->
+            keyTypeLocation?.setOnPreferenceChangeListener { _, newValue ->
                 if (newValue as Boolean) {
                     keyNameLocation?.isChecked = false
                     keyDimension?.isChecked = false
@@ -90,7 +88,7 @@ class SettingsActivity : AppCompatActivity() {
                 true
             }
 
-            keyDimension?.setOnPreferenceChangeListener { preference, newValue ->
+            keyDimension?.setOnPreferenceChangeListener { _, newValue ->
                 if (newValue as Boolean) {
                     keyNameLocation?.isChecked = false
                     keyTypeLocation?.isChecked = false

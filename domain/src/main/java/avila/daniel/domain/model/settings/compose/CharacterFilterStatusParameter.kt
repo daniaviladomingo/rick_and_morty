@@ -4,5 +4,5 @@ enum class CharacterFilterStatusParameter {
     ALIVE,
     DEAD,
     UNKNOWN,
-    ALL
+    ANY
 }

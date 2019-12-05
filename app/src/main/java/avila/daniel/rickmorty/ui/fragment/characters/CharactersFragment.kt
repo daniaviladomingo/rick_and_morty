@@ -2,7 +2,6 @@ package avila.daniel.rickmorty.ui.fragment.characters
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
@@ -32,7 +31,7 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
                 (list_characters.layoutManager as LinearLayoutManager).run {
                     charactersViewModel.listScrolled(
                         childCount,
-                        findFirstVisibleItemPosition(),
+                        findLastVisibleItemPosition(),
                         itemCount
                     )
                 }

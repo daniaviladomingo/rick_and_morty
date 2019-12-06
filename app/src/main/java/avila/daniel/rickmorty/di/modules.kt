@@ -19,6 +19,7 @@ import avila.daniel.repository.remote.model.mapper.StatusParameterMapper
 import avila.daniel.rickmorty.BuildConfig
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.di.qualifiers.*
+import avila.daniel.rickmorty.di.qualifiers.Any
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
 import avila.daniel.rickmorty.schedulers.ScheduleProviderImp
 import avila.daniel.rickmorty.ui.CharactersLocationViewModel
@@ -54,9 +55,9 @@ val activityModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { CharactersViewModel(get(), get(), get(), get()) }
+    viewModel { CharactersViewModel(get(), get(), get()) }
     viewModel { LocationsViewModel(get(), get(), get()) }
-    viewModel { EpisodesViewModel(get(), get(), get(), get()) }
+    viewModel { EpisodesViewModel(get(), get(), get()) }
     viewModel { CharactersLocationViewModel(get(), get(), get(), get(), get()) }
 }
 
@@ -66,8 +67,6 @@ val useCaseModule = module {
     single { GetLocationCharactersUseCase(get()) }
     single { GetEpisodesUseCase(get()) }
     single { GetEpisodeCharactersUseCase(get()) }
-    single { GetCharactersFilterSettingsUseCase(get()) }
-    single { GetLocationsFilterSettingsUseCase(get()) }
 }
 
 val repositoryModule = module {

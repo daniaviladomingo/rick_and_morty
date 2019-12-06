@@ -4,9 +4,7 @@ import avila.daniel.domain.IRepository
 import avila.daniel.domain.model.Character
 import avila.daniel.domain.model.Episode
 import avila.daniel.domain.model.Location
-import avila.daniel.domain.model.ParameterCharacter
-import avila.daniel.domain.model.settings.CharactersFilterSettings
-import avila.daniel.domain.model.settings.LocationFilterSettings
+import avila.daniel.domain.model.settings.compose.CharacterFilterParameter
 import avila.daniel.repository.cache.IDataCache
 import avila.daniel.repository.remote.IDataRemote
 import avila.daniel.repository.remote.model.mapper.CharacterApiMapper
@@ -24,25 +22,32 @@ class RepositoryImp(
     private val genderParameterMapper: GenderParameterMapper
 ) : IRepository {
 
-    override fun getCharacters(parameterCharacter: ParameterCharacter): Single<Pair<Int, List<Character>?>> =
-        dataRemote.getCharacters(
-            parameterCharacter.page,
-            parameterCharacter.name,
-            statusParameterMapper.map(parameterCharacter.status),
-            parameterCharacter.species,
-            parameterCharacter.type,
-            genderParameterMapper.map(parameterCharacter.gender)
-        ).map {
-            Pair(
-                it.info.pages,
+    override fun getCharacters(searchFilter: String, page: Int): Single<List<Character>> =
+        dataCache.getCharacterFilter().flatMap { filterSettings ->
+
+            var filterName = ""
+            var filterSpecie = ""
+            var filterType = ""
+
+            when (filterSettings.parameterFilter) {
+                CharacterFilterParameter.NAME -> filterName = searchFilter
+                CharacterFilterParameter.SPECIES -> filterSpecie = searchFilter
+                CharacterFilterParameter.TYPE -> filterType = searchFilter
+            }
+
+            dataRemote.getCharacters(
+                page,
+                filterName,
+                statusParameterMapper.map(filterSettings.status),
+                filterSpecie,
+                filterType,
+                genderParameterMapper.map(filterSettings.gender)
+            ).map {
                 characterApiMapper.map(it.results)
-            )
+            }
         }
 
     override fun getCharacter(id: Int): Single<Character> = dataRemote.getCharacter(id)
-
-    override fun getCharactersFilterSettings(): Single<CharactersFilterSettings> =
-        dataCache.getCharacterFilter()
 
     override fun getLocations(page: Int): Single<Pair<Int, List<Location>?>> =
         dataRemote.getLocations(page).map {
@@ -58,9 +63,6 @@ class RepositoryImp(
         getLocation(idLocation).flatMap { location ->
             dataRemote.getCharacters(extractIdsCharacters(location.residents))
         }
-
-    override fun getLocationsFilterSettings(): Single<LocationFilterSettings> =
-        dataCache.getLocationFilter()
 
     override fun getEpisodes(page: Int): Single<Pair<Int, List<Episode>?>> =
         dataRemote.getEpisodes(page).map {

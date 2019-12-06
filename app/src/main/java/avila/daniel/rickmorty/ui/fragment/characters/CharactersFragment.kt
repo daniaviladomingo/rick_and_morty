@@ -28,12 +28,14 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
         list_characters.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                (list_characters.layoutManager as LinearLayoutManager).run {
-                    charactersViewModel.listScrolled(
-                        childCount,
-                        findLastVisibleItemPosition(),
-                        itemCount
-                    )
+                if (dy > 0) {
+                    (list_characters.layoutManager as LinearLayoutManager).run {
+                        charactersViewModel.listScrolled(
+                            childCount,
+                            findFirstVisibleItemPosition(),
+                            itemCount
+                        )
+                    }
                 }
             }
         })
@@ -51,16 +53,26 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
                 }
             }
         })
+
+        charactersViewModel.clearCharactersLiveData.observe(
+            viewLifecycleOwner,
+            Observer { resource ->
+                resource?.run {
+                    managementResourceState(status, message)
+                    if (status == ResourceState.SUCCESS) {
+                        characterList.clear()
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+            })
     }
 
     override fun initialLoad() {
         charactersViewModel.loadMoreCharacteres()
     }
 
-    override fun updateFilterText(value: String) {
-        characterList.clear()
-        adapter.notifyDataSetChanged()
-        charactersViewModel.searchFilter(value)
+    override fun updateFilter(newFilter: String) {
+        charactersViewModel.updateSearchFilter(newFilter)
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_characters

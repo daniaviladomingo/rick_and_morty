@@ -44,12 +44,14 @@ class EpisodesFragment : InitialLoadFragment(), ISearch {
         list_episodes.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                (list_episodes.layoutManager as LinearLayoutManager).run {
-                    episodesViewModel.listScrolled(
-                        childCount,
-                        findFirstVisibleItemPosition(),
-                        itemCount
-                    )
+                if (dy > 0) {
+                    (list_episodes.layoutManager as LinearLayoutManager).run {
+                        episodesViewModel.listScrolled(
+                            childCount,
+                            findFirstVisibleItemPosition(),
+                            itemCount
+                        )
+                    }
                 }
             }
         })
@@ -73,8 +75,8 @@ class EpisodesFragment : InitialLoadFragment(), ISearch {
         episodesViewModel.loadMoreEpisodes()
     }
 
-    override fun updateFilterText(value: String) {
-        episodesViewModel.searchFilter(value)
+    override fun updateFilter(newFilter: String) {
+        episodesViewModel.searchFilter(newFilter)
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_episodes

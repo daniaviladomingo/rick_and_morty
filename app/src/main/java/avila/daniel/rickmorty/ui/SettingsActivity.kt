@@ -32,6 +32,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
+
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
 
@@ -45,24 +46,31 @@ class SettingsActivity : AppCompatActivity() {
                 if (newValue as Boolean) {
                     keyTypeCharacter?.isChecked = false
                     keySpecie?.isChecked = false
+                    true
+                } else {
+                    false
                 }
-                true
+
             }
 
             keyTypeCharacter?.setOnPreferenceChangeListener { _, newValue ->
                 if (newValue as Boolean) {
                     keyNameCharacter?.isChecked = false
                     keySpecie?.isChecked = false
+                    true
+                } else {
+                    false
                 }
-                true
             }
 
             keySpecie?.setOnPreferenceChangeListener { _, newValue ->
                 if (newValue as Boolean) {
                     keyTypeCharacter?.isChecked = false
                     keyNameCharacter?.isChecked = false
+                    true
+                } else {
+                    false
                 }
-                true
             }
 
             val keyNameLocation =
@@ -76,25 +84,30 @@ class SettingsActivity : AppCompatActivity() {
                 if (newValue as Boolean) {
                     keyTypeLocation?.isChecked = false
                     keyDimension?.isChecked = false
+                    true
+                } else {
+                    false
                 }
-                true
             }
 
             keyTypeLocation?.setOnPreferenceChangeListener { _, newValue ->
                 if (newValue as Boolean) {
                     keyNameLocation?.isChecked = false
                     keyDimension?.isChecked = false
+                    true
+                } else {
+                    false
                 }
-                true
             }
 
             keyDimension?.setOnPreferenceChangeListener { _, newValue ->
                 if (newValue as Boolean) {
                     keyNameLocation?.isChecked = false
                     keyTypeLocation?.isChecked = false
-
+                    true
+                } else {
+                    false
                 }
-                true
             }
         }
     }

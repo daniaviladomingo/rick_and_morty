@@ -2,7 +2,6 @@ package avila.daniel.rickmorty.ui.fragment.episodes
 
 import android.util.Log
 import avila.daniel.domain.interactor.GetEpisodesUseCase
-import avila.daniel.domain.interactor.GetLocationsFilterSettingsUseCase
 import avila.daniel.rickmorty.base.BaseViewModel
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
 import avila.daniel.rickmorty.ui.model.EpisodeUI
@@ -12,7 +11,6 @@ import avila.daniel.rickmorty.util.SingleLiveEvent
 
 class EpisodesViewModel(
     private val getEpisodesUseCase: GetEpisodesUseCase,
-    private val getLocationsFilterSettingsUseCase: GetLocationsFilterSettingsUseCase,
     private val episodesUIMapper: EpisodeUIMapper,
     private val scheduleProvider: IScheduleProvider
 ) : BaseViewModel() {

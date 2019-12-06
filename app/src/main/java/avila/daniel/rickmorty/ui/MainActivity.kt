@@ -65,17 +65,17 @@ class MainActivity : BaseActivity() {
         menuInflater.inflate(R.menu.menu_toolbar, menu)
 
         search_view.setMenuItem(menu.findItem(R.id.action_search))
-        search_view.setOnSearchViewListener(object : SimpleSearchView.SearchViewListener{
+        search_view.setOnSearchViewListener(object : SimpleSearchView.SearchViewListener {
             override fun onSearchViewShownAnimation() {
 
             }
 
             override fun onSearchViewClosed() {
                 searchFilter("")
+                Log.d("fff", "onSearchViewClosed")
             }
 
             override fun onSearchViewClosedAnimation() {
-                searchFilter("")
             }
 
             override fun onSearchViewShown() {
@@ -88,6 +88,7 @@ class MainActivity : BaseActivity() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
+                Log.d("fff", "onQueryTextChange: $newText")
                 searchFilter(newText)
                 return false
             }
@@ -113,8 +114,8 @@ class MainActivity : BaseActivity() {
 
     override fun tryAgain(): () -> Unit = {}
 
-    private fun searchFilter(filter: String){
-        (listFragmentTabs[viewpager.currentItem] as ISearch).updateFilterText(filter)
+    private fun searchFilter(filter: String) {
+        (listFragmentTabs[viewpager.currentItem] as ISearch).updateFilter(filter)
     }
 
     inner class CustomPagerAdapter(

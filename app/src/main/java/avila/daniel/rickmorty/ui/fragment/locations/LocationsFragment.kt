@@ -43,12 +43,14 @@ class LocationsFragment : InitialLoadFragment(), ISearch {
         list_locations.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                (list_locations.layoutManager as LinearLayoutManager).run {
-                    locationsViewModel.listScrolled(
-                        childCount,
-                        findFirstVisibleItemPosition(),
-                        itemCount
-                    )
+                if (dy > 0) {
+                    (list_locations.layoutManager as LinearLayoutManager).run {
+                        locationsViewModel.listScrolled(
+                            childCount,
+                            findFirstVisibleItemPosition(),
+                            itemCount
+                        )
+                    }
                 }
             }
         })
@@ -72,8 +74,8 @@ class LocationsFragment : InitialLoadFragment(), ISearch {
         locationsViewModel.loadMoreLocations()
     }
 
-    override fun updateFilterText(value: String) {
-        locationsViewModel.searchFilter(value)
+    override fun updateFilter(newFilter: String) {
+        locationsViewModel.searchFilter(newFilter)
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_locations

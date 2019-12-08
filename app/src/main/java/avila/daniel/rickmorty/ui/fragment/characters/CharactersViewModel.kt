@@ -11,14 +11,15 @@ import avila.daniel.rickmorty.util.SingleLiveEvent
 class CharactersViewModel(
     private val getCharactersUseCase: GetCharactersUseCase,
     private val characterUIMapper: CharacterUIMapper,
-    private val scheduleProvider: IScheduleProvider
+    private val scheduleProvider: IScheduleProvider,
+    private val initialPage: Int
 ) : BaseViewModel() {
 
     val charactersLiveData = SingleLiveEvent<Resource<List<CharacterUI>?>>()
     val clearCharactersLiveData = SingleLiveEvent<Resource<Boolean>>()
 
     private var isLoading = false
-    private var currentPage = 1
+    private var currentPage = initialPage
     private var currentSearchFilter = ""
 
     fun listScrolled(
@@ -36,6 +37,7 @@ class CharactersViewModel(
 
     fun loadMoreCharacteres() {
         charactersLiveData.value = Resource.loading()
+        dispose()
         addDisposable(getCharactersUseCase.execute(Pair(currentSearchFilter, currentPage))
             .observeOn(scheduleProvider.ui())
             .subscribeOn(scheduleProvider.io())
@@ -53,7 +55,7 @@ class CharactersViewModel(
         if (newSearchFilter != currentSearchFilter) {
             currentSearchFilter = newSearchFilter
             clearCharactersLiveData.value = Resource.success(true)
-            currentPage = 0
+            currentPage = initialPage
             loadMoreCharacteres()
         }
     }

@@ -55,10 +55,12 @@ val activityModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { CharactersViewModel(get(), get(), get()) }
+    viewModel { CharactersViewModel(get(), get(), get(), get(InitialPage)) }
     viewModel { LocationsViewModel(get(), get(), get()) }
     viewModel { EpisodesViewModel(get(), get(), get()) }
     viewModel { CharactersLocationViewModel(get(), get(), get(), get(), get()) }
+
+    single(InitialPage) { 1 }
 }
 
 val useCaseModule = module {

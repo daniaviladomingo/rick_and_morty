@@ -8,13 +8,18 @@ abstract class BaseViewModel : ViewModel() {
     private val disposable = CompositeDisposable()
 
     override fun onCleared() {
-        if (!disposable.isDisposed) {
-            disposable.clear()
-        }
+        dispose()
         super.onCleared()
     }
 
     protected fun addDisposable(d: Disposable) {
         disposable.add(d)
     }
+
+    protected fun dispose(){
+        if (!disposable.isDisposed) {
+            disposable.clear()
+        }
+    }
+
 }

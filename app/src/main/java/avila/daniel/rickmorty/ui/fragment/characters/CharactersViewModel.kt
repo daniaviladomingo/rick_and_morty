@@ -1,6 +1,5 @@
 package avila.daniel.rickmorty.ui.fragment.characters
 
-import android.util.Log
 import avila.daniel.domain.interactor.GetCharactersUseCase
 import avila.daniel.rickmorty.base.BaseViewModel
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
@@ -17,12 +16,12 @@ class CharactersViewModel(
     private val initialPage: Int
 ) : BaseViewModel(), IReloadData {
 
-    val charactersLiveData = SingleLiveEvent<Resource<List<CharacterUI>?>>()
-    val clearCharactersLiveData = SingleLiveEvent<Resource<Boolean>>()
+    val charactersLiveData = SingleLiveEvent<Resource<Pair<Boolean, List<CharacterUI>>>>()
 
     private var isLoading = false
     private var currentPage = initialPage
     private var currentSearchFilter = ""
+    private var clear = false
 
     fun listScrolled(
         visibleItemCount: Int,
@@ -44,8 +43,9 @@ class CharactersViewModel(
             .observeOn(scheduleProvider.ui())
             .subscribeOn(scheduleProvider.io())
             .subscribe({ characters ->
-                Log.d("fff", "loadmore")
-                charactersLiveData.value = Resource.success(characterUIMapper.map(characters))
+                charactersLiveData.value =
+                    Resource.success(Pair(clear, characterUIMapper.map(characters)))
+                clear = false
                 currentPage++
                 isLoading = false
             }) {
@@ -62,7 +62,6 @@ class CharactersViewModel(
     }
 
     private fun clearNReload() {
-        clearCharactersLiveData.value = Resource.success(true)
         currentPage = initialPage
         loadCharacteres()
     }

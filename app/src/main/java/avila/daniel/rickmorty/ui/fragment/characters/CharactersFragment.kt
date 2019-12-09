@@ -1,7 +1,6 @@
 package avila.daniel.rickmorty.ui.fragment.characters
 
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -44,30 +43,19 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
 
     private fun setListener() {
         charactersViewModel.charactersLiveData.observe(viewLifecycleOwner, Observer { resource ->
-            Log.d("fff", "more")
             resource?.run {
                 managementResourceState(status, message)
                 if (status == ResourceState.SUCCESS) {
                     data?.run {
-                        Log.d("fff", "sss ${this.size}")
-                        characterList.addAll(this)
+                        if (this.first) {
+                            characterList.clear()
+                        }
+                        characterList.addAll(this.second)
                         adapter.notifyDataSetChanged()
                     }
                 }
             }
         })
-
-        charactersViewModel.clearCharactersLiveData.observe(
-            viewLifecycleOwner,
-            Observer { resource ->
-                resource?.run {
-                    managementResourceState(status, message)
-                    if (status == ResourceState.SUCCESS) {
-                        characterList.clear()
-                        adapter.notifyDataSetChanged()
-                    }
-                }
-            })
     }
 
     override fun initialLoad() {

@@ -6,7 +6,7 @@ import avila.daniel.domain.model.Episode
 import io.reactivex.Single
 
 class GetEpisodesUseCase(private val repository: IRepository) :
-    SingleUseCaseWithParameter<Int, Pair<Int, List<Episode>?>> {
-    override fun execute(parameter: Int): Single<Pair<Int, List<Episode>?>> =
-        repository.getEpisodes(parameter)
+    SingleUseCaseWithParameter<Pair<String, Int>, List<Episode>> {
+    override fun execute(parameter: Pair<String, Int>): Single<List<Episode>> =
+        repository.getEpisodes(parameter.first, parameter.second)
 }

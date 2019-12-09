@@ -68,8 +68,8 @@ val viewModelModule = module {
             characterReload = this
         }
     }
-    viewModel { LocationsViewModel(get(), get(), get()) }
-    viewModel { EpisodesViewModel(get(), get(), get()) }
+    viewModel { LocationsViewModel(get(), get(), get(), get(InitialPage)) }
+    viewModel { EpisodesViewModel(get(), get(), get(), get(InitialPage)) }
     viewModel { CharactersLocationViewModel(get(), get(), get(), get(), get()) }
 
     single(InitialPage) { 1 }

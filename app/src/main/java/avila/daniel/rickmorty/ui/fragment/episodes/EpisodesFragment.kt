@@ -3,7 +3,6 @@ package avila.daniel.rickmorty.ui.fragment.episodes
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,7 +28,6 @@ class EpisodesFragment : InitialLoadFragment(), ISearch {
             activity,
             CharactersLocationActivity::class.java
         ).apply {
-            Log.d("aaa", "Id: $id")
             putExtra(CHARACTERS_SOURCE, CharactersSource.EPISODE as Parcelable)
             putExtra(ID, id)
         })
@@ -63,7 +61,10 @@ class EpisodesFragment : InitialLoadFragment(), ISearch {
                 managementResourceState(status, message)
                 if (status == ResourceState.SUCCESS) {
                     data?.run {
-                        episodesList.addAll(this)
+                        if (this.first) {
+                            episodesList.clear()
+                        }
+                        episodesList.addAll(this.second)
                         adapter.notifyDataSetChanged()
                     }
                 }
@@ -76,7 +77,7 @@ class EpisodesFragment : InitialLoadFragment(), ISearch {
     }
 
     override fun updateFilter(newFilter: String) {
-        episodesViewModel.searchFilter(newFilter)
+        episodesViewModel.updateSearchFilter(newFilter)
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_episodes

@@ -14,12 +14,14 @@ import retrofit2.http.Query
 interface IDataRemote {
 
     @GET("character/?")
-    fun getCharacters(@Query("page") page: Int,
-                      @Query("name") name: String,
-                      @Query("status") status: String,
-                      @Query("species") species: String,
-                      @Query("type") type: String,
-                      @Query("gender") gender: String): Single<CharacterResponse>
+    fun getCharacters(
+        @Query("page") page: Int,
+        @Query("name") name: String,
+        @Query("status") status: String,
+        @Query("species") species: String,
+        @Query("type") type: String,
+        @Query("gender") gender: String
+    ): Single<CharacterResponse>
 
     @GET("character/{ids}")
     fun getCharacters(@Path("ids") ids: String): Single<List<Character>>
@@ -28,13 +30,17 @@ interface IDataRemote {
     fun getCharacter(@Path("id") id: Int): Single<Character>
 
     @GET("location/?")
-    fun getLocations(@Query("page") page: Int): Single<LocationResponse>
+    fun getLocations(
+        @Query("page") page: Int, @Query("name") name: String, @Query("type") type: String, @Query(
+            "dimension"
+        ) dimension: String
+    ): Single<LocationResponse>
 
     @GET("location/{id}")
     fun getLocation(@Path("id") id: Int): Single<Location>
 
     @GET("episode/?")
-    fun getEpisodes(@Query("page") page: Int): Single<EpisodeResponse>
+    fun getEpisodes(@Query("page") page: Int, @Query("name") name: String): Single<EpisodeResponse>
 
     @GET("episode/{id}")
     fun getEpisode(@Path("id") id: Int): Single<Episode>

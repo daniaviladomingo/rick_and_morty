@@ -4,6 +4,7 @@ import avila.daniel.domain.IRepository
 import avila.daniel.domain.model.Character
 import avila.daniel.domain.model.Episode
 import avila.daniel.domain.model.Location
+import avila.daniel.domain.model.settings.LocationFilterSettings
 import avila.daniel.domain.model.settings.compose.CharacterFilterParameter
 import avila.daniel.repository.cache.IDataCache
 import avila.daniel.repository.remote.IDataRemote
@@ -49,12 +50,22 @@ class RepositoryImp(
 
     override fun getCharacter(id: Int): Single<Character> = dataRemote.getCharacter(id)
 
-    override fun getLocations(page: Int): Single<Pair<Int, List<Location>?>> =
-        dataRemote.getLocations(page).map {
-            Pair(
-                it.info.pages,
+    override fun getLocations(searchFilter: String, page: Int): Single<List<Location>> =
+        dataCache.getLocationFilter().flatMap { filterSettings ->
+
+            var filterName = ""
+            var filterType = ""
+            var filterDimension = ""
+
+            when (filterSettings) {
+                LocationFilterSettings.NAME -> filterName = searchFilter
+                LocationFilterSettings.TYPE -> filterType = searchFilter
+                LocationFilterSettings.DIMENSION -> filterDimension = searchFilter
+            }
+
+            dataRemote.getLocations(page, filterName, filterType, filterDimension).map {
                 it.results
-            )
+            }
         }
 
     override fun getLocation(id: Int): Single<Location> = dataRemote.getLocation(id)
@@ -64,12 +75,9 @@ class RepositoryImp(
             dataRemote.getCharacters(extractIdsCharacters(location.residents))
         }
 
-    override fun getEpisodes(page: Int): Single<Pair<Int, List<Episode>?>> =
-        dataRemote.getEpisodes(page).map {
-            Pair(
-                it.info.pages,
-                episodeApiMapper.map(it.results)
-            )
+    override fun getEpisodes(searchFilter: String, page: Int): Single<List<Episode>> =
+        dataRemote.getEpisodes(page, searchFilter).map {
+            episodeApiMapper.map(it.results)
         }
 
     override fun getEpisode(id: Int): Single<Episode> = dataRemote.getEpisode(id)
@@ -78,7 +86,6 @@ class RepositoryImp(
         getEpisode(idEpisode).flatMap { episode ->
             dataRemote.getCharacters(extractIdsCharacters(episode.characters))
         }
-
 
     private fun extractIdsCharacters(urlCharactersList: List<String>): String {
         var ids = ""

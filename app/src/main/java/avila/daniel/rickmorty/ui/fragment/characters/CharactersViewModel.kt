@@ -62,6 +62,7 @@ class CharactersViewModel(
     }
 
     private fun clearNReload() {
+        clear = true
         currentPage = initialPage
         loadCharacteres()
     }

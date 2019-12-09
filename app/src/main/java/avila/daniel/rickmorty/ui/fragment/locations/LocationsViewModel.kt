@@ -11,15 +11,16 @@ import avila.daniel.rickmorty.util.SingleLiveEvent
 class LocationsViewModel(
     private val getLocationsUseCase: GetLocationsUseCase,
     private val locationUIMapper: LocationUIMapper,
-    private val scheduleProvider: IScheduleProvider
+    private val scheduleProvider: IScheduleProvider,
+    private val initialPage: Int
 ) : BaseViewModel() {
 
-    private var currentPage = 1
-    private var totalPages = 1
-
-    val locationsLiveData = SingleLiveEvent<Resource<List<LocationUI>?>>()
+    val locationsLiveData = SingleLiveEvent<Resource<Pair<Boolean,List<LocationUI>>>>()
 
     private var isLoading = false
+    private var currentPage = initialPage
+    private var currentSearchFilter = ""
+    private var clear = false
 
     fun listScrolled(visibleItemCount: Int, lastVisibleItemPosition: Int, totalItemCount: Int) {
         if (!isLoading) {
@@ -31,25 +32,32 @@ class LocationsViewModel(
     }
 
     fun loadMoreLocations() {
-        if (currentPage <= totalPages) {
-            locationsLiveData.value = Resource.loading()
-            addDisposable(getLocationsUseCase.execute(currentPage)
-                .observeOn(scheduleProvider.ui())
-                .subscribeOn(scheduleProvider.io())
-                .subscribe({ locations ->
-                    locationsLiveData.value =
-                        Resource.success(locations.second?.run { locationUIMapper.map(this) })
-                    currentPage++
-                    totalPages = locations.first
-                    isLoading = false
-                }) {
-                    isLoading = false
-                    locationsLiveData.value = Resource.error(it.localizedMessage)
-                })
+        locationsLiveData.value = Resource.loading()
+        addDisposable(getLocationsUseCase.execute(Pair(currentSearchFilter, currentPage))
+            .observeOn(scheduleProvider.ui())
+            .subscribeOn(scheduleProvider.io())
+            .subscribe({ locations ->
+                locationsLiveData.value =
+                    Resource.success(Pair(clear, locationUIMapper.map(locations)))
+                clear = false
+                currentPage++
+                isLoading = false
+            }) {
+                isLoading = false
+                locationsLiveData.value = Resource.error(it.localizedMessage)
+            })
+    }
+
+    fun updateSearchFilter(newSearchFilter: String) {
+        if (newSearchFilter != currentSearchFilter) {
+            currentSearchFilter = newSearchFilter
+            clearNReload()
         }
     }
 
-    fun searchFilter(text: String) {
-
+    private fun clearNReload() {
+        clear = true
+        currentPage = initialPage
+        loadMoreLocations()
     }
 }

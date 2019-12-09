@@ -62,7 +62,10 @@ class LocationsFragment : InitialLoadFragment(), ISearch {
                 managementResourceState(status, message)
                 if (status == ResourceState.SUCCESS) {
                     data?.run {
-                        locationsList.addAll(this)
+                        if (this.first) {
+                            locationsList.clear()
+                        }
+                        locationsList.addAll(this.second)
                         adapter.notifyDataSetChanged()
                     }
                 }
@@ -75,7 +78,7 @@ class LocationsFragment : InitialLoadFragment(), ISearch {
     }
 
     override fun updateFilter(newFilter: String) {
-        locationsViewModel.searchFilter(newFilter)
+        locationsViewModel.updateSearchFilter(newFilter)
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_locations

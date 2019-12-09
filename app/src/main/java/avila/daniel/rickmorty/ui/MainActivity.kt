@@ -72,7 +72,6 @@ class MainActivity : BaseActivity() {
 
             override fun onSearchViewClosed() {
                 searchFilter("")
-                Log.d("fff", "onSearchViewClosed")
             }
 
             override fun onSearchViewClosedAnimation() {
@@ -82,13 +81,13 @@ class MainActivity : BaseActivity() {
 
             }
         })
+
         search_view.setOnQueryTextListener(object : SimpleSearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                Log.d("fff", "onQueryTextChange: $newText")
                 searchFilter(newText)
                 return false
             }

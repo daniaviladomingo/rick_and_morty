@@ -29,6 +29,7 @@ import avila.daniel.rickmorty.ui.fragment.locations.LocationsViewModel
 import avila.daniel.rickmorty.ui.model.mapper.CharacterUIMapper
 import avila.daniel.rickmorty.ui.model.mapper.EpisodeUIMapper
 import avila.daniel.rickmorty.ui.model.mapper.LocationUIMapper
+import avila.daniel.rickmorty.ui.util.IReloadData
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -43,6 +44,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+var characterReload: IReloadData? = null
+
 val appModule = module {
     single { PreferenceManager.getDefaultSharedPreferences(androidContext()) }
 }
@@ -52,10 +55,19 @@ val activityModule = module {
         //        LifecycleManager(get(), lifecycle)
         Unit
     }
+    single {
+        {
+            characterReload?.reload()
+        }
+    }
 }
 
 val viewModelModule = module {
-    viewModel { CharactersViewModel(get(), get(), get(), get(InitialPage)) }
+    viewModel {
+        CharactersViewModel(get(), get(), get(), get(InitialPage)).apply {
+            characterReload = this
+        }
+    }
     viewModel { LocationsViewModel(get(), get(), get()) }
     viewModel { EpisodesViewModel(get(), get(), get()) }
     viewModel { CharactersLocationViewModel(get(), get(), get(), get(), get()) }

@@ -10,7 +10,7 @@ import avila.daniel.domain.model.settings.compose.CharacterFilterParameter
 import io.reactivex.Single
 
 class DataCachePreferenceImp(
-    private val sharedPreferences: SharedPreferences,
+    private val defaultSharedPreferences: SharedPreferences,
     private val keyNameCharacter: String,
     private val keyStatus: String,
     private val keySpecie: String,
@@ -27,21 +27,21 @@ class DataCachePreferenceImp(
         it.onSuccess(
             CharactersFilterSettings(
                 when {
-                    sharedPreferences.getBoolean(keyNameCharacter, true) -> {
+                    defaultSharedPreferences.getBoolean(keyNameCharacter, true) -> {
                         CharacterFilterParameter.NAME
                     }
-                    sharedPreferences.getBoolean(keySpecie, true) -> {
+                    defaultSharedPreferences.getBoolean(keySpecie, true) -> {
                         CharacterFilterParameter.SPECIES
                     }
-                    sharedPreferences.getBoolean(keyTypeCharacter, true) -> {
+                    defaultSharedPreferences.getBoolean(keyTypeCharacter, true) -> {
                         CharacterFilterParameter.TYPE
                     }
                     else -> {
                         CharacterFilterParameter.NAME
                     }
                 },
-                preferenceStatusMapper.map(sharedPreferences.getString(keyStatus, "") ?: ""),
-                preferenceGenderMapper.map(sharedPreferences.getString(keyGender, "") ?: "")
+                preferenceStatusMapper.map(defaultSharedPreferences.getString(keyStatus, "") ?: ""),
+                preferenceGenderMapper.map(defaultSharedPreferences.getString(keyGender, "") ?: "")
             )
         )
     }
@@ -49,13 +49,13 @@ class DataCachePreferenceImp(
     override fun getLocationFilter(): Single<LocationFilterSettings> = Single.create {
         it.onSuccess(
             when {
-                sharedPreferences.getBoolean(keyNameLocation, true) -> {
+                defaultSharedPreferences.getBoolean(keyNameLocation, true) -> {
                     LocationFilterSettings.NAME
                 }
-                sharedPreferences.getBoolean(keyDimension, true) -> {
+                defaultSharedPreferences.getBoolean(keyDimension, true) -> {
                     LocationFilterSettings.DIMENSION
                 }
-                sharedPreferences.getBoolean(keyTypeLocation, true) -> {
+                defaultSharedPreferences.getBoolean(keyTypeLocation, true) -> {
                     LocationFilterSettings.TYPE
                 }
                 else -> {

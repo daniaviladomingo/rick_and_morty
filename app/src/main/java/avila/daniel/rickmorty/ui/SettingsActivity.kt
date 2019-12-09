@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.CheckBoxPreference
+import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import avila.daniel.rickmorty.R
 import kotlinx.android.synthetic.main.activity_settings.*
+import org.koin.android.ext.android.inject
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -33,6 +35,8 @@ class SettingsActivity : AppCompatActivity() {
 
     class SettingsFragment : PreferenceFragmentCompat() {
 
+        private val reloadData: () -> Unit by inject()
+
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
 
@@ -50,7 +54,6 @@ class SettingsActivity : AppCompatActivity() {
                 } else {
                     false
                 }
-
             }
 
             keyTypeCharacter?.setOnPreferenceChangeListener { _, newValue ->
@@ -104,6 +107,24 @@ class SettingsActivity : AppCompatActivity() {
                 if (newValue as Boolean) {
                     keyNameLocation?.isChecked = false
                     keyTypeLocation?.isChecked = false
+                    true
+                } else {
+                    false
+                }
+            }
+
+            findPreference<ListPreference>(getString(R.string.key_gender))?.setOnPreferenceChangeListener { prefecence, newValue ->
+                if ((prefecence as ListPreference).value != newValue) {
+                    reloadData()
+                    true
+                } else {
+                    false
+                }
+            }
+
+            findPreference<ListPreference>(getString(R.string.key_status))?.setOnPreferenceChangeListener { prefecence, newValue ->
+                if ((prefecence as ListPreference).value != newValue) {
+                    reloadData()
                     true
                 } else {
                     false

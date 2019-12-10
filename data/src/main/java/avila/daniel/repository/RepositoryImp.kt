@@ -23,7 +23,10 @@ class RepositoryImp(
     private val genderParameterMapper: GenderParameterMapper
 ) : IRepository {
 
-    override fun getCharacters(searchFilter: String, page: Int): Single<List<Character>> =
+    override fun getCharacters(
+        searchFilter: String,
+        page: Int
+    ): Single<Pair<Int, List<Character>>> =
         dataCache.getCharacterFilter().flatMap { filterSettings ->
 
             var filterName = ""
@@ -44,13 +47,13 @@ class RepositoryImp(
                 filterType,
                 genderParameterMapper.map(filterSettings.gender)
             ).map {
-                characterApiMapper.map(it.results)
+                Pair(it.info.pages, characterApiMapper.map(it.results))
             }
         }
 
     override fun getCharacter(id: Int): Single<Character> = dataRemote.getCharacter(id)
 
-    override fun getLocations(searchFilter: String, page: Int): Single<List<Location>> =
+    override fun getLocations(searchFilter: String, page: Int): Single<Pair<Int, List<Location>>> =
         dataCache.getLocationFilter().flatMap { filterSettings ->
 
             var filterName = ""
@@ -64,7 +67,7 @@ class RepositoryImp(
             }
 
             dataRemote.getLocations(page, filterName, filterType, filterDimension).map {
-                it.results
+                Pair(it.info.pages, it.results)
             }
         }
 
@@ -75,9 +78,9 @@ class RepositoryImp(
             dataRemote.getCharacters(extractIdsCharacters(location.residents))
         }
 
-    override fun getEpisodes(searchFilter: String, page: Int): Single<List<Episode>> =
+    override fun getEpisodes(searchFilter: String, page: Int): Single<Pair<Int, List<Episode>>> =
         dataRemote.getEpisodes(page, searchFilter).map {
-            episodeApiMapper.map(it.results)
+            Pair(it.info.pages, episodeApiMapper.map(it.results))
         }
 
     override fun getEpisode(id: Int): Single<Episode> = dataRemote.getEpisode(id)

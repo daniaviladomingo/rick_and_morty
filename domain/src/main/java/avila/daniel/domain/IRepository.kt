@@ -6,14 +6,14 @@ import avila.daniel.domain.model.Location
 import io.reactivex.Single
 
 interface IRepository {
-    fun getCharacters(searchFilter: String, page: Int): Single<List<Character>>
+    fun getCharacters(searchFilter: String, page: Int): Single<Pair<Int, List<Character>>>
     fun getCharacter(id: Int): Single<Character>
 
-    fun getLocations(searchFilter: String, page: Int): Single<List<Location>>
+    fun getLocations(searchFilter: String, page: Int): Single<Pair<Int, List<Location>>>
     fun getLocation(id: Int): Single<Location>
     fun getLocationCharacters(idLocation: Int): Single<List<Character>>
 
-    fun getEpisodes(searchFilter: String, page: Int): Single<List<Episode>>
+    fun getEpisodes(searchFilter: String, page: Int): Single<Pair<Int, List<Episode>>>
     fun getEpisode(id: Int): Single<Episode>
     fun getEpisodeCharacters(idEpisode: Int): Single<List<Character>>
 }

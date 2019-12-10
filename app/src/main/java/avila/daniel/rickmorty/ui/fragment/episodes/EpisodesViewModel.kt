@@ -19,6 +19,7 @@ class EpisodesViewModel(
 
     private var isLoading = false
     private var currentPage = initialPage
+    private var totalPage = initialPage
     private var currentSearchFilter = ""
     private var clear = false
 
@@ -32,20 +33,22 @@ class EpisodesViewModel(
     }
 
     fun loadMoreEpisodes() {
-        episodesLiveData.value = Resource.loading()
-        addDisposable(getEpisodesUseCase.execute(Pair(currentSearchFilter, currentPage))
-            .observeOn(scheduleProvider.ui())
-            .subscribeOn(scheduleProvider.io())
-            .subscribe({ episodes ->
-                episodesLiveData.value =
-                    Resource.success(Pair(clear, episodesUIMapper.map(episodes)))
-                clear = false
-                currentPage++
-                isLoading = false
-            }) {
-                isLoading = false
-                episodesLiveData.value = Resource.error(it.localizedMessage)
-            })
+        if (currentPage <= totalPage) {
+            episodesLiveData.value = Resource.loading()
+            addDisposable(getEpisodesUseCase.execute(Pair(currentSearchFilter, currentPage))
+                .observeOn(scheduleProvider.ui())
+                .subscribeOn(scheduleProvider.io())
+                .subscribe({ episodes ->
+                    episodesLiveData.value =
+                        Resource.success(Pair(clear, episodesUIMapper.map(episodes.second)))
+                    clear = false
+                    currentPage++
+                    isLoading = false
+                }) {
+                    isLoading = false
+                    episodesLiveData.value = Resource.error(it.localizedMessage)
+                })
+        }
 
     }
 
@@ -59,6 +62,7 @@ class EpisodesViewModel(
     private fun clearNReload() {
         clear = true
         currentPage = initialPage
+        totalPage = initialPage
         loadMoreEpisodes()
     }
 }

@@ -15,10 +15,11 @@ class LocationsViewModel(
     private val initialPage: Int
 ) : BaseViewModel() {
 
-    val locationsLiveData = SingleLiveEvent<Resource<Pair<Boolean,List<LocationUI>>>>()
+    val locationsLiveData = SingleLiveEvent<Resource<Pair<Boolean, List<LocationUI>>>>()
 
     private var isLoading = false
     private var currentPage = initialPage
+    private var totalPage = initialPage
     private var currentSearchFilter = ""
     private var clear = false
 
@@ -32,20 +33,22 @@ class LocationsViewModel(
     }
 
     fun loadMoreLocations() {
-        locationsLiveData.value = Resource.loading()
-        addDisposable(getLocationsUseCase.execute(Pair(currentSearchFilter, currentPage))
-            .observeOn(scheduleProvider.ui())
-            .subscribeOn(scheduleProvider.io())
-            .subscribe({ locations ->
-                locationsLiveData.value =
-                    Resource.success(Pair(clear, locationUIMapper.map(locations)))
-                clear = false
-                currentPage++
-                isLoading = false
-            }) {
-                isLoading = false
-                locationsLiveData.value = Resource.error(it.localizedMessage)
-            })
+        if (currentPage <= totalPage) {
+            locationsLiveData.value = Resource.loading()
+            addDisposable(getLocationsUseCase.execute(Pair(currentSearchFilter, currentPage))
+                .observeOn(scheduleProvider.ui())
+                .subscribeOn(scheduleProvider.io())
+                .subscribe({ locations ->
+                    locationsLiveData.value =
+                        Resource.success(Pair(clear, locationUIMapper.map(locations.second)))
+                    clear = false
+                    currentPage++
+                    isLoading = false
+                }) {
+                    isLoading = false
+                    locationsLiveData.value = Resource.error(it.localizedMessage)
+                })
+        }
     }
 
     fun updateSearchFilter(newSearchFilter: String) {
@@ -58,6 +61,7 @@ class LocationsViewModel(
     private fun clearNReload() {
         clear = true
         currentPage = initialPage
+        totalPage = initialPage
         loadMoreLocations()
     }
 }

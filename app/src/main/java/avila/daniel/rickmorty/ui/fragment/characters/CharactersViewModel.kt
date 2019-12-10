@@ -20,6 +20,7 @@ class CharactersViewModel(
 
     private var isLoading = false
     private var currentPage = initialPage
+    private var totalPage = initialPage
     private var currentSearchFilter = ""
     private var clear = false
 
@@ -37,21 +38,24 @@ class CharactersViewModel(
     }
 
     fun loadCharacteres() {
-        charactersLiveData.value = Resource.loading()
-        dispose()
-        addDisposable(getCharactersUseCase.execute(Pair(currentSearchFilter, currentPage))
-            .observeOn(scheduleProvider.ui())
-            .subscribeOn(scheduleProvider.io())
-            .subscribe({ characters ->
-                charactersLiveData.value =
-                    Resource.success(Pair(clear, characterUIMapper.map(characters)))
-                clear = false
-                currentPage++
-                isLoading = false
-            }) {
-                isLoading = false
-                charactersLiveData.value = Resource.error(it.localizedMessage)
-            })
+        if (currentPage <= totalPage) {
+            charactersLiveData.value = Resource.loading()
+            dispose()
+            addDisposable(getCharactersUseCase.execute(Pair(currentSearchFilter, currentPage))
+                .observeOn(scheduleProvider.ui())
+                .subscribeOn(scheduleProvider.io())
+                .subscribe({ characters ->
+                    charactersLiveData.value =
+                        Resource.success(Pair(clear, characterUIMapper.map(characters.second)))
+                    clear = false
+                    totalPage = characters.first
+                    currentPage++
+                    isLoading = false
+                }) {
+                    isLoading = false
+                    charactersLiveData.value = Resource.error(it.localizedMessage)
+                })
+        }
     }
 
     fun updateSearchFilter(newSearchFilter: String) {
@@ -64,6 +68,7 @@ class CharactersViewModel(
     private fun clearNReload() {
         clear = true
         currentPage = initialPage
+        totalPage = initialPage
         loadCharacteres()
     }
 

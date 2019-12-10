@@ -45,11 +45,9 @@ class LocationsFragment : InitialLoadFragment(), ISearch {
                 super.onScrolled(recyclerView, dx, dy)
                 if (dy > 0) {
                     (list_locations.layoutManager as LinearLayoutManager).run {
-                        locationsViewModel.listScrolled(
-                            childCount,
-                            findFirstVisibleItemPosition(),
-                            itemCount
-                        )
+                        if (childCount + findFirstVisibleItemPosition() >= itemCount) {
+                            locationsViewModel.scrollEnd()
+                        }
                     }
                 }
             }
@@ -57,7 +55,7 @@ class LocationsFragment : InitialLoadFragment(), ISearch {
     }
 
     private fun setListener() {
-        locationsViewModel.locationsLiveData.observe(viewLifecycleOwner, Observer { resource ->
+        locationsViewModel.itemsLiveData.observe(viewLifecycleOwner, Observer { resource ->
             resource?.run {
                 managementResourceState(status, message)
                 if (status == ResourceState.SUCCESS) {
@@ -74,7 +72,7 @@ class LocationsFragment : InitialLoadFragment(), ISearch {
     }
 
     override fun initialLoad() {
-        locationsViewModel.loadMoreLocations()
+        locationsViewModel.load()
     }
 
     override fun updateFilter(newFilter: String) {
@@ -84,11 +82,11 @@ class LocationsFragment : InitialLoadFragment(), ISearch {
     override fun getLayoutId(): Int = R.layout.fragment_locations
 
     override fun checkAgain(): () -> Unit = {
-        locationsViewModel.loadMoreLocations()
+        locationsViewModel.load()
     }
 
     override fun tryAgain(): () -> Unit = {
-        locationsViewModel.loadMoreLocations()
+        locationsViewModel.load()
     }
 
     companion object {

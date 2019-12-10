@@ -1,12 +1,13 @@
 package avila.daniel.rickmorty.base
 
+import android.util.Log
 import avila.daniel.domain.interactor.type.SingleUseCaseWithParameter
 import avila.daniel.domain.model.mapper.Mapper
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
 import avila.daniel.rickmorty.ui.util.data.Resource
 import avila.daniel.rickmorty.util.SingleLiveEvent
 
-abstract class PaginationViewModel<T>(
+abstract class PaginationViewModel<T, U>(
     private val scheduleProvider: IScheduleProvider,
     private val initialPage: Int
 ) : BaseViewModel() {
@@ -17,18 +18,12 @@ abstract class PaginationViewModel<T>(
     private var currentSearchFilter = ""
     private var clear = false
 
-    val itemsLiveData = SingleLiveEvent<Resource<Pair<Boolean, List<T>>>>()
+    val itemsLiveData = SingleLiveEvent<Resource<Pair<Boolean, List<U>>>>()
 
-    fun listScrolled(
-        visibleItemCount: Int,
-        lastVisibleItemPosition: Int,
-        totalItemCount: Int
-    ) {
+    fun scrollEnd() {
         if (!isLoading) {
-            if (visibleItemCount + lastVisibleItemPosition >= totalItemCount) {
-                isLoading = true
-                load()
-            }
+            isLoading = true
+            load()
         }
     }
 
@@ -39,7 +34,7 @@ abstract class PaginationViewModel<T>(
         }
     }
 
-    private fun clearNReload() {
+    protected fun clearNReload() {
         clear = true
         currentPage = initialPage
         totalPage = initialPage
@@ -53,15 +48,15 @@ abstract class PaginationViewModel<T>(
             addDisposable(query().execute(Pair(currentSearchFilter, currentPage))
                 .observeOn(scheduleProvider.ui())
                 .subscribeOn(scheduleProvider.io())
-                .subscribe({ characters ->
+                .subscribe({ items ->
                     itemsLiveData.value = Resource.success(
                         Pair(
                             clear,
-                            ((mapper()?.map(characters.second) ?: characters.second) as List<T>)
+                            mapper()?.map(items.second) ?: items.second as List<U>
                         )
                     )
                     clear = false
-                    totalPage = characters.first
+                    totalPage = items.first
                     currentPage++
                     isLoading = false
                 }) {
@@ -73,5 +68,7 @@ abstract class PaginationViewModel<T>(
 
     protected abstract fun query(): SingleUseCaseWithParameter<Pair<String, Int>, Pair<Int, List<T>>>
 
-    protected fun mapper(): Mapper<Any, T>? = null
+    protected open fun mapper(): Mapper<T, U>? = null
+
+
 }

@@ -16,6 +16,7 @@ import avila.daniel.rickmorty.ui.model.EpisodeUI
 import avila.daniel.rickmorty.ui.util.ISearch
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.fragment_episodes.*
+import kotlinx.android.synthetic.main.item_episode.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class EpisodesFragment : InitialLoadFragment(), ISearch {
@@ -44,11 +45,9 @@ class EpisodesFragment : InitialLoadFragment(), ISearch {
                 super.onScrolled(recyclerView, dx, dy)
                 if (dy > 0) {
                     (list_episodes.layoutManager as LinearLayoutManager).run {
-                        episodesViewModel.listScrolled(
-                            childCount,
-                            findFirstVisibleItemPosition(),
-                            itemCount
-                        )
+                        if (childCount + findFirstVisibleItemPosition() >= itemCount) {
+                            episodesViewModel.scrollEnd()
+                        }
                     }
                 }
             }
@@ -56,7 +55,7 @@ class EpisodesFragment : InitialLoadFragment(), ISearch {
     }
 
     private fun setListener() {
-        episodesViewModel.episodesLiveData.observe(viewLifecycleOwner, Observer { resource ->
+        episodesViewModel.itemsLiveData.observe(viewLifecycleOwner, Observer { resource ->
             resource?.run {
                 managementResourceState(status, message)
                 if (status == ResourceState.SUCCESS) {
@@ -73,7 +72,7 @@ class EpisodesFragment : InitialLoadFragment(), ISearch {
     }
 
     override fun initialLoad() {
-        episodesViewModel.loadMoreEpisodes()
+        episodesViewModel.load()
     }
 
     override fun updateFilter(newFilter: String) {
@@ -83,11 +82,11 @@ class EpisodesFragment : InitialLoadFragment(), ISearch {
     override fun getLayoutId(): Int = R.layout.fragment_episodes
 
     override fun checkAgain(): () -> Unit = {
-        episodesViewModel.loadMoreEpisodes()
+        episodesViewModel.load()
     }
 
     override fun tryAgain(): () -> Unit = {
-        episodesViewModel.loadMoreEpisodes()
+        episodesViewModel.load()
     }
 
     companion object {

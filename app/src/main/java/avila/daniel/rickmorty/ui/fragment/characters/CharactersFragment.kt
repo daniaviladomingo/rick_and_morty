@@ -1,6 +1,7 @@
 package avila.daniel.rickmorty.ui.fragment.characters
 
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,11 +31,9 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
                 super.onScrolled(recyclerView, dx, dy)
                 if (dy > 0) {
                     (list_characters.layoutManager as LinearLayoutManager).run {
-                        charactersViewModel.listScrolled(
-                            childCount,
-                            findFirstVisibleItemPosition(),
-                            itemCount
-                        )
+                        if (childCount + findFirstVisibleItemPosition() >= itemCount) {
+                            charactersViewModel.scrollEnd()
+                        }
                     }
                 }
             }
@@ -42,7 +41,7 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
     }
 
     private fun setListener() {
-        charactersViewModel.charactersLiveData.observe(viewLifecycleOwner, Observer { resource ->
+        charactersViewModel.itemsLiveData.observe(viewLifecycleOwner, Observer { resource ->
             resource?.run {
                 managementResourceState(status, message)
                 if (status == ResourceState.SUCCESS) {
@@ -59,7 +58,7 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
     }
 
     override fun initialLoad() {
-        charactersViewModel.loadCharacteres()
+        charactersViewModel.load()
     }
 
     override fun updateFilter(newFilter: String) {
@@ -69,11 +68,11 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
     override fun getLayoutId(): Int = R.layout.fragment_characters
 
     override fun checkAgain(): () -> Unit = {
-        charactersViewModel.loadCharacteres()
+        charactersViewModel.load()
     }
 
     override fun tryAgain(): () -> Unit = {
-        charactersViewModel.loadCharacteres()
+        charactersViewModel.load()
     }
 
     companion object {

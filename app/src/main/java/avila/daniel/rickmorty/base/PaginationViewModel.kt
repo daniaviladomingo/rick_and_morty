@@ -1,6 +1,5 @@
 package avila.daniel.rickmorty.base
 
-import android.util.Log
 import avila.daniel.domain.interactor.type.SingleUseCaseWithParameter
 import avila.daniel.domain.model.mapper.Mapper
 import avila.daniel.rickmorty.schedulers.IScheduleProvider

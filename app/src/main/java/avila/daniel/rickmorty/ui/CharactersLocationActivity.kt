@@ -19,7 +19,7 @@ class CharactersLocationActivity : BaseActivity() {
     private val charactersLocationViewModel: CharactersLocationViewModel by viewModel()
 
     private val characterList = mutableListOf<CharacterUI>()
-    private val adapter = CharactersAdapter(characterList)
+    private val adapter = CharactersAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +41,9 @@ class CharactersLocationActivity : BaseActivity() {
                 managementResourceState(status, message)
                 if (status == ResourceState.SUCCESS) {
                     data?.run {
+                        characterList.clear()
                         characterList.addAll(this)
-                        adapter.notifyDataSetChanged()
+                        adapter.update(characterList)
                     }
                 }
             }

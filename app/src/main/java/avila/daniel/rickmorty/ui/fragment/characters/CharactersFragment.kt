@@ -1,7 +1,6 @@
 package avila.daniel.rickmorty.ui.fragment.characters
 
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +17,7 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
     private val charactersViewModel: CharactersViewModel by viewModel()
 
     private val characterList = mutableListOf<CharacterUI>()
-    private val adapter = CharactersAdapter(characterList)
+    private val adapter = CharactersAdapter()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -50,7 +49,7 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
                             characterList.clear()
                         }
                         characterList.addAll(this.second)
-                        adapter.notifyDataSetChanged()
+                        adapter.update(characterList)
                     }
                 }
             }

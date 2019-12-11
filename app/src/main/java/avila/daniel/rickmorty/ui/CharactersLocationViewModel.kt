@@ -1,6 +1,5 @@
 package avila.daniel.rickmorty.ui
 
-import android.util.Log
 import avila.daniel.domain.interactor.GetCharactersUseCase
 import avila.daniel.domain.interactor.GetEpisodeCharactersUseCase
 import avila.daniel.domain.interactor.GetLocationCharactersUseCase

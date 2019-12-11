@@ -10,7 +10,7 @@ class CharacterUIMapper(
     override fun map(model: Character): CharacterUI = model.run {
         val fname =
             name.run { if (length > maxNameLenght) substring(0..maxNameLenght) + "..." else this }
-        CharacterUI(fname, image, species)
+        CharacterUI(id, fname, image, species)
     }
 
     override fun inverseMap(model: CharacterUI): Character {

@@ -3,6 +3,7 @@ package avila.daniel.rickmorty.ui.fragment.episodes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.ui.model.EpisodeUI
@@ -12,11 +13,21 @@ import kotlinx.android.synthetic.main.header_episode.view.*
 import kotlinx.android.synthetic.main.item_episode.view.*
 
 class EpisodesAdapter(
-    private val userList: List<Any>,
     private val onClickListener: (Int) -> Unit
-) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>(), AdapterDataProvider {
-    override fun getItemCount(): Int = userList.size
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AdapterDataProvider {
+
+    private val episodeList = mutableListOf<Any>()
+
+    fun update(newEpisodes: List<Any>) {
+        val diffCallback = EpisodesDiffCallback(episodeList, newEpisodes)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
+        episodeList.clear()
+        episodeList.addAll(newEpisodes)
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    override fun getItemCount(): Int = episodeList.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         if (viewType == 0) {
@@ -25,25 +36,23 @@ class EpisodesAdapter(
             HeaderViewHolder.create(parent)
         }
 
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = userList[position]
+        val item = episodeList[position]
         if (item is EpisodeUI) {
-            (holder as UserViewHolder).bin(userList[position] as EpisodeUI, onClickListener)
+            (holder as UserViewHolder).bin(episodeList[position] as EpisodeUI, onClickListener)
         } else if (item is StickyHeaderModel) {
-            (holder as HeaderViewHolder).bin(userList[position] as ItemHeader)
+            (holder as HeaderViewHolder).bin(episodeList[position] as ItemHeader)
         }
-
     }
 
     override fun getItemViewType(position: Int): Int =
-        if (userList[position] is EpisodeUI) {
+        if (episodeList[position] is EpisodeUI) {
             0
         } else {
             1
         }
 
-    override fun getAdapterData(): List<Any> = userList
+    override fun getAdapterData(): List<Any> = episodeList
 }
 
 private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -74,7 +83,7 @@ private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 private class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bin(header: ItemHeader) {
         itemView.run {
-            title_header.text = "Season ${header.title}"
+            title_header.text = String.format("Season %s", header.title)
         }
     }
 

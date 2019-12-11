@@ -23,7 +23,7 @@ class LocationsFragment : InitialLoadFragment(), ISearch {
     private val locationsViewModel: LocationsViewModel by viewModel()
 
     private val locationsList = mutableListOf<LocationUI>()
-    private val adapter = LocationsAdapter(locationsList) { id ->
+    private val adapter = LocationsAdapter { id ->
         startActivity(
             Intent(
                 activity,
@@ -64,7 +64,7 @@ class LocationsFragment : InitialLoadFragment(), ISearch {
                             locationsList.clear()
                         }
                         locationsList.addAll(this.second)
-                        adapter.notifyDataSetChanged()
+                        adapter.update(locationsList)
                     }
                 }
             }

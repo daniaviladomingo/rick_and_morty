@@ -3,7 +3,6 @@ package avila.daniel.rickmorty.ui.fragment.episodes
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +17,6 @@ import avila.daniel.rickmorty.ui.util.ISearch
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import com.yuyang.stickyheaders.StickyLinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_episodes.*
-import kotlinx.android.synthetic.main.item_episode.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class EpisodesFragment : InitialLoadFragment(), ISearch {
@@ -26,7 +24,7 @@ class EpisodesFragment : InitialLoadFragment(), ISearch {
     private val episodesViewModel: EpisodesViewModel by viewModel()
 
     private val episodesList = mutableListOf<Any>()
-    private val adapter = EpisodesAdapter(episodesList) { id ->
+    private val adapter = EpisodesAdapter { id ->
         startActivity(Intent(
             activity,
             CharactersLocationActivity::class.java
@@ -68,7 +66,7 @@ class EpisodesFragment : InitialLoadFragment(), ISearch {
                             episodesList.clear()
                         }
                         managementHeaders(this.second)
-                        adapter.notifyDataSetChanged()
+                        adapter.update(episodesList)
                     }
                 }
             }

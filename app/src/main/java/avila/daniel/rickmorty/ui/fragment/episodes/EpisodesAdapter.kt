@@ -50,8 +50,6 @@ private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     fun bin(episode: EpisodeUI, onClickListener: (Int) -> Unit) {
         itemView.run {
             name.text = episode.name
-            season.text =
-                "${episode.season}"
             this.episode.text = "${episode.number}"
             on_air.text = episode.airDate
             characters.text = "${episode.characters}"

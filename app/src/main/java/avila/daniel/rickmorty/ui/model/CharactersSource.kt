@@ -3,12 +3,12 @@ package avila.daniel.rickmorty.ui.model
 import android.os.Parcel
 import android.os.Parcelable
 
-enum class CharactersSource() : Parcelable {
+enum class CharactersSource : Parcelable {
     LOCATION,
     EPISODE;
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-
+        parcel.writeInt(ordinal)
     }
 
     override fun describeContents(): Int {
@@ -17,7 +17,8 @@ enum class CharactersSource() : Parcelable {
 
     companion object CREATOR : Parcelable.Creator<CharactersSource> {
         override fun createFromParcel(parcel: Parcel): CharactersSource {
-            return values()[parcel.readInt()-1]
+
+            return values()[parcel.readInt()]
         }
 
         override fun newArray(size: Int): Array<CharactersSource?> {

@@ -1,11 +1,13 @@
 package avila.daniel.rickmorty.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.Observer
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseActivity
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersAdapter
 import avila.daniel.rickmorty.ui.model.CharacterUI
+import avila.daniel.rickmorty.ui.model.CharactersSource
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.activity_characters.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -28,9 +30,10 @@ class CharactersLocationActivity : BaseActivity() {
 
         list_characters.adapter = adapter
 
-        intent.run {
+
+        intent.extras?.run {
             charactersLocationViewModel.loadCharacters(
-                getParcelableExtra(CHARACTERS_SOURCE)!!, getIntExtra(ID, 0)
+                getInt(ID), getParcelable(CHARACTERS_SOURCE)!!
             )
         }
     }

@@ -3,6 +3,7 @@ package avila.daniel.rickmorty.ui.fragment.locations
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,8 +30,8 @@ class LocationsFragment : InitialLoadFragment(), ISearch {
                 activity,
                 CharactersLocationActivity::class.java
             ).apply {
-                putExtra(CHARACTERS_SOURCE, CharactersSource.LOCATION as Parcelable)
                 putExtra(ID, id)
+                putExtra(CHARACTERS_SOURCE, CharactersSource.LOCATION as Parcelable)
             })
     }
 

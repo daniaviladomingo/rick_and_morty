@@ -3,7 +3,7 @@ package avila.daniel.rickmorty.ui.fragment.locations
 import androidx.recyclerview.widget.DiffUtil
 import avila.daniel.rickmorty.ui.model.LocationUI
 
-class LocationDiffCallback(
+class LocationsDiffCallback(
     private val listOld: List<LocationUI>,
     private val listNew: List<LocationUI>
 ) : DiffUtil.Callback() {

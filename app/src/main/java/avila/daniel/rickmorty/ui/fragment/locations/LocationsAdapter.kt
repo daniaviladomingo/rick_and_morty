@@ -15,7 +15,7 @@ class LocationsAdapter(private val onClickListener: (Int) -> Unit) :
     private val locationList = mutableListOf<LocationUI>()
 
     fun update(newCharacters: List<LocationUI>) {
-        val diffCallback = LocationDiffCallback(locationList, newCharacters)
+        val diffCallback = LocationsDiffCallback(locationList, newCharacters)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
 
         locationList.clear()

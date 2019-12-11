@@ -9,7 +9,7 @@ import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.ui.model.LocationUI
 import kotlinx.android.synthetic.main.item_location.view.*
 
-class LocationsAdapter(private val onClickListener: (Int) -> Unit) :
+class LocationsAdapter(private val onClickListener: (Int, String) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val locationList = mutableListOf<LocationUI>()
@@ -33,14 +33,14 @@ class LocationsAdapter(private val onClickListener: (Int) -> Unit) :
 }
 
 private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bin(location: LocationUI, onClickListener: (Int) -> Unit) {
+    fun bin(location: LocationUI, onClickListener: (Int, String) -> Unit) {
         itemView.run {
             name.text = location.name
             type.text = location.type
             dimension.text = location.dimension
             population.text = "${location.population}"
             setOnClickListener {
-                onClickListener(location.id)
+                onClickListener(location.id, location.name)
             }
         }
     }

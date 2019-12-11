@@ -12,6 +12,7 @@ import avila.daniel.rickmorty.base.InitialLoadFragment
 import avila.daniel.rickmorty.ui.CHARACTERS_SOURCE
 import avila.daniel.rickmorty.ui.CharactersLocationActivity
 import avila.daniel.rickmorty.ui.ID
+import avila.daniel.rickmorty.ui.TITLE
 import avila.daniel.rickmorty.ui.model.CharactersSource
 import avila.daniel.rickmorty.ui.model.LocationUI
 import avila.daniel.rickmorty.ui.util.ISearch
@@ -24,14 +25,15 @@ class LocationsFragment : InitialLoadFragment(), ISearch {
     private val locationsViewModel: LocationsViewModel by viewModel()
 
     private val locationsList = mutableListOf<LocationUI>()
-    private val adapter = LocationsAdapter { id ->
+    private val adapter = LocationsAdapter { id, name ->
         startActivity(
             Intent(
                 activity,
                 CharactersLocationActivity::class.java
             ).apply {
-                putExtra(ID, id)
                 putExtra(CHARACTERS_SOURCE, CharactersSource.LOCATION as Parcelable)
+                putExtra(ID, id)
+                putExtra(TITLE, name)
             })
     }
 

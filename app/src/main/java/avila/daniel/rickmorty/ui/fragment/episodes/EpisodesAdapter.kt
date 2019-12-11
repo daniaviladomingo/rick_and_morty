@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.header_episode.view.*
 import kotlinx.android.synthetic.main.item_episode.view.*
 
 class EpisodesAdapter(
-    private val onClickListener: (Int) -> Unit
+    private val onClickListener: (Int,String) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AdapterDataProvider {
 
     private val episodeList = mutableListOf<Any>()
@@ -56,14 +56,14 @@ class EpisodesAdapter(
 }
 
 private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bin(episode: EpisodeUI, onClickListener: (Int) -> Unit) {
+    fun bin(episode: EpisodeUI, onClickListener: (Int, String) -> Unit) {
         itemView.run {
             name.text = episode.name
             this.episode.text = "${episode.number}"
             on_air.text = episode.airDate
             characters.text = "${episode.characters}"
             setOnClickListener {
-                onClickListener(episode.id)
+                onClickListener(episode.id, episode.name)
             }
         }
     }

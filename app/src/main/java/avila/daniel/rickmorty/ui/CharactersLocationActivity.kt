@@ -1,19 +1,19 @@
 package avila.daniel.rickmorty.ui
 
 import android.os.Bundle
-import android.util.Log
+import android.view.MenuItem
 import androidx.lifecycle.Observer
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseActivity
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersAdapter
 import avila.daniel.rickmorty.ui.model.CharacterUI
-import avila.daniel.rickmorty.ui.model.CharactersSource
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.activity_characters.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 const val ID = "id"
 const val CHARACTERS_SOURCE = "characters.source"
+const val TITLE = "title"
 
 
 class CharactersLocationActivity : BaseActivity() {
@@ -26,16 +26,26 @@ class CharactersLocationActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         setListener()
 
         list_characters.adapter = adapter
-
 
         intent.extras?.run {
             charactersLocationViewModel.loadCharacters(
                 getInt(ID), getParcelable(CHARACTERS_SOURCE)!!
             )
+            supportActionBar?.title = getString(TITLE)
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setListener() {

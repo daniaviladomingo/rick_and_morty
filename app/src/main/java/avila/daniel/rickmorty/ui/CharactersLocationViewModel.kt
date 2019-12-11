@@ -23,7 +23,6 @@ class CharactersLocationViewModel(
     val charactersLiveData = SingleLiveEvent<Resource<List<CharacterUI>>>()
 
     fun loadCharacters(id: Int, charactersSource: CharactersSource) {
-        Log.d("aaa", "$charactersSource, $id")
         charactersLiveData.value = Resource.loading()
         addDisposable(
             when (charactersSource) {

@@ -3,6 +3,7 @@ package avila.daniel.rickmorty.ui.fragment.episodes
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,7 @@ import avila.daniel.rickmorty.ui.model.CharactersSource
 import avila.daniel.rickmorty.ui.model.EpisodeUI
 import avila.daniel.rickmorty.ui.util.ISearch
 import avila.daniel.rickmorty.ui.util.data.ResourceState
+import com.yuyang.stickyheaders.StickyLinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_episodes.*
 import kotlinx.android.synthetic.main.item_episode.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -23,7 +25,7 @@ class EpisodesFragment : InitialLoadFragment(), ISearch {
 
     private val episodesViewModel: EpisodesViewModel by viewModel()
 
-    private val episodesList = mutableListOf<EpisodeUI>()
+    private val episodesList = mutableListOf<Any>()
     private val adapter = EpisodesAdapter(episodesList) { id ->
         startActivity(Intent(
             activity,
@@ -39,6 +41,8 @@ class EpisodesFragment : InitialLoadFragment(), ISearch {
 
         setListener()
 
+        list_episodes.layoutManager =
+            StickyLinearLayoutManager(activity, adapter).apply { elevateHeaders(5) }
         list_episodes.adapter = adapter
         list_episodes.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -63,12 +67,37 @@ class EpisodesFragment : InitialLoadFragment(), ISearch {
                         if (this.first) {
                             episodesList.clear()
                         }
-                        episodesList.addAll(this.second)
+                        managementHeaders(this.second)
                         adapter.notifyDataSetChanged()
                     }
                 }
             }
         })
+    }
+
+    private fun managementHeaders(episodes: List<EpisodeUI>) {
+        if (episodesList.size == 0) {
+            episodesList.add(ItemHeader("${episodes[0].season}"))
+        } else {
+            val lastItem = episodesList[episodesList.size - 1] as EpisodeUI
+            val firstItem = episodes[0]
+            if (lastItem.season != firstItem.season) {
+                episodesList.add(ItemHeader("${firstItem.season}"))
+            }
+        }
+
+        episodes.forEachIndexed { index, _ ->
+            if (index > 0) {
+                val item0 = episodes[index - 1]
+                val item1 = episodes[index]
+                if (item0.season != item1.season) {
+                    episodesList.add(ItemHeader("${item1.season}"))
+                }
+                episodesList.add(item1)
+            } else {
+                episodesList.add(episodes[0])
+            }
+        }
     }
 
     override fun initialLoad() {

@@ -1,7 +1,5 @@
 package avila.daniel.rickmorty.ui
 
-import android.util.Log
-import avila.daniel.domain.interactor.GetCharactersUseCase
 import avila.daniel.domain.interactor.GetEpisodeCharactersUseCase
 import avila.daniel.domain.interactor.GetLocationCharactersUseCase
 import avila.daniel.rickmorty.base.BaseViewModel
@@ -12,8 +10,7 @@ import avila.daniel.rickmorty.ui.model.mapper.CharacterUIMapper
 import avila.daniel.rickmorty.ui.util.data.Resource
 import avila.daniel.rickmorty.util.SingleLiveEvent
 
-class CharactersLocationViewModel(
-    private val getCharactersUseCase: GetCharactersUseCase,
+class CharactersFromViewModel(
     private val getLocationCharactersUseCase: GetLocationCharactersUseCase,
     private val getEpisodeCharactersUseCase: GetEpisodeCharactersUseCase,
     private val characterUIMapper: CharacterUIMapper,

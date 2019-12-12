@@ -11,14 +11,9 @@ import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.activity_characters.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-const val ID = "id"
-const val CHARACTERS_SOURCE = "characters.source"
-const val TITLE = "title"
+class CharactersFromActivity : BaseActivity() {
 
-
-class CharactersLocationActivity : BaseActivity() {
-
-    private val charactersLocationViewModel: CharactersLocationViewModel by viewModel()
+    private val charactersFromViewModel: CharactersFromViewModel by viewModel()
 
     private val characterList = mutableListOf<CharacterUI>()
     private val adapter = CharactersAdapter()
@@ -34,7 +29,7 @@ class CharactersLocationActivity : BaseActivity() {
         list_characters.adapter = adapter
 
         intent.extras?.run {
-            charactersLocationViewModel.loadCharacters(
+            charactersFromViewModel.loadCharacters(
                 getInt(ID), getParcelable(CHARACTERS_SOURCE)!!
             )
             supportActionBar?.title = getString(TITLE)
@@ -49,7 +44,7 @@ class CharactersLocationActivity : BaseActivity() {
     }
 
     private fun setListener() {
-        charactersLocationViewModel.charactersLiveData.observe(this, Observer { resource ->
+        charactersFromViewModel.charactersLiveData.observe(this, Observer { resource ->
             resource?.run {
                 managementResourceState(status, message)
                 if (status == ResourceState.SUCCESS) {
@@ -68,4 +63,10 @@ class CharactersLocationActivity : BaseActivity() {
     override fun checkAgain(): () -> Unit = {}
 
     override fun tryAgain(): () -> Unit = {}
+
+    companion object {
+        const val ID = "id"
+        const val CHARACTERS_SOURCE = "characters.source"
+        const val TITLE = "title"
+    }
 }

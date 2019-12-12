@@ -40,7 +40,9 @@ private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
             dimension.text = location.dimension
             population.text = "${location.population}"
             setOnClickListener {
-                onClickListener(location.id, location.name)
+                if (location.population > 0) {
+                    onClickListener(location.id, location.name)
+                }
             }
         }
     }

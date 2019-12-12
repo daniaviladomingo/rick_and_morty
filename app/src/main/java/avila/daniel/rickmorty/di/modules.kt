@@ -22,7 +22,7 @@ import avila.daniel.rickmorty.di.qualifiers.*
 import avila.daniel.rickmorty.di.qualifiers.Any
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
 import avila.daniel.rickmorty.schedulers.ScheduleProviderImp
-import avila.daniel.rickmorty.ui.CharactersLocationViewModel
+import avila.daniel.rickmorty.ui.CharactersFromViewModel
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersViewModel
 import avila.daniel.rickmorty.ui.fragment.episodes.EpisodesViewModel
 import avila.daniel.rickmorty.ui.fragment.locations.LocationsViewModel
@@ -70,7 +70,7 @@ val viewModelModule = module {
     }
     viewModel { LocationsViewModel(get(), get(), get(), get(InitialPage)) }
     viewModel { EpisodesViewModel(get(), get(), get(), get(InitialPage)) }
-    viewModel { CharactersLocationViewModel(get(), get(), get(), get(), get()) }
+    viewModel { CharactersFromViewModel(get(), get(), get(), get()) }
 
     single(InitialPage) { 1 }
 }

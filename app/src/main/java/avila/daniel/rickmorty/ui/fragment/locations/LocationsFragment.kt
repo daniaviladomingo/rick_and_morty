@@ -3,16 +3,15 @@ package avila.daniel.rickmorty.ui.fragment.locations
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.InitialLoadFragment
-import avila.daniel.rickmorty.ui.CHARACTERS_SOURCE
-import avila.daniel.rickmorty.ui.CharactersLocationActivity
-import avila.daniel.rickmorty.ui.ID
-import avila.daniel.rickmorty.ui.TITLE
+import avila.daniel.rickmorty.ui.CharactersFromActivity
+import avila.daniel.rickmorty.ui.CharactersFromActivity.Companion.CHARACTERS_SOURCE
+import avila.daniel.rickmorty.ui.CharactersFromActivity.Companion.ID
+import avila.daniel.rickmorty.ui.CharactersFromActivity.Companion.TITLE
 import avila.daniel.rickmorty.ui.model.CharactersSource
 import avila.daniel.rickmorty.ui.model.LocationUI
 import avila.daniel.rickmorty.ui.util.ISearch
@@ -29,7 +28,7 @@ class LocationsFragment : InitialLoadFragment(), ISearch {
         startActivity(
             Intent(
                 activity,
-                CharactersLocationActivity::class.java
+                CharactersFromActivity::class.java
             ).apply {
                 putExtra(CHARACTERS_SOURCE, CharactersSource.LOCATION as Parcelable)
                 putExtra(ID, id)

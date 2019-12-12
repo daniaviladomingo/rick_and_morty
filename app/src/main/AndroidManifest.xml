@@ -18,7 +18,7 @@
             android:name=".ui.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.CharactersLocationActivity" />
+        <activity android:name=".ui.CharactersFromActivity" />
         <activity
             android:name=".ui.MainActivity"
             android:screenOrientation="portrait">

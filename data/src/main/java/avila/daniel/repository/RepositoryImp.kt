@@ -75,7 +75,7 @@ class RepositoryImp(
 
     override fun getLocationCharacters(idLocation: Int): Single<List<Character>> =
         getLocation(idLocation).flatMap { location ->
-            dataRemote.getCharacters(extractIdsCharacters(location.residents))
+            getCharactersFrom(location.residents)
         }
 
     override fun getEpisodes(searchFilter: String, page: Int): Single<Pair<Int, List<Episode>>> =
@@ -87,17 +87,33 @@ class RepositoryImp(
 
     override fun getEpisodeCharacters(idEpisode: Int): Single<List<Character>> =
         getEpisode(idEpisode).flatMap { episode ->
-            dataRemote.getCharacters(extractIdsCharacters(episode.characters))
+            getCharactersFrom(episode.characters)
         }
 
-    private fun extractIdsCharacters(urlCharactersList: List<String>): String {
-        var ids = ""
-        urlCharactersList.forEach { urlCharacter ->
-            if (ids.isNotEmpty()) {
-                ids += ","
-            }
-            ids += urlCharacter.substringAfterLast('/')
+    private fun getCharactersFrom(urlCharactersList: List<String>): Single<List<Character>> {
+        val ids = extractIdsCharacters(urlCharactersList)
+        return if (ids.size > 1) {
+            dataRemote.getCharacters(generateIdsParameter(ids))
+        } else {
+            dataRemote.getCharacter(ids[0]).map { listOf(it) }
         }
-        return ids
+    }
+
+    private fun extractIdsCharacters(urlCharactersList: List<String>): IntArray =
+        IntArray(urlCharactersList.size).apply {
+            urlCharactersList.forEachIndexed { index, urlCharacter ->
+                this[index] = (urlCharacter.substringAfterLast('/').toInt())
+            }
+        }
+
+    private fun generateIdsParameter(ids: IntArray): String {
+        var parameterIds = ""
+        ids.forEach { id ->
+            if (parameterIds.isNotEmpty()) {
+                parameterIds += ","
+            }
+            parameterIds += id
+        }
+        return parameterIds
     }
 }

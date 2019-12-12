@@ -22,6 +22,11 @@ Use [Clean Architecture]
 
 ## Third Party Libraries
 
+* [Retrofit]
+* [Koin]
+* [ReactiveX]
+* [Glide]
+* [CircleImageView]
 * [Sticky Header]
 * [Simple Search View]
 
@@ -56,5 +61,8 @@ Use [Clean Architecture]
 [The Rick and Morty Api]: https://rickandmortyapi.com/
 [Alex Fuhrmann]: https://axelfuhrmann.com/
 
+[Retrofit]: https://github.com/square/retrofit
 [Sticky Header]: https://github.com/smuyyh/StickyHeaderRecyclerView
 [Simple Search View]: https://github.com/Ferfalk/SimpleSearchView
+[Glide]: https://github.com/bumptech/glide
+[CircleImageView]: https://github.com/hdodenhof/CircleImageView

@@ -1,7 +1,7 @@
 package avila.daniel.data_cache_preference.model.mapper
 
 import avila.daniel.domain.model.mapper.Mapper
-import avila.daniel.domain.model.settings.compose.CharacterFilterGenderParameter
+import avila.daniel.repository.cache.model.compose.CharacterFilterGenderParameter
 
 class PreferenceGenderMapper(
     private val male: String,

@@ -4,9 +4,9 @@ import android.content.SharedPreferences
 import avila.daniel.data_cache.preference.IDataCachePreference
 import avila.daniel.data_cache_preference.model.mapper.PreferenceGenderMapper
 import avila.daniel.data_cache_preference.model.mapper.PreferenceStatusMapper
-import avila.daniel.domain.model.settings.CharactersFilterSettings
-import avila.daniel.domain.model.settings.LocationFilterSettings
-import avila.daniel.domain.model.settings.compose.CharacterFilterParameter
+import avila.daniel.repository.cache.model.CharactersFilterSettings
+import avila.daniel.repository.cache.model.LocationFilterSettings
+import avila.daniel.repository.cache.model.compose.CharacterFilterParameter
 import io.reactivex.Single
 
 class DataCachePreferenceImp(

@@ -1,4 +1,4 @@
-package avila.daniel.domain.model.settings.compose
+package avila.daniel.repository.cache.model.compose
 
 enum class CharacterFilterStatusParameter {
     ALIVE,

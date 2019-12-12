@@ -4,8 +4,8 @@ import avila.daniel.domain.IRepository
 import avila.daniel.domain.model.Character
 import avila.daniel.domain.model.Episode
 import avila.daniel.domain.model.Location
-import avila.daniel.domain.model.settings.LocationFilterSettings
-import avila.daniel.domain.model.settings.compose.CharacterFilterParameter
+import avila.daniel.repository.cache.model.LocationFilterSettings
+import avila.daniel.repository.cache.model.compose.CharacterFilterParameter
 import avila.daniel.repository.cache.IDataCache
 import avila.daniel.repository.remote.IDataRemote
 import avila.daniel.repository.remote.model.mapper.CharacterApiMapper

@@ -1,7 +1,7 @@
 package avila.daniel.data_cache_preference.model.mapper
 
 import avila.daniel.domain.model.mapper.Mapper
-import avila.daniel.domain.model.settings.compose.CharacterFilterStatusParameter
+import avila.daniel.repository.cache.model.compose.CharacterFilterStatusParameter
 
 class PreferenceStatusMapper(
     private val alive: String,

@@ -8,6 +8,8 @@ App show info from [The Rick and Morty Api]
 
 ## Architecture & Design Pattern
 
+<img alt='Clean' src="https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg" align="right" width="50%"/>
+
 Use [Clean Architecture]
 
 * [SOLID]
@@ -17,8 +19,6 @@ Use [Clean Architecture]
 * Observable: [ReactiveX], [LiveData]
 
 <br/>
-
-<img alt='Clean' src="https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg" align="right" width="50%"/>
 
 ## Third Party Libraries
 

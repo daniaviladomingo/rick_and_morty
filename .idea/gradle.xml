@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/data-cache" />
+            <option value="$PROJECT_DIR$/data-cache-db" />
             <option value="$PROJECT_DIR$/data-cache-preference" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/searchview_test" />

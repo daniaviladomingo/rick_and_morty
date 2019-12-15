@@ -4,10 +4,10 @@ import androidx.recyclerview.widget.DiffUtil
 import avila.daniel.rickmorty.ui.model.CharacterUI
 import avila.daniel.rickmorty.ui.model.EpisodeUI
 
-class CharactersDiffCallback(
-    private val listOld: List<CharacterUI>,
-    private val listNew: List<CharacterUI>
-) : DiffUtil.Callback() {
+class CharactersDiffCallback: DiffUtil.Callback() {
+    lateinit var listOld: List<CharacterUI>
+    lateinit var listNew: List<CharacterUI>
+
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
         listOld[oldItemPosition].id == listNew[newItemPosition].id
 

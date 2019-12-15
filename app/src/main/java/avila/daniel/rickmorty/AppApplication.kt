@@ -20,6 +20,7 @@ class AppApplication : Application() {
                 repositoryModule,
                 dataRemoteModule,
                 dataCacheModule,
+                dataCacheDbModule,
                 dataCachePreferenceModule,
                 useCaseModule,
                 viewModelModule,

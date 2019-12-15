@@ -9,6 +9,11 @@
     <string name="settings">Settings</string>
     <string name="info">Info</string>
     <string name="search">Search&#8230;</string>
+    <string name="favorite">Favorite</string>
+    <string name="favorites">Favorites</string>
+    <string name="un_favorite">Unfavorite</string>
+    <string name="favorite_added">Added to Favorite</string>
+    <string name="favorite_removed">Removed from Favorite</string>
 
     <string name="label_empty_result">Oops, there are no results to display</string>
     <string name="label_error_result">Oops, there was an error fetching the data</string>

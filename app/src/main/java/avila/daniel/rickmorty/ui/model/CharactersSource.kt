@@ -5,7 +5,8 @@ import android.os.Parcelable
 
 enum class CharactersSource : Parcelable {
     LOCATION,
-    EPISODE;
+    EPISODE,
+    FAVORITES;
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(ordinal)

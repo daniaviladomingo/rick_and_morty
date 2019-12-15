@@ -1,4 +1,4 @@
-package avila.daniel.rickmorty.ui
+package avila.daniel.rickmorty.ui.activity
 
 import android.os.Bundle
 import android.view.MenuItem

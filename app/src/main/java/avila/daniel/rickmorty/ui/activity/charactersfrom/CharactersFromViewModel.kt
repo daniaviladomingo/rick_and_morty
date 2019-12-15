@@ -1,5 +1,6 @@
-package avila.daniel.rickmorty.ui
+package avila.daniel.rickmorty.ui.activity.charactersfrom
 
+import avila.daniel.domain.interactor.GetCharactersFavoriteUseCase
 import avila.daniel.domain.interactor.GetEpisodeCharactersUseCase
 import avila.daniel.domain.interactor.GetLocationCharactersUseCase
 import avila.daniel.rickmorty.base.BaseViewModel
@@ -13,6 +14,7 @@ import avila.daniel.rickmorty.util.SingleLiveEvent
 class CharactersFromViewModel(
     private val getLocationCharactersUseCase: GetLocationCharactersUseCase,
     private val getEpisodeCharactersUseCase: GetEpisodeCharactersUseCase,
+    private val getCharactersFavoriteUseCase: GetCharactersFavoriteUseCase,
     private val characterUIMapper: CharacterUIMapper,
     private val scheduleProvider: IScheduleProvider
 ) : BaseViewModel() {
@@ -25,6 +27,7 @@ class CharactersFromViewModel(
             when (charactersSource) {
                 CharactersSource.EPISODE -> getEpisodeCharactersUseCase.execute(id)
                 CharactersSource.LOCATION -> getLocationCharactersUseCase.execute(id)
+                CharactersSource.FAVORITES -> getCharactersFavoriteUseCase.execute()
             }
                 .observeOn(scheduleProvider.ui())
                 .subscribeOn(scheduleProvider.io())

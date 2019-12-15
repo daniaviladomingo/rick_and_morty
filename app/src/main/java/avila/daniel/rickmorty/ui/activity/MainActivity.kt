@@ -1,8 +1,8 @@
-package avila.daniel.rickmorty.ui
+package avila.daniel.rickmorty.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.os.Parcelable
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -11,9 +11,11 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseActivity
+import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersFragment
 import avila.daniel.rickmorty.ui.fragment.episodes.EpisodesFragment
 import avila.daniel.rickmorty.ui.fragment.locations.LocationsFragment
+import avila.daniel.rickmorty.ui.model.CharactersSource
 import avila.daniel.rickmorty.ui.util.ISearch
 import avila.daniel.searchview_test.SimpleSearchView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -55,6 +57,17 @@ class MainActivity : BaseActivity() {
             R.id.action_info -> {
                 Toast.makeText(this, "Info", Toast.LENGTH_SHORT).show()
                 true
+            }
+            R.id.action_favorites -> {
+                startActivity(
+                    Intent(
+                        this,
+                        CharactersFromActivity::class.java
+                    ).apply {
+                        putExtra(CharactersFromActivity.CHARACTERS_SOURCE, CharactersSource.FAVORITES as Parcelable)
+                        putExtra(CharactersFromActivity.TITLE, getString(R.string.favorites))
+                    })
+                return true
             }
             else -> super.onOptionsItemSelected(item)
         }

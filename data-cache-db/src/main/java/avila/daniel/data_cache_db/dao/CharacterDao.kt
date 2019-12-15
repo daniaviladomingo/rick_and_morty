@@ -12,4 +12,10 @@ abstract class CharacterDao : BaseDao<CharacterDb> {
 
     @Query("SELECT * FROM character WHERE id = :id")
     abstract fun getCharacter(id: Int): Single<CharacterDb>
+
+    @Query("SELECT COUNT(id) FROM character WHERE id = :id")
+    abstract fun exist(id: Int): Single<Int>
+
+    @Query("DELETE FROM character WHERE id = :id")
+    abstract fun removeCharacter(id: Int)
 }

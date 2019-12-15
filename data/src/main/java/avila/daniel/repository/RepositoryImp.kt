@@ -4,14 +4,15 @@ import avila.daniel.domain.IRepository
 import avila.daniel.domain.model.Character
 import avila.daniel.domain.model.Episode
 import avila.daniel.domain.model.Location
+import avila.daniel.repository.cache.IDataCache
 import avila.daniel.repository.cache.model.LocationFilterSettings
 import avila.daniel.repository.cache.model.compose.CharacterFilterParameter
-import avila.daniel.repository.cache.IDataCache
 import avila.daniel.repository.remote.IDataRemote
 import avila.daniel.repository.remote.model.mapper.CharacterApiMapper
 import avila.daniel.repository.remote.model.mapper.EpisodeApiMapper
 import avila.daniel.repository.remote.model.mapper.GenderParameterMapper
 import avila.daniel.repository.remote.model.mapper.StatusParameterMapper
+import io.reactivex.Completable
 import io.reactivex.Single
 
 class RepositoryImp(
@@ -51,7 +52,8 @@ class RepositoryImp(
             }
         }
 
-    override fun getCharacter(id: Int): Single<Character> = dataRemote.getCharacter(id)
+    override fun getCharacter(id: Int): Single<Character> =
+        dataRemote.getCharacter(id).map { characterApiMapper.map(it) }
 
     override fun getLocations(searchFilter: String, page: Int): Single<Pair<Int, List<Location>>> =
         dataCache.getLocationFilter().flatMap { filterSettings ->
@@ -90,12 +92,23 @@ class RepositoryImp(
             getCharactersFrom(episode.characters)
         }
 
+    override fun getCharactersFavorites(): Single<List<Character>> =
+        dataCache.getCharactersFavorites()
+
+    override fun addCharacterFavorite(character: Character): Completable =
+        dataCache.addCharacterFavorite(character)
+
+    override fun removeCharacterFavorite(id: Int): Completable =
+        dataCache.removeCharacterFavorite(id)
+
+    override fun isFavorite(id: Int): Single<Boolean> = dataCache.isFavorite(id)
+
     private fun getCharactersFrom(urlCharactersList: List<String>): Single<List<Character>> {
         val ids = extractIdsCharacters(urlCharactersList)
         return if (ids.size > 1) {
-            dataRemote.getCharacters(generateIdsParameter(ids))
+            dataRemote.getCharacters(generateIdsParameter(ids)).map { characterApiMapper.map(it) }
         } else {
-            dataRemote.getCharacter(ids[0]).map { listOf(it) }
+            dataRemote.getCharacter(ids[0]).map { listOf(it) }.map { characterApiMapper.map(it) }
         }
     }
 

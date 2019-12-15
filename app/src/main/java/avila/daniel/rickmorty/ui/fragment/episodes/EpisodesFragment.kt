@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.InitialLoadFragment
-import avila.daniel.rickmorty.ui.CharactersFromActivity
-import avila.daniel.rickmorty.ui.CharactersFromActivity.Companion.CHARACTERS_SOURCE
-import avila.daniel.rickmorty.ui.CharactersFromActivity.Companion.ID
-import avila.daniel.rickmorty.ui.CharactersFromActivity.Companion.TITLE
+import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity
+import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.CHARACTERS_SOURCE
+import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.ID
+import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.TITLE
 import avila.daniel.rickmorty.ui.model.CharactersSource
 import avila.daniel.rickmorty.ui.model.EpisodeUI
 import avila.daniel.rickmorty.ui.util.ISearch

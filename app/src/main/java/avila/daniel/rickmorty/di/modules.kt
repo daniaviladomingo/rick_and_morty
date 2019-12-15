@@ -2,8 +2,13 @@ package avila.daniel.rickmorty.di
 
 import androidx.lifecycle.Lifecycle
 import androidx.preference.PreferenceManager
+import androidx.room.Room
 import avila.daniel.data_cache.DataCacheImp
+import avila.daniel.data_cache.db.IDataCacheDb
 import avila.daniel.data_cache.preference.IDataCachePreference
+import avila.daniel.data_cache_db.DataCacheDbImp
+import avila.daniel.data_cache_db.definition.AppDatabase
+import avila.daniel.data_cache_db.model.mapper.CharacterMapperDb
 import avila.daniel.data_cache_preference.DataCachePreferenceImp
 import avila.daniel.data_cache_preference.model.mapper.PreferenceGenderMapper
 import avila.daniel.data_cache_preference.model.mapper.PreferenceStatusMapper
@@ -22,7 +27,9 @@ import avila.daniel.rickmorty.di.qualifiers.*
 import avila.daniel.rickmorty.di.qualifiers.Any
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
 import avila.daniel.rickmorty.schedulers.ScheduleProviderImp
-import avila.daniel.rickmorty.ui.CharactersFromViewModel
+import avila.daniel.rickmorty.ui.activity.character.CharacterViewModel
+import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromViewModel
+import avila.daniel.rickmorty.ui.fragment.characters.CharactersDiffCallback
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersViewModel
 import avila.daniel.rickmorty.ui.fragment.episodes.EpisodesViewModel
 import avila.daniel.rickmorty.ui.fragment.locations.LocationsViewModel
@@ -48,6 +55,7 @@ var characterReload: IReloadData? = null
 
 val appModule = module {
     single { PreferenceManager.getDefaultSharedPreferences(androidContext()) }
+    single { CharactersDiffCallback() }
 }
 
 val activityModule = module {
@@ -70,7 +78,16 @@ val viewModelModule = module {
     }
     viewModel { LocationsViewModel(get(), get(), get(), get(InitialPage)) }
     viewModel { EpisodesViewModel(get(), get(), get(), get(InitialPage)) }
-    viewModel { CharactersFromViewModel(get(), get(), get(), get()) }
+    viewModel {
+        CharactersFromViewModel(
+            get(),
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
+    viewModel { CharacterViewModel(get(), get(), get(), get(), get()) }
 
     single(InitialPage) { 1 }
 }
@@ -81,6 +98,11 @@ val useCaseModule = module {
     single { GetLocationCharactersUseCase(get()) }
     single { GetEpisodesUseCase(get()) }
     single { GetEpisodeCharactersUseCase(get()) }
+    single { GetCharacterUseCase(get()) }
+    single { AddCharacterToFavoriteUseCase(get()) }
+    single { RemoveCharacterFromFavoriteUseCase(get()) }
+    single { IsFavoriteUseCase(get()) }
+    single { GetCharactersFavoriteUseCase(get()) }
 }
 
 val repositoryModule = module {
@@ -132,7 +154,7 @@ val dataRemoteModule = module {
 
 val dataCacheModule = module {
     single<IDataCache> {
-        DataCacheImp(get())
+        DataCacheImp(get(), get())
     }
 }
 
@@ -186,6 +208,18 @@ val dataCachePreferenceModule = module {
     }
 }
 
+val dataCacheDbModule = module {
+
+    single<IDataCacheDb> {
+        DataCacheDbImp(get(), get())
+    }
+
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "db")
+            .allowMainThreadQueries().build()
+    }
+}
+
 val scheduleModule = module {
     single<IScheduleProvider> { ScheduleProviderImp() }
 }
@@ -200,6 +234,8 @@ val mapperModule = module {
 
     single { StatusParameterMapper("alive", "dead", "unknown", "") }
     single { GenderParameterMapper("male", "female", "genderless", "unknown", "") }
+
+    single { CharacterMapperDb() }
 
     single {
         PreferenceStatusMapper(

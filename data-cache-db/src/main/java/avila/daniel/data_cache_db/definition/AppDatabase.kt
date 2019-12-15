@@ -6,12 +6,13 @@ import androidx.room.TypeConverters
 import avila.daniel.data_cache_db.dao.CharacterDao
 import avila.daniel.data_cache_db.definition.typeconverter.GenderTypeConverter
 import avila.daniel.data_cache_db.definition.typeconverter.StatusTypeConverter
+import avila.daniel.data_cache_db.model.CharacterDb
 
 private const val DATABASE_VERSION = 1
 
 @Database(
     entities = [
-        CharacterDao::class
+        CharacterDb::class
     ],
     version = DATABASE_VERSION,
     exportSchema = false

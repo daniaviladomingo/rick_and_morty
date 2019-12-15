@@ -1,14 +1,18 @@
-package avila.daniel.rickmorty.ui
+package avila.daniel.rickmorty.ui.activity.charactersfrom
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.lifecycle.Observer
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseActivity
+import avila.daniel.rickmorty.ui.activity.character.CharacterActivity
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersAdapter
+import avila.daniel.rickmorty.ui.fragment.characters.CharactersDiffCallback
 import avila.daniel.rickmorty.ui.model.CharacterUI
 import avila.daniel.rickmorty.ui.util.data.ResourceState
-import kotlinx.android.synthetic.main.activity_characters.*
+import kotlinx.android.synthetic.main.activity_characters_from.*
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class CharactersFromActivity : BaseActivity() {
@@ -16,7 +20,16 @@ class CharactersFromActivity : BaseActivity() {
     private val charactersFromViewModel: CharactersFromViewModel by viewModel()
 
     private val characterList = mutableListOf<CharacterUI>()
-    private val adapter = CharactersAdapter()
+    private val adapter = CharactersAdapter(inject<CharactersDiffCallback>().value) { id, name ->
+        startActivity(
+            Intent(
+                this,
+                CharacterActivity::class.java
+            ).apply {
+                putExtra(CharacterActivity.ID, id)
+                putExtra(CharacterActivity.TITLE, name)
+            })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +43,9 @@ class CharactersFromActivity : BaseActivity() {
 
         intent.extras?.run {
             charactersFromViewModel.loadCharacters(
-                getInt(ID), getParcelable(CHARACTERS_SOURCE)!!
+                getInt(ID), getParcelable(
+                    CHARACTERS_SOURCE
+                )!!
             )
             supportActionBar?.title = getString(TITLE)
         }
@@ -58,7 +73,7 @@ class CharactersFromActivity : BaseActivity() {
         })
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_characters
+    override fun getLayoutId(): Int = R.layout.activity_characters_from
 
     override fun checkAgain(): () -> Unit = {}
 

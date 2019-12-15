@@ -3,6 +3,7 @@ package avila.daniel.domain
 import avila.daniel.domain.model.Character
 import avila.daniel.domain.model.Episode
 import avila.daniel.domain.model.Location
+import io.reactivex.Completable
 import io.reactivex.Single
 
 interface IRepository {
@@ -16,4 +17,9 @@ interface IRepository {
     fun getEpisodes(searchFilter: String, page: Int): Single<Pair<Int, List<Episode>>>
     fun getEpisode(id: Int): Single<Episode>
     fun getEpisodeCharacters(idEpisode: Int): Single<List<Character>>
+
+    fun getCharactersFavorites(): Single<List<Character>>
+    fun addCharacterFavorite(character: Character): Completable
+    fun removeCharacterFavorite(id: Int): Completable
+    fun isFavorite(id: Int): Single<Boolean>
 }

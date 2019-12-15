@@ -3,6 +3,7 @@ package avila.daniel.repository.remote
 import avila.daniel.domain.model.Character
 import avila.daniel.domain.model.Episode
 import avila.daniel.domain.model.Location
+import avila.daniel.repository.remote.model.CharacterApi
 import avila.daniel.repository.remote.model.CharacterResponse
 import avila.daniel.repository.remote.model.EpisodeResponse
 import avila.daniel.repository.remote.model.LocationResponse
@@ -24,10 +25,10 @@ interface IDataRemote {
     ): Single<CharacterResponse>
 
     @GET("character/{ids}")
-    fun getCharacters(@Path("ids") ids: String): Single<List<Character>>
+    fun getCharacters(@Path("ids") ids: String): Single<List<CharacterApi>>
 
     @GET("character/{id}")
-    fun getCharacter(@Path("id") id: Int): Single<Character>
+    fun getCharacter(@Path("id") id: Int): Single<CharacterApi>
 
     @GET("location/?")
     fun getLocations(

@@ -15,12 +15,13 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".ui.SettingsActivity"
+            android:name=".ui.activity.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.CharactersFromActivity" />
+        <activity android:name=".ui.activity.charactersfrom.CharactersFromActivity" />
+        <activity android:name=".ui.activity.character.CharacterActivity"/>
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

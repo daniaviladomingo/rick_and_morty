@@ -8,4 +8,5 @@ interface IDataCacheDb {
     fun removeFavoriteCharacter(id: Int): Completable
     fun addFavoriteCharacter(character: Character): Completable
     fun getAllFavoriteCharacters(): Single<List<Character>>
+    fun isFavorite(id: Int): Single<Boolean>
 }

@@ -1,12 +1,11 @@
 package avila.daniel.rickmorty.ui.fragment.characters
 
 import androidx.recyclerview.widget.DiffUtil
-import avila.daniel.rickmorty.ui.model.CharacterUI
-import avila.daniel.rickmorty.ui.model.EpisodeUI
+import avila.daniel.domain.model.Character
 
 class CharactersDiffCallback: DiffUtil.Callback() {
-    lateinit var listOld: List<CharacterUI>
-    lateinit var listNew: List<CharacterUI>
+    lateinit var listOld: List<Character>
+    lateinit var listNew: List<Character>
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
         listOld[oldItemPosition].id == listNew[newItemPosition].id

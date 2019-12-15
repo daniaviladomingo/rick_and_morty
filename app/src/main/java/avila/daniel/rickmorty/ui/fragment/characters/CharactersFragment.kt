@@ -2,16 +2,13 @@ package avila.daniel.rickmorty.ui.fragment.characters
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.InitialLoadFragment
 import avila.daniel.rickmorty.ui.activity.character.CharacterActivity
-import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity
-import avila.daniel.rickmorty.ui.model.CharacterUI
-import avila.daniel.rickmorty.ui.model.CharactersSource
+import avila.daniel.domain.model.Character
 import avila.daniel.rickmorty.ui.util.ISearch
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.fragment_characters.*
@@ -22,16 +19,9 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
 
     private val charactersViewModel: CharactersViewModel by viewModel()
 
-    private val characterList = mutableListOf<CharacterUI>()
-    private val adapter = CharactersAdapter(inject<CharactersDiffCallback>().value) { id, name ->
-        startActivity(
-            Intent(
-                activity,
-                CharacterActivity::class.java
-            ).apply {
-                putExtra(CharactersFromActivity.ID, id)
-                putExtra(CharactersFromActivity.TITLE, name)
-            })
+    private val characterList = mutableListOf<Character>()
+    private val adapter = CharactersAdapter(inject<CharactersDiffCallback>().value) { id ->
+        charactersViewModel.openCharacterDetail(characterList.find { it.id == id }!!)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -69,6 +59,25 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
                 }
             }
         })
+
+        charactersViewModel.characterParcelabeLiveData.observe(
+            viewLifecycleOwner,
+            Observer { resource ->
+                resource?.run {
+                    managementResourceState(status, message)
+                    if (status == ResourceState.SUCCESS) {
+                        data?.run {
+                            startActivity(
+                                Intent(
+                                    activity,
+                                    CharacterActivity::class.java
+                                ).apply {
+                                    putExtra(CharacterActivity.CHARACTER, this)
+                                })
+                        }
+                    }
+                }
+            })
     }
 
     override fun initialLoad() {

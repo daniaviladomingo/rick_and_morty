@@ -27,9 +27,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-//    androidExtensions {
-//        experimental = true
-//    }
+    androidExtensions {
+        experimental = true
+    }
 }
 
 dependencies {

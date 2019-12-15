@@ -8,7 +8,6 @@ import androidx.lifecycle.Observer
 import avila.daniel.domain.model.Character
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseActivity
-import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.activity_character.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -29,8 +28,8 @@ class CharacterActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         intent.extras?.run {
-            characterViewModel.getCharacter(getInt(CharactersFromActivity.ID))
-            supportActionBar?.title = getString(CharactersFromActivity.TITLE)
+            characterViewModel.getCharacter(getParcelable(CHARACTER)!!)
+
         }
     }
 
@@ -40,6 +39,7 @@ class CharacterActivity : BaseActivity() {
                 managementResourceState(status, message)
                 if (status == ResourceState.SUCCESS) {
                     data?.run {
+                        supportActionBar?.title = this.name
                         character = this
                     }
                 }
@@ -117,7 +117,6 @@ class CharacterActivity : BaseActivity() {
     override fun tryAgain(): () -> Unit = {}
 
     companion object {
-        const val ID = "id"
-        const val TITLE = "title"
+        const val CHARACTER = "character"
     }
 }

@@ -3,19 +3,22 @@ package avila.daniel.rickmorty.ui.fragment.characters
 import avila.daniel.domain.interactor.GetCharactersUseCase
 import avila.daniel.domain.interactor.type.SingleUseCaseWithParameter
 import avila.daniel.domain.model.Character
-import avila.daniel.domain.model.mapper.Mapper
 import avila.daniel.rickmorty.base.PaginationViewModel
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
-import avila.daniel.rickmorty.ui.model.CharacterUI
-import avila.daniel.rickmorty.ui.model.mapper.CharacterUIMapper
+import avila.daniel.rickmorty.ui.model.CharacterParcelable
+import avila.daniel.rickmorty.ui.model.mapper.CharacterParcelableMapper
 import avila.daniel.rickmorty.ui.util.IReloadData
+import avila.daniel.rickmorty.ui.util.data.Resource
+import avila.daniel.rickmorty.util.SingleLiveEvent
 
 class CharactersViewModel(
     private val getCharactersUseCase: GetCharactersUseCase,
-    private val characterUIMapper: CharacterUIMapper,
+    private val characterParcelableMapper: CharacterParcelableMapper,
     scheduleProvider: IScheduleProvider,
     initialPage: Int
-) : PaginationViewModel<Character, CharacterUI>(scheduleProvider, initialPage), IReloadData {
+) : PaginationViewModel<Character, Character>(scheduleProvider, initialPage), IReloadData {
+
+    val characterParcelabeLiveData = SingleLiveEvent<Resource<CharacterParcelable>>()
 
     override fun reload() {
         clearNReload()
@@ -24,5 +27,7 @@ class CharactersViewModel(
     override fun query(): SingleUseCaseWithParameter<Pair<String, Int>, Pair<Int, List<Character>>> =
         getCharactersUseCase
 
-    override fun mapper(): Mapper<Character, CharacterUI>? = characterUIMapper
+    fun openCharacterDetail(character: Character){
+        characterParcelabeLiveData.value = Resource.success(characterParcelableMapper.map(character))
+    }
 }

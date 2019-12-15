@@ -1,20 +1,21 @@
 package avila.daniel.rickmorty.ui.activity.character
 
 import avila.daniel.domain.interactor.AddCharacterToFavoriteUseCase
-import avila.daniel.domain.interactor.GetCharacterUseCase
 import avila.daniel.domain.interactor.IsFavoriteUseCase
 import avila.daniel.domain.interactor.RemoveCharacterFromFavoriteUseCase
 import avila.daniel.domain.model.Character
 import avila.daniel.rickmorty.base.BaseViewModel
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
+import avila.daniel.rickmorty.ui.model.CharacterParcelable
+import avila.daniel.rickmorty.ui.model.mapper.CharacterParcelableMapper
 import avila.daniel.rickmorty.ui.util.data.Resource
 import avila.daniel.rickmorty.util.SingleLiveEvent
 
 class CharacterViewModel(
-    private val getCharacterUseCase: GetCharacterUseCase,
     private val addCharacterToFavoriteUseCase: AddCharacterToFavoriteUseCase,
     private val removeCharacterFromFavoriteUseCase: RemoveCharacterFromFavoriteUseCase,
     private val isFavoriteUseCase: IsFavoriteUseCase,
+    private val characterParcelableMapper: CharacterParcelableMapper,
     private val scheduleProvider: IScheduleProvider
 ) : BaseViewModel() {
 
@@ -22,23 +23,19 @@ class CharacterViewModel(
     val favoriteLiveData = SingleLiveEvent<Resource<Boolean>>()
     val isFavoriteLiveData = SingleLiveEvent<Resource<Boolean>>()
 
-    fun getCharacter(id: Int) {
+    fun getCharacter(characterParcelable: CharacterParcelable) {
         characterLiveData.value = Resource.loading()
-        addDisposable(getCharacterUseCase.execute(id)
-            .observeOn(scheduleProvider.ui())
-            .subscribeOn(scheduleProvider.io())
-            .subscribe({ character ->
-                addDisposable(isFavoriteUseCase.execute(id)
-                    .observeOn(scheduleProvider.ui())
-                    .subscribeOn(scheduleProvider.io()).subscribe({ isFavorite ->
-                        isFavoriteLiveData.value = Resource.success(isFavorite)
-                    }) {
+        val character = characterParcelableMapper.inverseMap(characterParcelable)
+        Resource.success(character)
 
-                    })
-                characterLiveData.value = Resource.success(character)
+        addDisposable(isFavoriteUseCase.execute(character.id)
+            .observeOn(scheduleProvider.ui())
+            .subscribeOn(scheduleProvider.io()).subscribe({ isFavorite ->
+                isFavoriteLiveData.value = Resource.success(isFavorite)
             }) {
-                characterLiveData.value = Resource.error(it.localizedMessage)
+
             })
+
     }
 
     fun addFavorite(character: Character) {

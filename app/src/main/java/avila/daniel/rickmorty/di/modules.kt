@@ -33,7 +33,7 @@ import avila.daniel.rickmorty.ui.fragment.characters.CharactersDiffCallback
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersViewModel
 import avila.daniel.rickmorty.ui.fragment.episodes.EpisodesViewModel
 import avila.daniel.rickmorty.ui.fragment.locations.LocationsViewModel
-import avila.daniel.rickmorty.ui.model.mapper.CharacterUIMapper
+import avila.daniel.rickmorty.ui.model.mapper.CharacterParcelableMapper
 import avila.daniel.rickmorty.ui.model.mapper.EpisodeUIMapper
 import avila.daniel.rickmorty.ui.model.mapper.LocationUIMapper
 import avila.daniel.rickmorty.ui.util.IReloadData
@@ -98,7 +98,7 @@ val useCaseModule = module {
     single { GetLocationCharactersUseCase(get()) }
     single { GetEpisodesUseCase(get()) }
     single { GetEpisodeCharactersUseCase(get()) }
-    single { GetCharacterUseCase(get()) }
+//    single { GetCharacterUseCase(get()) }
     single { AddCharacterToFavoriteUseCase(get()) }
     single { RemoveCharacterFromFavoriteUseCase(get()) }
     single { IsFavoriteUseCase(get()) }
@@ -225,7 +225,6 @@ val scheduleModule = module {
 }
 
 val mapperModule = module {
-    single { CharacterUIMapper(get(MaxLenghtName)) }
     single { LocationUIMapper() }
     single { EpisodeUIMapper(get(RangeSeason), get(RangeEpisode)) }
 
@@ -236,6 +235,8 @@ val mapperModule = module {
     single { GenderParameterMapper("male", "female", "genderless", "unknown", "") }
 
     single { CharacterMapperDb() }
+
+    single { CharacterParcelableMapper() }
 
     single {
         PreferenceStatusMapper(
@@ -286,8 +287,6 @@ val mapperModule = module {
 
     single(RangeSeason) { (1..2) }
     single(RangeEpisode) { (4..5) }
-
-    single(MaxLenghtName) { 20 }
 }
 
 val dateFormatModule = module {

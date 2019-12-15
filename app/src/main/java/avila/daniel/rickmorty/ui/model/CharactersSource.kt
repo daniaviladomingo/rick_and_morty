@@ -8,6 +8,7 @@ enum class CharactersSource : Parcelable {
     EPISODE,
     FAVORITES;
 
+
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(ordinal)
     }

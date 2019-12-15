@@ -6,18 +6,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
-import avila.daniel.rickmorty.ui.model.CharacterUI
+import avila.daniel.domain.model.Character
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_charter.view.*
 
 class CharactersAdapter(
     private val diffCallback: CharactersDiffCallback,
-    private val onClickListener: (Int,String) -> Unit
+    private val onClickListener: (Int) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val characterList = mutableListOf<CharacterUI>()
+    private val characterList = mutableListOf<Character>()
 
-    fun update(newCharacters: List<CharacterUI>) {
+    fun update(newCharacters: List<Character>) {
         diffCallback.listOld = characterList
         diffCallback.listNew = newCharacters
         val diffResult = DiffUtil.calculateDiff(diffCallback)
@@ -37,12 +37,12 @@ class CharactersAdapter(
 }
 
 private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bin(character: CharacterUI, onClickListener: (Int, String) -> Unit) {
+    fun bin(character: Character, onClickListener: (Int) -> Unit) {
         itemView.run {
-            name.text = character.name
-            Glide.with(itemView).load(character.photo).into(photo)
+            name.text = character.name.run { if (length > 20) substring(0..20) + "..." else this }
+            Glide.with(itemView).load(character.image).into(photo)
             setOnClickListener {
-                onClickListener(character.id, character.name)
+                onClickListener(character.id)
             }
         }
     }

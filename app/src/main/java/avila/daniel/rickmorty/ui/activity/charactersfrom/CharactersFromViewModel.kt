@@ -3,11 +3,11 @@ package avila.daniel.rickmorty.ui.activity.charactersfrom
 import avila.daniel.domain.interactor.GetCharactersFavoriteUseCase
 import avila.daniel.domain.interactor.GetEpisodeCharactersUseCase
 import avila.daniel.domain.interactor.GetLocationCharactersUseCase
+import avila.daniel.domain.model.Character
 import avila.daniel.rickmorty.base.BaseViewModel
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
-import avila.daniel.rickmorty.ui.model.CharacterUI
-import avila.daniel.rickmorty.ui.model.CharactersSource
-import avila.daniel.rickmorty.ui.model.mapper.CharacterUIMapper
+import avila.daniel.rickmorty.ui.model.CharacterParcelable
+import avila.daniel.rickmorty.ui.model.mapper.CharacterParcelableMapper
 import avila.daniel.rickmorty.ui.util.data.Resource
 import avila.daniel.rickmorty.util.SingleLiveEvent
 
@@ -15,28 +15,59 @@ class CharactersFromViewModel(
     private val getLocationCharactersUseCase: GetLocationCharactersUseCase,
     private val getEpisodeCharactersUseCase: GetEpisodeCharactersUseCase,
     private val getCharactersFavoriteUseCase: GetCharactersFavoriteUseCase,
-    private val characterUIMapper: CharacterUIMapper,
+    private val characterParcelableMapper: CharacterParcelableMapper,
     private val scheduleProvider: IScheduleProvider
 ) : BaseViewModel() {
 
-    val charactersLiveData = SingleLiveEvent<Resource<List<CharacterUI>>>()
+    val charactersLiveData = SingleLiveEvent<Resource<List<Character>>>()
+    val characterParcelabeLiveData = SingleLiveEvent<Resource<CharacterParcelable>>()
 
-    fun loadCharacters(id: Int, charactersSource: CharactersSource) {
+
+    fun loadCharactersFromEpisode(id: Int) {
+        charactersLiveData.value = Resource.loading()
+        addDisposable(getEpisodeCharactersUseCase.execute(id)
+            .observeOn(scheduleProvider.ui())
+            .subscribeOn(scheduleProvider.io())
+            .subscribe({ characters ->
+                charactersLiveData.value = Resource.success(characters)
+
+            }) {
+
+                charactersLiveData.value = Resource.error(it.localizedMessage)
+            })
+    }
+
+    fun loadCharactersFromLocation(id: Int) {
+        charactersLiveData.value = Resource.loading()
+        addDisposable(getLocationCharactersUseCase.execute(id)
+            .observeOn(scheduleProvider.ui())
+            .subscribeOn(scheduleProvider.io())
+            .subscribe({ characters ->
+                charactersLiveData.value = Resource.success(characters)
+
+            }) {
+
+                charactersLiveData.value = Resource.error(it.localizedMessage)
+            })
+    }
+
+    fun loadCharactersFromFavorite() {
         charactersLiveData.value = Resource.loading()
         addDisposable(
-            when (charactersSource) {
-                CharactersSource.EPISODE -> getEpisodeCharactersUseCase.execute(id)
-                CharactersSource.LOCATION -> getLocationCharactersUseCase.execute(id)
-                CharactersSource.FAVORITES -> getCharactersFavoriteUseCase.execute()
-            }
+            getCharactersFavoriteUseCase.execute()
                 .observeOn(scheduleProvider.ui())
                 .subscribeOn(scheduleProvider.io())
                 .subscribe({ characters ->
-                    charactersLiveData.value = Resource.success(characterUIMapper.map(characters))
+                    charactersLiveData.value = Resource.success(characters)
 
                 }) {
 
                     charactersLiveData.value = Resource.error(it.localizedMessage)
                 })
+    }
+
+    fun openCharacterDetail(character: Character) {
+        characterParcelabeLiveData.value =
+            Resource.success(characterParcelableMapper.map(character))
     }
 }

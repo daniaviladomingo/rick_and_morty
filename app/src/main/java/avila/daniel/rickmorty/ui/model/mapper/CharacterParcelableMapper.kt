@@ -17,23 +17,25 @@ class CharacterParcelableMapper : Mapper<Character, CharacterParcelable>() {
         CharacterParcelable(
             created,
             episode,
-            when (gender) {
-                Gender.MALE -> GenderParcelable.MALE
-                Gender.FEMALE -> GenderParcelable.FEMALE
-                Gender.GENDERLESS -> GenderParcelable.GENDERLESS
-                Gender.UNKNOWN -> GenderParcelable.UNKNOWN
-            },
+//            when (gender) {
+//                Gender.MALE -> GenderParcelable.MALE
+//                Gender.FEMALE -> GenderParcelable.FEMALE
+//                Gender.GENDERLESS -> GenderParcelable.GENDERLESS
+//                Gender.UNKNOWN -> GenderParcelable.UNKNOWN
+//            },
+            gender,
             id,
             image,
             LocationParcelable(location.name, location.url),
             name,
             OriginParcelable(origin.name, origin.url),
             species,
-            when (status) {
-                Status.ALIVE -> StatusParcelable.ALIVE
-                Status.DEAD -> StatusParcelable.DEAD
-                Status.UNKNOWN -> StatusParcelable.UNKNOWN
-            },
+//            when (status) {
+//                Status.ALIVE -> StatusParcelable.ALIVE
+//                Status.DEAD -> StatusParcelable.DEAD
+//                Status.UNKNOWN -> StatusParcelable.UNKNOWN
+//            },
+            status,
             type,
             url
         )
@@ -43,23 +45,25 @@ class CharacterParcelableMapper : Mapper<Character, CharacterParcelable>() {
         Character(
             created,
             episode,
-            when (gender) {
-                GenderParcelable.MALE -> Gender.MALE
-                GenderParcelable.FEMALE -> Gender.FEMALE
-                GenderParcelable.GENDERLESS -> Gender.GENDERLESS
-                GenderParcelable.UNKNOWN -> Gender.UNKNOWN
-            },
+//            when (gender) {
+//                GenderParcelable.MALE -> Gender.MALE
+//                GenderParcelable.FEMALE -> Gender.FEMALE
+//                GenderParcelable.GENDERLESS -> Gender.GENDERLESS
+//                GenderParcelable.UNKNOWN -> Gender.UNKNOWN
+//            },
+            gender,
             id,
             image,
             LocationCompose(location.name, location.url),
             name,
             Origin(origin.name, origin.url),
             species,
-            when (status) {
-                StatusParcelable.ALIVE -> Status.ALIVE
-                StatusParcelable.DEAD -> Status.DEAD
-                StatusParcelable.UNKNOWN -> Status.UNKNOWN
-            },
+//            when (status) {
+//                StatusParcelable.ALIVE -> Status.ALIVE
+//                StatusParcelable.DEAD -> Status.DEAD
+//                StatusParcelable.UNKNOWN -> Status.UNKNOWN
+//            },
+            status,
             type,
             url
         )

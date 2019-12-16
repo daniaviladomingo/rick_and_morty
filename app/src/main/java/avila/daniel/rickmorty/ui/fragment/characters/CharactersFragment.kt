@@ -2,6 +2,7 @@ package avila.daniel.rickmorty.ui.fragment.characters
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -9,6 +10,7 @@ import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.InitialLoadFragment
 import avila.daniel.rickmorty.ui.activity.character.CharacterActivity
 import avila.daniel.domain.model.Character
+import avila.daniel.rickmorty.ui.model.CharacterParcelable
 import avila.daniel.rickmorty.ui.util.ISearch
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.fragment_characters.*
@@ -66,13 +68,13 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
                 resource?.run {
                     managementResourceState(status, message)
                     if (status == ResourceState.SUCCESS) {
-                        data?.run {
+                        data?.let {
                             startActivity(
                                 Intent(
                                     activity,
                                     CharacterActivity::class.java
                                 ).apply {
-                                    putExtra(CharacterActivity.CHARACTER, this)
+                                    putExtra(CharacterActivity.CHARACTER, it)
                                 })
                         }
                     }

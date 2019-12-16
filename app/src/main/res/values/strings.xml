@@ -62,4 +62,15 @@
     <string name="any">Any</string>
     <string name="unknown">Unknown</string>
 
+    <string name="action_bar_subtitle_episode">Characters Episode</string>
+    <string name="action_bar_subtitle_location">Characters Location</string>
+
+    <string name="character_name_info">Name:</string>
+    <string name="character_specie_info">Species:</string>
+    <string name="character_origin_info">Origin:</string>
+    <string name="character_location_info">Location:</string>
+    <string name="character_status_info">Status:</string>
+
+    <string name="no_favorite_yet">No favorite yet</string>
+
 </resources>

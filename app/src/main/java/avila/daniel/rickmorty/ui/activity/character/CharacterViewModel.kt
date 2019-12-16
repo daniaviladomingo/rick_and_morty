@@ -26,7 +26,7 @@ class CharacterViewModel(
     fun getCharacter(characterParcelable: CharacterParcelable) {
         characterLiveData.value = Resource.loading()
         val character = characterParcelableMapper.inverseMap(characterParcelable)
-        Resource.success(character)
+        characterLiveData.value = Resource.success(character)
 
         addDisposable(isFavoriteUseCase.execute(character.id)
             .observeOn(scheduleProvider.ui())
@@ -35,7 +35,6 @@ class CharacterViewModel(
             }) {
 
             })
-
     }
 
     fun addFavorite(character: Character) {
@@ -61,5 +60,4 @@ class CharacterViewModel(
                 favoriteLiveData.value = Resource.error(it.localizedMessage)
             })
     }
-
 }

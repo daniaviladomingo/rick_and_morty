@@ -1,4 +1,4 @@
-package avila.daniel.repository.cache.model.compose
+package avila.daniel.domain.model.filter
 
 enum class CharacterFilterParameter {
     NAME,

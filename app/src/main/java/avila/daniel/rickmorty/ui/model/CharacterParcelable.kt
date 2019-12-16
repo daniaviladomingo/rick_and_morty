@@ -1,7 +1,6 @@
 package avila.daniel.rickmorty.ui.model
 
 import android.os.Parcelable
-import avila.daniel.domain.model.Location
 import avila.daniel.domain.model.compose.Gender
 import avila.daniel.domain.model.compose.Status
 import avila.daniel.rickmorty.ui.model.compose.LocationParcelable
@@ -22,4 +21,4 @@ data class CharacterParcelable(
     val status: Status,
     val type: String,
     val url: String
-): Parcelable
+) : Parcelable

@@ -6,14 +6,14 @@
         android:id="@+id/action_favorite"
         android:icon="@drawable/ic_action_star_border"
         android:title="@string/favorite"
-        android:visible="false"
+        android:visible="true"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_unfavorite"
         android:icon="@drawable/ic_action_star_rate"
         android:title="@string/un_favorite"
-        android:visible="true"
+        android:visible="false"
         app:showAsAction="ifRoom" />
 
 </menu>

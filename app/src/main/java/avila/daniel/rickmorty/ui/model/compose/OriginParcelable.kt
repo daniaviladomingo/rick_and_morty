@@ -7,4 +7,4 @@ import kotlinx.android.parcel.Parcelize
 data class OriginParcelable(
     val name: String,
     val url: String
-): Parcelable
+) : Parcelable

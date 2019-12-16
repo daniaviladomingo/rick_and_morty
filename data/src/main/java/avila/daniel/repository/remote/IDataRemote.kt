@@ -1,6 +1,5 @@
 package avila.daniel.repository.remote
 
-import avila.daniel.domain.model.Character
 import avila.daniel.domain.model.Episode
 import avila.daniel.domain.model.Location
 import avila.daniel.repository.remote.model.CharacterApi

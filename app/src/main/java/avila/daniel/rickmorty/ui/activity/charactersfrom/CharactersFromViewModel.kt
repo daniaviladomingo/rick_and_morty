@@ -59,9 +59,7 @@ class CharactersFromViewModel(
                 .subscribeOn(scheduleProvider.io())
                 .subscribe({ characters ->
                     charactersLiveData.value = Resource.success(characters)
-
                 }) {
-
                     charactersLiveData.value = Resource.error(it.localizedMessage)
                 })
     }

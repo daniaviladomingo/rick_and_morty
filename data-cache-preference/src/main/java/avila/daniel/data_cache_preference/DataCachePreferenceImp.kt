@@ -5,8 +5,8 @@ import avila.daniel.data_cache.preference.IDataCachePreference
 import avila.daniel.data_cache_preference.model.mapper.PreferenceGenderMapper
 import avila.daniel.data_cache_preference.model.mapper.PreferenceStatusMapper
 import avila.daniel.repository.cache.model.CharactersFilterSettings
-import avila.daniel.repository.cache.model.LocationFilterSettings
-import avila.daniel.repository.cache.model.compose.CharacterFilterParameter
+import avila.daniel.domain.model.filter.LocationFilterParameter
+import avila.daniel.domain.model.filter.CharacterFilterParameter
 import io.reactivex.Single
 
 class DataCachePreferenceImp(
@@ -46,20 +46,20 @@ class DataCachePreferenceImp(
         )
     }
 
-    override fun getLocationFilter(): Single<LocationFilterSettings> = Single.create {
+    override fun getLocationFilter(): Single<LocationFilterParameter> = Single.create {
         it.onSuccess(
             when {
                 defaultSharedPreferences.getBoolean(keyNameLocation, true) -> {
-                    LocationFilterSettings.NAME
+                    LocationFilterParameter.NAME
                 }
                 defaultSharedPreferences.getBoolean(keyDimension, true) -> {
-                    LocationFilterSettings.DIMENSION
+                    LocationFilterParameter.DIMENSION
                 }
                 defaultSharedPreferences.getBoolean(keyTypeLocation, true) -> {
-                    LocationFilterSettings.TYPE
+                    LocationFilterParameter.TYPE
                 }
                 else -> {
-                    LocationFilterSettings.NAME
+                    LocationFilterParameter.NAME
                 }
             }
         )

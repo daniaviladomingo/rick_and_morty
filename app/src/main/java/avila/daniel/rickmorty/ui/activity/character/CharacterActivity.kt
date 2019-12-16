@@ -3,12 +3,15 @@ package avila.daniel.rickmorty.ui.activity.character
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import avila.daniel.domain.model.Character
+import avila.daniel.domain.model.compose.Status
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseActivity
 import avila.daniel.rickmorty.ui.util.data.ResourceState
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_character.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -17,7 +20,7 @@ class CharacterActivity : BaseActivity() {
 
     private lateinit var character: Character
 
-    private lateinit var menu: Menu
+    private var favorite = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +32,6 @@ class CharacterActivity : BaseActivity() {
 
         intent.extras?.run {
             characterViewModel.getCharacter(getParcelable(CHARACTER)!!)
-
         }
     }
 
@@ -41,6 +43,7 @@ class CharacterActivity : BaseActivity() {
                     data?.run {
                         supportActionBar?.title = this.name
                         character = this
+                        draw(this)
                     }
                 }
             }
@@ -51,7 +54,8 @@ class CharacterActivity : BaseActivity() {
                 managementResourceState(status, message)
                 if (status == ResourceState.SUCCESS) {
                     data?.run {
-                        menuItem(this)
+                        favorite = this
+                        invalidateOptionsMenu()
                         Toast.makeText(
                             this@CharacterActivity,
                             if (this) R.string.favorite_added else R.string.favorite_removed,
@@ -67,20 +71,46 @@ class CharacterActivity : BaseActivity() {
                 managementResourceState(status, message)
                 if (status == ResourceState.SUCCESS) {
                     data?.run {
-                        menuItem(this)
+                        favorite = this
+                        invalidateOptionsMenu()
                     }
                 }
             }
         })
     }
 
-    private fun menuItem(favorite: Boolean) {
-        if (favorite) {
-            menu.findItem(R.id.action_favorite).isVisible = false
-            menu.findItem(R.id.action_unfavorite).isVisible = true
-        } else {
-            menu.findItem(R.id.action_favorite).isVisible = true
-            menu.findItem(R.id.action_unfavorite).isVisible = false
+    private fun draw(character: Character) {
+        character.run {
+            Glide.with(image_view).load(image).into(image_view)
+            name_info.text = this.name
+            species_info.text = this.species
+            this.origin.name.run {
+                if (this == "unknown") {
+                    origin_unknow.visibility = View.VISIBLE
+                    origin_info.visibility = View.GONE
+                } else {
+                    origin_unknow.visibility = View.GONE
+                    origin_info.text = this
+                }
+            }
+
+            this.location.name.run {
+                if (this == "unknown") {
+                    location_unknow.visibility = View.VISIBLE
+                    location_info.visibility = View.GONE
+                } else {
+                    location_unknow.visibility = View.GONE
+                    location_info.text = this
+                }
+            }
+
+            icon_status.setImageResource(
+                when (this.status) {
+                    Status.ALIVE -> R.drawable.ic_alive
+                    Status.DEAD -> R.drawable.ic_dead
+                    else -> R.drawable.ic_unknown
+                }
+            )
         }
     }
 
@@ -104,9 +134,7 @@ class CharacterActivity : BaseActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        this.menu = menu
-        menuInflater.inflate(R.menu.menu_favorite, menu)
-
+        menuInflater.inflate(if (favorite) R.menu.menu_favorite else R.menu.menu_unfavorite, menu)
         return super.onCreateOptionsMenu(menu)
     }
 

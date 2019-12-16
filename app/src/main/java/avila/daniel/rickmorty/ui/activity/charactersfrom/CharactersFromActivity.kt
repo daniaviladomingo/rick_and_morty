@@ -3,6 +3,7 @@ package avila.daniel.rickmorty.ui.activity.charactersfrom
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import avila.daniel.domain.model.Character
 import androidx.lifecycle.Observer
 import avila.daniel.rickmorty.R
@@ -40,9 +41,17 @@ class CharactersFromActivity : BaseActivity() {
         intent.extras?.run {
             charactersSource = getParcelable(CHARACTERS_SOURCE)!!
             when (charactersSource) {
-                CharactersSource.FAVORITES -> charactersFromViewModel.loadCharactersFromFavorite()
-                CharactersSource.LOCATION -> charactersFromViewModel.loadCharactersFromLocation(getInt(ID))
-                CharactersSource.EPISODE -> charactersFromViewModel.loadCharactersFromEpisode(getInt(ID))
+                CharactersSource.FAVORITES -> {
+                    charactersFromViewModel.loadCharactersFromFavorite()
+                }
+                CharactersSource.LOCATION -> {
+                    supportActionBar?.setSubtitle(R.string.action_bar_subtitle_location)
+                    charactersFromViewModel.loadCharactersFromLocation(getInt(ID))
+                }
+                CharactersSource.EPISODE -> {
+                    supportActionBar?.setSubtitle(R.string.action_bar_subtitle_episode)
+                    charactersFromViewModel.loadCharactersFromEpisode(getInt(ID))
+                }
             }
 
             supportActionBar?.title = getString(TITLE)
@@ -72,6 +81,7 @@ class CharactersFromActivity : BaseActivity() {
                         characterList.clear()
                         characterList.addAll(this)
                         adapter.update(characterList)
+                        no_favorite.visibility = if (this.isEmpty()) View.VISIBLE else View.GONE
                     }
                 }
             }
@@ -79,17 +89,18 @@ class CharactersFromActivity : BaseActivity() {
 
         charactersFromViewModel.characterParcelabeLiveData.observe(
             this,
-            Observer { resource ->
+            Observer
+            { resource ->
                 resource?.run {
                     managementResourceState(status, message)
                     if (status == ResourceState.SUCCESS) {
-                        data?.run {
+                        data?.let {
                             startActivity(
                                 Intent(
                                     this@CharactersFromActivity,
                                     CharacterActivity::class.java
                                 ).apply {
-                                    putExtra(CharacterActivity.CHARACTER, this)
+                                    putExtra(CharacterActivity.CHARACTER, it)
                                 })
                         }
                     }

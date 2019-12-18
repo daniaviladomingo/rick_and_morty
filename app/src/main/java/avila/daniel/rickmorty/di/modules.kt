@@ -8,7 +8,10 @@ import avila.daniel.data_cache.db.IDataCacheDb
 import avila.daniel.data_cache.preference.IDataCachePreference
 import avila.daniel.data_cache_db.DataCacheDbImp
 import avila.daniel.data_cache_db.definition.AppDatabase
-import avila.daniel.data_cache_db.model.mapper.CharacterMapperDb
+import avila.daniel.data_cache_db.model.mapper.CharacterAllMapper
+import avila.daniel.data_cache_db.model.mapper.CharacterDbMapper
+import avila.daniel.data_cache_db.model.mapper.LocationDbMapper
+import avila.daniel.data_cache_db.model.mapper.OriginDbMapper
 import avila.daniel.data_cache_preference.DataCachePreferenceImp
 import avila.daniel.data_cache_preference.model.mapper.PreferenceGenderMapper
 import avila.daniel.data_cache_preference.model.mapper.PreferenceStatusMapper
@@ -211,7 +214,7 @@ val dataCachePreferenceModule = module {
 val dataCacheDbModule = module {
 
     single<IDataCacheDb> {
-        DataCacheDbImp(get(), get())
+        DataCacheDbImp(get(), get(), get(), get(), get())
     }
 
     single {
@@ -234,7 +237,10 @@ val mapperModule = module {
     single { StatusParameterMapper("alive", "dead", "unknown", "") }
     single { GenderParameterMapper("male", "female", "genderless", "unknown", "") }
 
-    single { CharacterMapperDb() }
+    single { CharacterDbMapper() }
+    single { CharacterAllMapper(get(), get()) }
+    single { LocationDbMapper() }
+    single { OriginDbMapper() }
 
     single { CharacterParcelableMapper() }
 

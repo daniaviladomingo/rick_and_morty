@@ -26,21 +26,23 @@ class EpisodesFragment : InitialLoadFragment(), ISearch {
     private val episodesViewModel: EpisodesViewModel by viewModel()
 
     private val episodesList = mutableListOf<Any>()
-    private val adapter = EpisodesAdapter(inject<EpisodesDiffCallback>().value) { id, name ->
-        startActivity(Intent(
-            activity,
-            CharactersFromActivity::class.java
-        ).apply {
-            putExtra(CHARACTERS_SOURCE, CharactersSource.EPISODE as Parcelable)
-            putExtra(ID, id)
-            putExtra(TITLE, name)
-        })
-    }
+    private val adapter: EpisodesAdapter by inject()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         setListener()
+
+        adapter.onClickListener = { id, name ->
+            startActivity(Intent(
+                activity,
+                CharactersFromActivity::class.java
+            ).apply {
+                putExtra(CHARACTERS_SOURCE, CharactersSource.EPISODE as Parcelable)
+                putExtra(ID, id)
+                putExtra(TITLE, name)
+            })
+        }
 
         list_episodes.layoutManager =
             StickyLinearLayoutManager(activity, adapter).apply { elevateHeaders(5) }

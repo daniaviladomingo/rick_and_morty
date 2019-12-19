@@ -15,6 +15,7 @@ class AppApplication : MultiDexApplication() {
             modules(
                 appModule,
                 activityModule,
+                adapterModule,
                 mapperModule,
                 scheduleModule,
                 repositoryModule,

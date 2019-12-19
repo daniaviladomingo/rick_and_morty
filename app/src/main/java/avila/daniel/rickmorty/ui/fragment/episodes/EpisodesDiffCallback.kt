@@ -1,7 +1,6 @@
 package avila.daniel.rickmorty.ui.fragment.episodes
 
 import androidx.recyclerview.widget.DiffUtil
-import avila.daniel.domain.model.Character
 import avila.daniel.rickmorty.ui.model.EpisodeUI
 
 class EpisodesDiffCallback : DiffUtil.Callback() {

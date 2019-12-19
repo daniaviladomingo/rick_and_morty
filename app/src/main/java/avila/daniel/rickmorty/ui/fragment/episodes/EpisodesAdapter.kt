@@ -14,11 +14,11 @@ import kotlinx.android.synthetic.main.header_episode.view.*
 import kotlinx.android.synthetic.main.item_episode.view.*
 
 class EpisodesAdapter(
-    private val diffCallback: EpisodesDiffCallback,
-    private val onClickListener: (Int,String) -> Unit
+    private val diffCallback: EpisodesDiffCallback
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AdapterDataProvider {
 
     private val episodeList = mutableListOf<Any>()
+    var onClickListener: ((Int,String) -> Unit)? = null
 
     fun update(newEpisodes: List<Any>) {
         diffCallback.listOld = episodeList
@@ -59,14 +59,14 @@ class EpisodesAdapter(
 }
 
 private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bin(episode: EpisodeUI, onClickListener: (Int, String) -> Unit) {
+    fun bin(episode: EpisodeUI, onClickListener: ((Int, String) -> Unit)?) {
         itemView.run {
             name.text = episode.name
             this.episode.text = "${episode.number}"
             on_air.text = episode.airDate
             characters.text = "${episode.characters}"
             setOnClickListener {
-                onClickListener(episode.id, episode.name)
+                onClickListener?.invoke(episode.id, episode.name)
             }
         }
     }

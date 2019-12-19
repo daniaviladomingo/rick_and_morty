@@ -13,11 +13,12 @@ import kotlinx.android.synthetic.main.item_charter.view.*
 
 class CharactersAdapter(
     private val diffCallback: CharactersDiffCallback,
-    private val searchFilter: () -> CharacterFilterParameter,
-    private val onClickListener: (Int) -> Unit
+    private val searchFilter: () -> CharacterFilterParameter
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val characterList = mutableListOf<Character>()
+
+    var onClickListener: ((Int) -> Unit)? = null
 
     fun update(newCharacters: List<Character>) {
         diffCallback.listOld = characterList
@@ -29,7 +30,7 @@ class CharactersAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
-    fun refresh(){
+    fun refresh() {
         diffCallback.newFilter = searchFilter()
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         diffResult.dispatchUpdatesTo(this)
@@ -48,7 +49,7 @@ class CharactersAdapter(
 private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bin(
         character: Character,
-        onClickListener: (Int) -> Unit,
+        onClickListener: ((Int) -> Unit)?,
         searchFilter: () -> CharacterFilterParameter
     ) {
         itemView.run {
@@ -61,7 +62,7 @@ private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
             Glide.with(itemView).load(character.image).into(photo)
             setOnClickListener {
-                onClickListener(character.id)
+                onClickListener?.invoke(character.id)
             }
         }
     }

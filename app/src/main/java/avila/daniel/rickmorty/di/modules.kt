@@ -33,10 +33,13 @@ import avila.daniel.rickmorty.schedulers.IScheduleProvider
 import avila.daniel.rickmorty.schedulers.ScheduleProviderImp
 import avila.daniel.rickmorty.ui.activity.character.CharacterViewModel
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromViewModel
+import avila.daniel.rickmorty.ui.fragment.characters.CharactersAdapter
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersDiffCallback
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersViewModel
+import avila.daniel.rickmorty.ui.fragment.episodes.EpisodesAdapter
 import avila.daniel.rickmorty.ui.fragment.episodes.EpisodesDiffCallback
 import avila.daniel.rickmorty.ui.fragment.episodes.EpisodesViewModel
+import avila.daniel.rickmorty.ui.fragment.locations.LocationsAdapter
 import avila.daniel.rickmorty.ui.fragment.locations.LocationsDiffCallback
 import avila.daniel.rickmorty.ui.fragment.locations.LocationsViewModel
 import avila.daniel.rickmorty.ui.model.mapper.CharacterParcelableMapper
@@ -62,7 +65,7 @@ var characterReload: IReloadData? = null
 val appModule = module {
     single { PreferenceManager.getDefaultSharedPreferences(androidContext()) }
 
-    single { CharactersDiffCallback(get()) }
+    single { CharactersDiffCallback() }
     single { EpisodesDiffCallback() }
     single { LocationsDiffCallback() }
 
@@ -85,6 +88,14 @@ val activityModule = module {
             characterReload?.refresh()
         }
     }
+}
+
+val adapterModule = module {
+    factory { CharactersAdapter(get(), get(SearchFilterCharacters)) }
+
+    factory { EpisodesAdapter(get()) }
+
+    factory { LocationsAdapter(get()) }
 }
 
 val viewModelModule = module {

@@ -29,25 +29,24 @@ class LocationsFragment : InitialLoadFragment(), ISearch {
     private val locationsViewModel: LocationsViewModel by viewModel()
 
     private val locationsList = mutableListOf<LocationUI>()
-    private val adapter = LocationsAdapter(
-        inject<LocationsDiffCallback>().value,
-        inject<() -> LocationFilterParameter>(SearchFilterCharacters).value
-    ) { id, name ->
-        startActivity(
-            Intent(
-                activity,
-                CharactersFromActivity::class.java
-            ).apply {
-                putExtra(CHARACTERS_SOURCE, CharactersSource.LOCATION as Parcelable)
-                putExtra(ID, id)
-                putExtra(TITLE, name)
-            })
-    }
+    private val adapter: LocationsAdapter by inject()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         setListener()
+
+        adapter.onClickListener = { id, name ->
+            startActivity(
+                Intent(
+                    activity,
+                    CharactersFromActivity::class.java
+                ).apply {
+                    putExtra(CHARACTERS_SOURCE, CharactersSource.LOCATION as Parcelable)
+                    putExtra(ID, id)
+                    putExtra(TITLE, name)
+                })
+        }
 
         list_locations.adapter = adapter
         list_locations.addOnScrollListener(object : RecyclerView.OnScrollListener() {

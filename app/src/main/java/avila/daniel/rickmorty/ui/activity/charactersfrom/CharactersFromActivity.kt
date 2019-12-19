@@ -26,12 +26,7 @@ class CharactersFromActivity : BaseActivity() {
     private lateinit var charactersSource: CharactersSource
 
     private val characterList = mutableListOf<Character>()
-    private val adapter = CharactersAdapter(
-        inject<CharactersDiffCallback>().value,
-        inject<() -> CharacterFilterParameter>(SearchFilterCharacters).value
-    ) { id ->
-        charactersFromViewModel.openCharacterDetail(characterList.find { it.id == id }!!)
-    }
+    private val adapter:  CharactersAdapter by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +35,10 @@ class CharactersFromActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         setListener()
+
+        adapter.onClickListener = { id ->
+            charactersFromViewModel.openCharacterDetail(characterList.find { it.id == id }!!)
+        }
 
         list_characters.adapter = adapter
 

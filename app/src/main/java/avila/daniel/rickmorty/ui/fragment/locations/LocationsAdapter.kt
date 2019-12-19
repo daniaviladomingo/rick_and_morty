@@ -5,19 +5,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import avila.daniel.repository.cache.model.LocationFilterParameter
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.ui.model.LocationUI
 import kotlinx.android.synthetic.main.item_location.view.*
 
 class LocationsAdapter(
-    private val diffCallback: LocationsDiffCallback,
-    private val searchFilter: () -> LocationFilterParameter,
-    private val onClickListener: (Int, String) -> Unit
+    private val diffCallback: LocationsDiffCallback
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val locationList = mutableListOf<LocationUI>()
+
+    var onClickListener: ((Int, String) -> Unit)? = null
 
     fun update(newLocation: List<LocationUI>) {
         diffCallback.listOld = locationList
@@ -39,7 +38,7 @@ class LocationsAdapter(
 }
 
 private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bin(location: LocationUI, onClickListener: (Int, String) -> Unit) {
+    fun bin(location: LocationUI, onClickListener: ((Int, String) -> Unit)?) {
         itemView.run {
             name.text = location.name
             type.text = location.type
@@ -47,7 +46,7 @@ private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
             population.text = "${location.population}"
             setOnClickListener {
                 if (location.population > 0) {
-                    onClickListener(location.id, location.name)
+                    onClickListener?.invoke(location.id, location.name)
                 }
             }
         }

@@ -22,17 +22,16 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
     private val charactersViewModel: CharactersViewModel by viewModel()
 
     private val characterList = mutableListOf<Character>()
-    private val adapter = CharactersAdapter(
-        inject<CharactersDiffCallback>().value,
-        inject<() -> CharacterFilterParameter>(SearchFilterCharacters).value
-    ) { id ->
-        charactersViewModel.openCharacterDetail(characterList.find { it.id == id }!!)
-    }
+    private val adapter: CharactersAdapter by inject()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         setListener()
+
+        adapter.onClickListener = { id ->
+            charactersViewModel.openCharacterDetail(characterList.find { it.id == id }!!)
+        }
 
         list_characters.adapter = adapter
         list_characters.addOnScrollListener(object : RecyclerView.OnScrollListener() {

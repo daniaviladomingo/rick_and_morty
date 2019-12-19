@@ -4,7 +4,7 @@ import avila.daniel.data_cache.db.IDataCacheDb
 import avila.daniel.data_cache.preference.IDataCachePreference
 import avila.daniel.domain.model.Character
 import avila.daniel.repository.cache.model.CharactersFilterSettings
-import avila.daniel.domain.model.filter.LocationFilterParameter
+import avila.daniel.repository.cache.model.LocationFilterParameter
 import avila.daniel.repository.cache.IDataCache
 import io.reactivex.Completable
 import io.reactivex.Single

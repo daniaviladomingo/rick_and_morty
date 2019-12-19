@@ -6,8 +6,10 @@ import android.view.MenuItem
 import android.view.View
 import avila.daniel.domain.model.Character
 import androidx.lifecycle.Observer
+import avila.daniel.repository.cache.model.compose.CharacterFilterParameter
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseActivity
+import avila.daniel.rickmorty.di.qualifiers.SearchFilterCharacters
 import avila.daniel.rickmorty.ui.activity.character.CharacterActivity
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersAdapter
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersDiffCallback
@@ -24,7 +26,10 @@ class CharactersFromActivity : BaseActivity() {
     private lateinit var charactersSource: CharactersSource
 
     private val characterList = mutableListOf<Character>()
-    private val adapter = CharactersAdapter(inject<CharactersDiffCallback>().value) { id ->
+    private val adapter = CharactersAdapter(
+        inject<CharactersDiffCallback>().value,
+        inject<() -> CharacterFilterParameter>(SearchFilterCharacters).value
+    ) { id ->
         charactersFromViewModel.openCharacterDetail(characterList.find { it.id == id }!!)
     }
 

@@ -1,4 +1,4 @@
-package avila.daniel.domain.model.filter
+package avila.daniel.repository.cache.model
 
 enum class LocationFilterParameter {
     NAME,

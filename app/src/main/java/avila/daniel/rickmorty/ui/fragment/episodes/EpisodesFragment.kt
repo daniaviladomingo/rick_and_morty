@@ -18,6 +18,7 @@ import avila.daniel.rickmorty.ui.util.ISearch
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import com.yuyang.stickyheaders.StickyLinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_episodes.*
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class EpisodesFragment : InitialLoadFragment(), ISearch {
@@ -25,7 +26,7 @@ class EpisodesFragment : InitialLoadFragment(), ISearch {
     private val episodesViewModel: EpisodesViewModel by viewModel()
 
     private val episodesList = mutableListOf<Any>()
-    private val adapter = EpisodesAdapter { id, name ->
+    private val adapter = EpisodesAdapter(inject<EpisodesDiffCallback>().value) { id, name ->
         startActivity(Intent(
             activity,
             CharactersFromActivity::class.java

@@ -6,8 +6,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.domain.model.Character
+import avila.daniel.repository.cache.model.compose.CharacterFilterParameter
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.InitialLoadFragment
+import avila.daniel.rickmorty.di.qualifiers.SearchFilterCharacters
 import avila.daniel.rickmorty.ui.activity.character.CharacterActivity
 import avila.daniel.rickmorty.ui.util.ISearch
 import avila.daniel.rickmorty.ui.util.data.ResourceState
@@ -20,7 +22,10 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
     private val charactersViewModel: CharactersViewModel by viewModel()
 
     private val characterList = mutableListOf<Character>()
-    private val adapter = CharactersAdapter(inject<CharactersDiffCallback>().value) { id ->
+    private val adapter = CharactersAdapter(
+        inject<CharactersDiffCallback>().value,
+        inject<() -> CharacterFilterParameter>(SearchFilterCharacters).value
+    ) { id ->
         charactersViewModel.openCharacterDetail(characterList.find { it.id == id }!!)
     }
 
@@ -55,6 +60,17 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
                         }
                         characterList.addAll(this.second)
                         adapter.update(characterList)
+                    }
+                }
+            }
+        })
+
+        charactersViewModel.refreshLiveData.observe(viewLifecycleOwner, Observer { resource ->
+            resource?.run {
+                managementResourceState(status, message)
+                if (status == ResourceState.SUCCESS) {
+                    data?.run {
+                        adapter.refresh()
                     }
                 }
             }

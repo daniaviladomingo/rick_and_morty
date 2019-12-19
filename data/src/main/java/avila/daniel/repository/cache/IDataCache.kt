@@ -2,7 +2,7 @@ package avila.daniel.repository.cache
 
 import avila.daniel.domain.model.Character
 import avila.daniel.repository.cache.model.CharactersFilterSettings
-import avila.daniel.domain.model.filter.LocationFilterParameter
+import avila.daniel.repository.cache.model.LocationFilterParameter
 import io.reactivex.Completable
 import io.reactivex.Single
 

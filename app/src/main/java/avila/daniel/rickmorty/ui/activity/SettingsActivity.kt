@@ -7,6 +7,7 @@ import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import avila.daniel.rickmorty.R
+import avila.daniel.rickmorty.di.qualifiers.RefreshData
 import kotlinx.android.synthetic.main.activity_settings.*
 import org.koin.android.ext.android.inject
 
@@ -36,40 +37,45 @@ class SettingsActivity : AppCompatActivity() {
     class SettingsFragment : PreferenceFragmentCompat() {
 
         private val reloadData: () -> Unit by inject()
+        private val refreshData: () -> Unit by inject(RefreshData)
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
 
-            val keyNameCharacter =
+            val preferenceNameCharacter =
                 findPreference<CheckBoxPreference>(getString(R.string.key_name_characters))
-            val keyTypeCharacter =
+            val preferenceTypeCharacter =
                 findPreference<CheckBoxPreference>(getString(R.string.key_type_characters))
-            val keySpecie = findPreference<CheckBoxPreference>(getString(R.string.key_specie))
+            val preferenceSpecieCharacter =
+                findPreference<CheckBoxPreference>(getString(R.string.key_specie))
 
-            keyNameCharacter?.setOnPreferenceChangeListener { _, newValue ->
+            preferenceNameCharacter?.setOnPreferenceChangeListener { _, newValue ->
                 if (newValue as Boolean) {
-                    keyTypeCharacter?.isChecked = false
-                    keySpecie?.isChecked = false
+                    preferenceTypeCharacter?.isChecked = false
+                    preferenceSpecieCharacter?.isChecked = false
+                    refreshData()
                     true
                 } else {
                     false
                 }
             }
 
-            keyTypeCharacter?.setOnPreferenceChangeListener { _, newValue ->
+            preferenceTypeCharacter?.setOnPreferenceChangeListener { _, newValue ->
                 if (newValue as Boolean) {
-                    keyNameCharacter?.isChecked = false
-                    keySpecie?.isChecked = false
+                    preferenceNameCharacter?.isChecked = false
+                    preferenceSpecieCharacter?.isChecked = false
+                    refreshData()
                     true
                 } else {
                     false
                 }
             }
 
-            keySpecie?.setOnPreferenceChangeListener { _, newValue ->
+            preferenceSpecieCharacter?.setOnPreferenceChangeListener { _, newValue ->
                 if (newValue as Boolean) {
-                    keyTypeCharacter?.isChecked = false
-                    keyNameCharacter?.isChecked = false
+                    preferenceTypeCharacter?.isChecked = false
+                    preferenceNameCharacter?.isChecked = false
+                    refreshData()
                     true
                 } else {
                     false
@@ -87,6 +93,7 @@ class SettingsActivity : AppCompatActivity() {
                 if (newValue as Boolean) {
                     keyTypeLocation?.isChecked = false
                     keyDimension?.isChecked = false
+                    refreshData()
                     true
                 } else {
                     false
@@ -97,6 +104,7 @@ class SettingsActivity : AppCompatActivity() {
                 if (newValue as Boolean) {
                     keyNameLocation?.isChecked = false
                     keyDimension?.isChecked = false
+                    refreshData()
                     true
                 } else {
                     false
@@ -107,6 +115,7 @@ class SettingsActivity : AppCompatActivity() {
                 if (newValue as Boolean) {
                     keyNameLocation?.isChecked = false
                     keyTypeLocation?.isChecked = false
+                    refreshData()
                     true
                 } else {
                     false

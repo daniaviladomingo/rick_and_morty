@@ -64,7 +64,7 @@
             app:iconSpaceReserved="false"
             app:key="@string/key_dimension"
             app:summary="@string/location_dimension_summary"
-            app:title="@string/location" />
+            app:title="@string/locations_dimension" />
 
     </PreferenceCategory>
 

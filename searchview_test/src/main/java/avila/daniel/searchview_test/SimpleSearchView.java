@@ -133,10 +133,6 @@ public class SimpleSearchView extends FrameLayout {
 
     private void initStyle(AttributeSet attrs, int defStyleAttr) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SimpleSearchView, defStyleAttr, 0);
-        if (typedArray == null) {
-            setCardStyle(style);
-            return;
-        }
 
         if (typedArray.hasValue(R.styleable.SimpleSearchView_type)) {
             setCardStyle(typedArray.getInt(R.styleable.SimpleSearchView_type, style));

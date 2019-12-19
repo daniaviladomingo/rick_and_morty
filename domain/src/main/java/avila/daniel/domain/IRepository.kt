@@ -1,8 +1,8 @@
 package avila.daniel.domain
 
-import avila.daniel.domain.model.*
-import avila.daniel.domain.model.filter.CharacterFilterParameter
-import avila.daniel.domain.model.filter.LocationFilterParameter
+import avila.daniel.domain.model.Character
+import avila.daniel.domain.model.Episode
+import avila.daniel.domain.model.Location
 import io.reactivex.Completable
 import io.reactivex.Single
 
@@ -22,7 +22,4 @@ interface IRepository {
     fun addCharacterFavorite(character: Character): Completable
     fun removeCharacterFavorite(id: Int): Completable
     fun isFavorite(id: Int): Single<Boolean>
-
-    fun getCharacterFilter(): Single<CharacterFilterParameter>
-    fun getLocationFilter(): Single<LocationFilterParameter>
 }

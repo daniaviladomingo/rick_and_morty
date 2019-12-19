@@ -19,6 +19,7 @@ import avila.daniel.domain.IRepository
 import avila.daniel.domain.interactor.*
 import avila.daniel.repository.RepositoryImp
 import avila.daniel.repository.cache.IDataCache
+import avila.daniel.repository.cache.model.compose.CharacterFilterParameter
 import avila.daniel.repository.remote.IDataRemote
 import avila.daniel.repository.remote.model.mapper.CharacterApiMapper
 import avila.daniel.repository.remote.model.mapper.EpisodeApiMapper
@@ -34,7 +35,9 @@ import avila.daniel.rickmorty.ui.activity.character.CharacterViewModel
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromViewModel
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersDiffCallback
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersViewModel
+import avila.daniel.rickmorty.ui.fragment.episodes.EpisodesDiffCallback
 import avila.daniel.rickmorty.ui.fragment.episodes.EpisodesViewModel
+import avila.daniel.rickmorty.ui.fragment.locations.LocationsDiffCallback
 import avila.daniel.rickmorty.ui.fragment.locations.LocationsViewModel
 import avila.daniel.rickmorty.ui.model.mapper.CharacterParcelableMapper
 import avila.daniel.rickmorty.ui.model.mapper.EpisodeUIMapper
@@ -58,7 +61,12 @@ var characterReload: IReloadData? = null
 
 val appModule = module {
     single { PreferenceManager.getDefaultSharedPreferences(androidContext()) }
-    single { CharactersDiffCallback() }
+
+    single { CharactersDiffCallback(get()) }
+    single { EpisodesDiffCallback() }
+    single { LocationsDiffCallback() }
+
+    single { CharacterFilterParameter.NAME }
 }
 
 val activityModule = module {
@@ -69,6 +77,12 @@ val activityModule = module {
     single {
         {
             characterReload?.reload()
+        }
+    }
+
+    single(RefreshData) {
+        {
+            characterReload?.refresh()
         }
     }
 }
@@ -101,7 +115,6 @@ val useCaseModule = module {
     single { GetLocationCharactersUseCase(get()) }
     single { GetEpisodesUseCase(get()) }
     single { GetEpisodeCharactersUseCase(get()) }
-//    single { GetCharacterUseCase(get()) }
     single { AddCharacterToFavoriteUseCase(get()) }
     single { RemoveCharacterFromFavoriteUseCase(get()) }
     single { IsFavoriteUseCase(get()) }
@@ -176,6 +189,10 @@ val dataCachePreferenceModule = module {
             get(),
             get()
         )
+    }
+
+    single(SearchFilterCharacters) {
+        { ((get() as IDataCachePreference) as DataCachePreferenceImp).getCharacterSearchFilter() }
     }
 
     single(KeyNameCharacter) {

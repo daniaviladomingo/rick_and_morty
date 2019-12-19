@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
+import avila.daniel.rickmorty.ui.fragment.characters.CharactersDiffCallback
 import avila.daniel.rickmorty.ui.model.EpisodeUI
 import com.yuyang.stickyheaders.AdapterDataProvider
 import com.yuyang.stickyheaders.StickyHeaderModel
@@ -13,13 +14,15 @@ import kotlinx.android.synthetic.main.header_episode.view.*
 import kotlinx.android.synthetic.main.item_episode.view.*
 
 class EpisodesAdapter(
+    private val diffCallback: EpisodesDiffCallback,
     private val onClickListener: (Int,String) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AdapterDataProvider {
 
     private val episodeList = mutableListOf<Any>()
 
     fun update(newEpisodes: List<Any>) {
-        val diffCallback = EpisodesDiffCallback(episodeList, newEpisodes)
+        diffCallback.listOld = episodeList
+        diffCallback.listNew = newEpisodes
         val diffResult = DiffUtil.calculateDiff(diffCallback)
 
         episodeList.clear()

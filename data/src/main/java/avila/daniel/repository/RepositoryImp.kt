@@ -5,8 +5,8 @@ import avila.daniel.domain.model.Character
 import avila.daniel.domain.model.Episode
 import avila.daniel.domain.model.Location
 import avila.daniel.repository.cache.IDataCache
-import avila.daniel.domain.model.filter.LocationFilterParameter
-import avila.daniel.domain.model.filter.CharacterFilterParameter
+import avila.daniel.repository.cache.model.LocationFilterParameter
+import avila.daniel.repository.cache.model.compose.CharacterFilterParameter
 import avila.daniel.repository.remote.IDataRemote
 import avila.daniel.repository.remote.model.mapper.CharacterApiMapper
 import avila.daniel.repository.remote.model.mapper.EpisodeApiMapper
@@ -102,14 +102,6 @@ class RepositoryImp(
         dataCache.removeCharacterFavorite(id)
 
     override fun isFavorite(id: Int): Single<Boolean> = dataCache.isFavorite(id)
-
-    override fun getCharacterFilter(): Single<CharacterFilterParameter> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getLocationFilter(): Single<LocationFilterParameter> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     private fun getCharactersFrom(urlCharactersList: List<String>): Single<List<Character>> {
         val ids = extractIdsCharacters(urlCharactersList)

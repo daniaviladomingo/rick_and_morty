@@ -19,9 +19,14 @@ class CharactersViewModel(
 ) : PaginationViewModel<Character, Character>(scheduleProvider, initialPage), IReloadData {
 
     val characterParcelabeLiveData = SingleLiveEvent<Resource<CharacterParcelable>>()
+    val refreshLiveData = SingleLiveEvent<Resource<Boolean>>()
 
     override fun reload() {
         clearNReload()
+    }
+
+    override fun refresh() {
+        refreshLiveData.value = Resource.success(true)
     }
 
     override fun query(): SingleUseCaseWithParameter<Pair<String, Int>, Pair<Int, List<Character>>> =

@@ -6,6 +6,10 @@ App show info from [The Rick and Morty Api]
 ![minSdkVersion 16](https://img.shields.io/badge/minSdkVersion-16-red.svg?style=true)
 ![compileSdkVersion 29](https://img.shields.io/badge/compileSdkVersion-29-yellow.svg?style=true)
 
+![alt text](./Screenshot_20191219-153743.png)
+![alt text](./Screenshot_20191219-153800.png)
+
+
 ## Architecture & Design Pattern
 
 <img alt='Clean' src="https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg" align="right" width="50%"/>

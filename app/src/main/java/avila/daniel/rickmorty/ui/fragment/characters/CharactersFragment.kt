@@ -6,10 +6,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.domain.model.Character
-import avila.daniel.repository.cache.model.compose.CharacterFilterParameter
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.InitialLoadFragment
-import avila.daniel.rickmorty.di.qualifiers.SearchFilterCharacters
 import avila.daniel.rickmorty.ui.activity.character.CharacterActivity
 import avila.daniel.rickmorty.ui.util.ISearch
 import avila.daniel.rickmorty.ui.util.data.ResourceState

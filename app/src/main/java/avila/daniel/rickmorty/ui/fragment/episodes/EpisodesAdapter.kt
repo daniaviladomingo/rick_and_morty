@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
-import avila.daniel.rickmorty.ui.fragment.characters.CharactersDiffCallback
 import avila.daniel.rickmorty.ui.model.EpisodeUI
 import com.yuyang.stickyheaders.AdapterDataProvider
 import com.yuyang.stickyheaders.StickyHeaderModel

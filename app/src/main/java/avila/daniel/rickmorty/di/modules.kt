@@ -77,24 +77,14 @@ val activityModule = module {
         //        LifecycleManager(get(), lifecycle)
         Unit
     }
-    single {
-        {
-            characterReload?.reload()
-        }
-    }
+    single { { characterReload?.reload() } }
 
-    single(RefreshData) {
-        {
-            characterReload?.refresh()
-        }
-    }
+    single(RefreshData) { { characterReload?.refresh() } }
 }
 
 val adapterModule = module {
     factory { CharactersAdapter(get(), get(SearchFilterCharacters)) }
-
     factory { EpisodesAdapter(get()) }
-
     factory { LocationsAdapter(get()) }
 }
 

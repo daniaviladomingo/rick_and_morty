@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="avila.daniel.rickmorty">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -18,10 +17,10 @@
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.activity.charactersfrom.CharactersFromActivity" />
-        <activity android:name=".ui.activity.character.CharacterActivity"/>
         <activity
-            android:name=".ui.activity.MainActivity"
-            android:screenOrientation="portrait">
+            android:name=".ui.activity.character.CharacterActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

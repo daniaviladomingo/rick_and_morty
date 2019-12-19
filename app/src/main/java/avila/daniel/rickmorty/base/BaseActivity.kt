@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.activity_base.*
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_error.*
 
 abstract class BaseActivity : AppCompatActivity() {

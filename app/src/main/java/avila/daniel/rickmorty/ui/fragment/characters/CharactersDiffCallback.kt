@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 import avila.daniel.domain.model.Character
 import avila.daniel.repository.cache.model.compose.CharacterFilterParameter
 
-class CharactersDiffCallback: DiffUtil.Callback() {
+class CharactersDiffCallback : DiffUtil.Callback() {
     lateinit var listOld: List<Character>
     lateinit var listNew: List<Character>
 
@@ -18,5 +18,6 @@ class CharactersDiffCallback: DiffUtil.Callback() {
 
     override fun getNewListSize(): Int = listNew.size
 
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean= currentFilter == newFilter
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+        currentFilter == newFilter
 }

@@ -9,6 +9,8 @@ App show info from [The Rick and Morty Api]
 ![alt text](./Screenshot_20191219-153743.png)
 ![alt text](./Screenshot_20191219-153800.png)
 
+<!--<img alt='Clean' src="./Screenshot_20191219-153743.png" align="right" width="50%"/>-->
+<!--<img alt='Clean' src="./Screenshot_20191219-153800.png" align="right" width="50%"/>-->
 
 ## Architecture & Design Pattern
 

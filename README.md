@@ -6,8 +6,7 @@ App show info from [The Rick and Morty Api]
 ![minSdkVersion 16](https://img.shields.io/badge/minSdkVersion-16-red.svg?style=true)
 ![compileSdkVersion 29](https://img.shields.io/badge/compileSdkVersion-29-yellow.svg?style=true)
 
-![alt text](./Screenshot_20191219-153743.png)
-![alt text](./Screenshot_20191219-153800.png)
+![alt text](./Screenshot_20191219-153743.png) | ![alt text](./Screenshot_20191219-153800.png)
 
 <!--<img alt='Clean' src="./Screenshot_20191219-153743.png" align="right" width="50%"/>-->
 <!--<img alt='Clean' src="./Screenshot_20191219-153800.png" align="right" width="50%"/>-->

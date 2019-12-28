@@ -11,13 +11,14 @@ abstract class PaginationViewModel<T, U>(
     private val initialPage: Int
 ) : BaseViewModel() {
 
+    private val locationsList = mutableListOf<U>()
+
     private var isLoading = false
     private var currentPage = initialPage
     private var totalPage = initialPage
-    private var currentSearchFilter = ""
-    private var clear = false
+    private var currentSearchText = ""
 
-    val itemsLiveData = SingleLiveEvent<Resource<Pair<Boolean, List<U>>>>()
+    val itemsLiveData = SingleLiveEvent<Resource<List<U>>>()
 
     fun scrollEnd() {
         if (!isLoading) {
@@ -26,15 +27,15 @@ abstract class PaginationViewModel<T, U>(
         }
     }
 
-    fun updateSearchFilter(newSearchFilter: String) {
-        if (newSearchFilter != currentSearchFilter) {
-            currentSearchFilter = newSearchFilter
+    fun searchText(searchText: String) {
+        if (searchText != currentSearchText) {
+            currentSearchText = searchText
             clearNReload()
         }
     }
 
     protected fun clearNReload() {
-        clear = true
+        locationsList.clear()
         currentPage = initialPage
         totalPage = initialPage
         load()
@@ -44,19 +45,13 @@ abstract class PaginationViewModel<T, U>(
         if (currentPage <= totalPage) {
             itemsLiveData.value = Resource.loading()
             dispose()
-            addDisposable(query().execute(Pair(currentSearchFilter, currentPage))
+            addDisposable(query().execute(Pair(currentSearchText, currentPage++))
                 .observeOn(scheduleProvider.ui())
                 .subscribeOn(scheduleProvider.io())
                 .subscribe({ items ->
-                    itemsLiveData.value = Resource.success(
-                        Pair(
-                            clear,
-                            mapper()?.map(items.second) ?: items.second as List<U>
-                        )
-                    )
-                    clear = false
+                    locationsList.addAll(mapper()?.map(items.second) ?: items.second as List<U>)
+                    itemsLiveData.value = Resource.success(locationsList)
                     totalPage = items.first
-                    currentPage++
                     isLoading = false
                 }) {
                     isLoading = false

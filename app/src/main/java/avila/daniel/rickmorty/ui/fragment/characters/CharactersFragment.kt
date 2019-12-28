@@ -5,30 +5,30 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import avila.daniel.domain.model.Character
+import avila.daniel.repository.cache.model.compose.CharacterFilterParameter
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.InitialLoadFragment
+import avila.daniel.rickmorty.di.qualifiers.SearchFilterCharacters
 import avila.daniel.rickmorty.ui.activity.character.CharacterActivity
-import avila.daniel.rickmorty.ui.util.ISearch
+import avila.daniel.rickmorty.ui.util.ISearchText
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.fragment_characters.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class CharactersFragment : InitialLoadFragment(), ISearch {
+class CharactersFragment : InitialLoadFragment(), ISearchText {
 
     private val charactersViewModel: CharactersViewModel by viewModel()
 
-    private val characterList = mutableListOf<Character>()
-    private val adapter: CharactersAdapter by inject()
+    private var adapter = CharactersAdapter(inject<() -> CharacterFilterParameter>(SearchFilterCharacters).value)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         setListener()
 
-        adapter.onClickListener = { id ->
-            charactersViewModel.openCharacterDetail(characterList.find { it.id == id }!!)
+        adapter.onClickListener = {
+            charactersViewModel.openCharacterDetail(it)
         }
 
         list_characters.adapter = adapter
@@ -52,11 +52,7 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
                 managementResourceState(status, message)
                 if (status == ResourceState.SUCCESS) {
                     data?.run {
-                        if (this.first) {
-                            characterList.clear()
-                        }
-                        characterList.addAll(this.second)
-                        adapter.update(characterList)
+                        adapter.setData(this)
                     }
                 }
             }
@@ -97,8 +93,8 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
         charactersViewModel.load()
     }
 
-    override fun updateFilter(newFilter: String) {
-        charactersViewModel.updateSearchFilter(newFilter)
+    override fun searchText(searchText: String) {
+        charactersViewModel.searchText(searchText)
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_characters

@@ -12,24 +12,81 @@ import com.yuyang.stickyheaders.StickyHeaderModel
 import kotlinx.android.synthetic.main.header_episode.view.*
 import kotlinx.android.synthetic.main.item_episode.view.*
 
-class EpisodesAdapter(
-    private val diffCallback: EpisodesDiffCallback
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AdapterDataProvider {
+class EpisodesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AdapterDataProvider {
 
-    private val episodeList = mutableListOf<Any>()
-    var onClickListener: ((Int,String) -> Unit)? = null
+    private val data = mutableListOf<Any>()
+    var onClickListener: ((Int, String) -> Unit)? = null
+    private val diffCallback = object : DiffUtil.Callback() {
+        lateinit var listOld: List<Any>
+        lateinit var listNew: List<Any>
 
-    fun update(newEpisodes: List<Any>) {
-        diffCallback.listOld = episodeList
-        diffCallback.listNew = newEpisodes
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldItem = listOld[oldItemPosition]
+            val newItem = listNew[newItemPosition]
+            return if (oldItem is EpisodeUI && newItem is EpisodeUI) {
+                oldItem.id == newItem.id
+            } else if (oldItem is ItemHeader && newItem is ItemHeader) {
+                oldItem.title == newItem.title
+            } else {
+                false
+            }
+        }
+
+        override fun getOldListSize(): Int = listOld.size
+
+        override fun getNewListSize(): Int = listNew.size
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldItem = listOld[oldItemPosition]
+            val newItem = listNew[newItemPosition]
+
+            return if (oldItem is EpisodeUI && newItem is EpisodeUI) {
+                oldItem.name == newItem.name
+            } else if (oldItem is ItemHeader && newItem is ItemHeader) {
+                oldItem.title == newItem.title
+            } else {
+                false
+            }
+        }
+    }
+
+    fun setData(newData: List<EpisodeUI>) {
+        diffCallback.listOld = data
+        managementHeaders(newData)
+        diffCallback.listNew = data
         val diffResult = DiffUtil.calculateDiff(diffCallback)
 
-        episodeList.clear()
-        episodeList.addAll(newEpisodes)
+//        data.clear()
+//        data.addAll(newDataWithHeader)
         diffResult.dispatchUpdatesTo(this)
     }
 
-    override fun getItemCount(): Int = episodeList.size
+    private fun managementHeaders(episodes: List<EpisodeUI>) {
+        if (data.size == 0) {
+            data.add(ItemHeader("${episodes[0].season}"))
+        } else {
+            val lastItem = data[data.size - 1] as EpisodeUI
+            val firstItem = episodes[0]
+            if (lastItem.season != firstItem.season) {
+                data.add(ItemHeader("${firstItem.season}"))
+            }
+        }
+
+        episodes.forEachIndexed { index, _ ->
+            if (index > 0) {
+                val item0 = episodes[index - 1]
+                val item1 = episodes[index]
+                if (item0.season != item1.season) {
+                    data.add(ItemHeader("${item1.season}"))
+                }
+                data.add(item1)
+            } else {
+                data.add(episodes[0])
+            }
+        }
+    }
+
+    override fun getItemCount(): Int = data.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         if (viewType == 0) {
@@ -39,22 +96,22 @@ class EpisodesAdapter(
         }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = episodeList[position]
+        val item = data[position]
         if (item is EpisodeUI) {
-            (holder as UserViewHolder).bin(episodeList[position] as EpisodeUI, onClickListener)
+            (holder as UserViewHolder).bin(data[position] as EpisodeUI, onClickListener)
         } else if (item is StickyHeaderModel) {
-            (holder as HeaderViewHolder).bin(episodeList[position] as ItemHeader)
+            (holder as HeaderViewHolder).bin(data[position] as ItemHeader)
         }
     }
 
     override fun getItemViewType(position: Int): Int =
-        if (episodeList[position] is EpisodeUI) {
+        if (data[position] is EpisodeUI) {
             0
         } else {
             1
         }
 
-    override fun getAdapterData(): List<Any> = episodeList
+    override fun getAdapterData(): List<Any> = data
 }
 
 private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

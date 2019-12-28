@@ -16,7 +16,7 @@ import avila.daniel.rickmorty.ui.fragment.characters.CharactersFragment
 import avila.daniel.rickmorty.ui.fragment.episodes.EpisodesFragment
 import avila.daniel.rickmorty.ui.fragment.locations.LocationsFragment
 import avila.daniel.rickmorty.ui.model.CharactersSource
-import avila.daniel.rickmorty.ui.util.ISearch
+import avila.daniel.rickmorty.ui.util.ISearchText
 import avila.daniel.searchview_test.SimpleSearchView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
@@ -84,7 +84,7 @@ class MainActivity : BaseActivity() {
             }
 
             override fun onSearchViewClosed() {
-                searchFilter("")
+                searchText("")
             }
 
             override fun onSearchViewClosedAnimation() {
@@ -101,7 +101,7 @@ class MainActivity : BaseActivity() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                searchFilter(newText)
+                searchText(newText)
                 return false
             }
 
@@ -126,8 +126,8 @@ class MainActivity : BaseActivity() {
 
     override fun tryAgain(): () -> Unit = {}
 
-    private fun searchFilter(filter: String) {
-        (listFragmentTabs[viewpager.currentItem] as ISearch).updateFilter(filter)
+    private fun searchText(filter: String) {
+        (listFragmentTabs[viewpager.currentItem] as ISearchText).searchText(filter)
     }
 
     inner class CustomPagerAdapter(

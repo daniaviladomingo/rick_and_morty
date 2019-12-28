@@ -1,65 +1,61 @@
 package avila.daniel.rickmorty.ui.fragment.locations
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
+import avila.daniel.rickmorty.databinding.ItemLocationBinding
 import avila.daniel.rickmorty.ui.model.LocationUI
-import kotlinx.android.synthetic.main.item_location.view.*
 
-class LocationsAdapter(
-    private val diffCallback: LocationsDiffCallback
-) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private val locationList = mutableListOf<LocationUI>()
-
+class LocationsAdapter : RecyclerView.Adapter<LocationsAdapter.ViewHolder>() {
+    private val data = mutableListOf<LocationUI>()
     var onClickListener: ((Int, String) -> Unit)? = null
+    private val diffCallback = object : DiffUtil.Callback() {
+        lateinit var listOld: List<LocationUI>
+        lateinit var listNew: List<LocationUI>
 
-    fun update(newLocation: List<LocationUI>) {
-        diffCallback.listOld = locationList
-        diffCallback.listNew = newLocation
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            listOld[oldItemPosition].id == listNew[newItemPosition].id
+
+        override fun getOldListSize(): Int = listOld.size
+
+        override fun getNewListSize(): Int = listNew.size
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            listOld[oldItemPosition].name == listNew[newItemPosition].name
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
+        DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            R.layout.item_location, parent, false
+        )
+    )
+
+    override fun getItemCount(): Int = data.size
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(data[position])
+
+    fun setData(newData: List<LocationUI>) {
+        diffCallback.listOld = data
+        diffCallback.listNew = newData
+
         val diffResult = DiffUtil.calculateDiff(diffCallback)
 
-        locationList.clear()
-        locationList.addAll(newLocation)
+        data.clear()
+        data.addAll(newData)
         diffResult.dispatchUpdatesTo(this)
     }
 
-    override fun getItemCount(): Int = locationList.size
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        UserViewHolder.create(parent)
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-        (holder as UserViewHolder).bin(locationList[position], onClickListener)
-}
-
-private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bin(location: LocationUI, onClickListener: ((Int, String) -> Unit)?) {
-        itemView.run {
-            name.text = location.name
-            type.text = location.type
-            dimension.text = location.dimension
-            population.text = "${location.population}"
-            setOnClickListener {
-                if (location.population > 0) {
-                    onClickListener?.invoke(location.id, location.name)
-                }
+    class ViewHolder(private val binding: ItemLocationBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(location: LocationUI) {
+            with(binding) {
+                viewModel = location
+                executePendingBindings()
             }
         }
-    }
-
-    companion object {
-        fun create(parent: ViewGroup): UserViewHolder =
-            UserViewHolder(
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.item_location,
-                    parent,
-                    false
-                )
-            )
     }
 }

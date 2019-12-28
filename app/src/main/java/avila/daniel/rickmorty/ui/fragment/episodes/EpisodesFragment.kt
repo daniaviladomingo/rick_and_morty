@@ -14,19 +14,18 @@ import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.TITLE
 import avila.daniel.rickmorty.ui.model.CharactersSource
 import avila.daniel.rickmorty.ui.model.EpisodeUI
-import avila.daniel.rickmorty.ui.util.ISearch
+import avila.daniel.rickmorty.ui.util.ISearchText
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import com.yuyang.stickyheaders.StickyLinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_episodes.*
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class EpisodesFragment : InitialLoadFragment(), ISearch {
+class EpisodesFragment : InitialLoadFragment(), ISearchText {
 
     private val episodesViewModel: EpisodesViewModel by viewModel()
 
     private val episodesList = mutableListOf<Any>()
-    private val adapter: EpisodesAdapter by inject()
+    private var adapter = EpisodesAdapter()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -67,11 +66,9 @@ class EpisodesFragment : InitialLoadFragment(), ISearch {
                 managementResourceState(status, message)
                 if (status == ResourceState.SUCCESS) {
                     data?.run {
-                        if (this.first) {
-                            episodesList.clear()
-                        }
-                        managementHeaders(this.second)
-                        adapter.update(episodesList)
+//                        managementHeaders(this)
+//                        episodesList.addAll(this)
+                        adapter.setData(this)
                     }
                 }
             }
@@ -107,8 +104,8 @@ class EpisodesFragment : InitialLoadFragment(), ISearch {
         episodesViewModel.load()
     }
 
-    override fun updateFilter(newFilter: String) {
-        episodesViewModel.updateSearchFilter(newFilter)
+    override fun searchText(searchText: String) {
+        episodesViewModel.searchText(searchText)
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_episodes

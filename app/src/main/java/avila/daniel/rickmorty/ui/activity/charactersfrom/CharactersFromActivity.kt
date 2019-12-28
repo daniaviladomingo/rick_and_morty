@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import avila.daniel.domain.model.Character
 import androidx.lifecycle.Observer
 import avila.daniel.repository.cache.model.compose.CharacterFilterParameter
 import avila.daniel.rickmorty.R
@@ -12,7 +11,6 @@ import avila.daniel.rickmorty.base.BaseActivity
 import avila.daniel.rickmorty.di.qualifiers.SearchFilterCharacters
 import avila.daniel.rickmorty.ui.activity.character.CharacterActivity
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersAdapter
-import avila.daniel.rickmorty.ui.fragment.characters.CharactersDiffCallback
 import avila.daniel.rickmorty.ui.model.CharactersSource
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.activity_characters_from.*
@@ -25,8 +23,9 @@ class CharactersFromActivity : BaseActivity() {
 
     private lateinit var charactersSource: CharactersSource
 
-    private val characterList = mutableListOf<Character>()
-    private val adapter:  CharactersAdapter by inject()
+    private var adapter = CharactersAdapter(inject<() -> CharacterFilterParameter>(
+        SearchFilterCharacters
+    ).value)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +35,8 @@ class CharactersFromActivity : BaseActivity() {
 
         setListener()
 
-        adapter.onClickListener = { id ->
-            charactersFromViewModel.openCharacterDetail(characterList.find { it.id == id }!!)
+        adapter.onClickListener = {
+            charactersFromViewModel.openCharacterDetail(it)
         }
 
         list_characters.adapter = adapter
@@ -82,9 +81,7 @@ class CharactersFromActivity : BaseActivity() {
                 managementResourceState(status, message)
                 if (status == ResourceState.SUCCESS) {
                     data?.run {
-                        characterList.clear()
-                        characterList.addAll(this)
-                        adapter.update(characterList)
+                        adapter.setData(this)
                         no_favorite.visibility = if (this.isEmpty()) View.VISIBLE else View.GONE
                     }
                 }

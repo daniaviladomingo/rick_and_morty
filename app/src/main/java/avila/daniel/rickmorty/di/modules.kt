@@ -33,19 +33,13 @@ import avila.daniel.rickmorty.schedulers.IScheduleProvider
 import avila.daniel.rickmorty.schedulers.ScheduleProviderImp
 import avila.daniel.rickmorty.ui.activity.character.CharacterViewModel
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromViewModel
-import avila.daniel.rickmorty.ui.fragment.characters.CharactersAdapter
-import avila.daniel.rickmorty.ui.fragment.characters.CharactersDiffCallback
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersViewModel
-import avila.daniel.rickmorty.ui.fragment.episodes.EpisodesAdapter
-import avila.daniel.rickmorty.ui.fragment.episodes.EpisodesDiffCallback
 import avila.daniel.rickmorty.ui.fragment.episodes.EpisodesViewModel
-import avila.daniel.rickmorty.ui.fragment.locations.LocationsAdapter
-import avila.daniel.rickmorty.ui.fragment.locations.LocationsDiffCallback
 import avila.daniel.rickmorty.ui.fragment.locations.LocationsViewModel
 import avila.daniel.rickmorty.ui.model.mapper.CharacterParcelableMapper
 import avila.daniel.rickmorty.ui.model.mapper.EpisodeUIMapper
 import avila.daniel.rickmorty.ui.model.mapper.LocationUIMapper
-import avila.daniel.rickmorty.ui.util.IReloadData
+import avila.daniel.rickmorty.ui.util.IDataChanged
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -60,14 +54,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-var characterReload: IReloadData? = null
+var characterReload: IDataChanged? = null
 
 val appModule = module {
     single { PreferenceManager.getDefaultSharedPreferences(androidContext()) }
-
-    single { CharactersDiffCallback() }
-    single { EpisodesDiffCallback() }
-    single { LocationsDiffCallback() }
 
     single { CharacterFilterParameter.NAME }
 }
@@ -80,12 +70,6 @@ val activityModule = module {
     single { { characterReload?.reload() } }
 
     single(RefreshData) { { characterReload?.refresh() } }
-}
-
-val adapterModule = module {
-    factory { CharactersAdapter(get(), get(SearchFilterCharacters)) }
-    factory { EpisodesAdapter(get()) }
-    factory { LocationsAdapter(get()) }
 }
 
 val viewModelModule = module {
@@ -236,8 +220,7 @@ val dataCacheDbModule = module {
     }
 
     single {
-        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "db")
-            .allowMainThreadQueries().build()
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "RickNMorty.db").build()
     }
 }
 

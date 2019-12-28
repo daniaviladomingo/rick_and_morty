@@ -12,21 +12,38 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_charter.view.*
 
 class CharactersAdapter(
-    private val diffCallback: CharactersDiffCallback,
     private val searchFilter: () -> CharacterFilterParameter
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val characterList = mutableListOf<Character>()
+    private val data = mutableListOf<Character>()
 
-    var onClickListener: ((Int) -> Unit)? = null
+    private val diffCallback = object : DiffUtil.Callback() {
+        lateinit var listOld: List<Character>
+        lateinit var listNew: List<Character>
 
-    fun update(newCharacters: List<Character>) {
-        diffCallback.listOld = characterList
-        diffCallback.listNew = newCharacters
+        var currentFilter: CharacterFilterParameter? = null
+        var newFilter: CharacterFilterParameter? = null
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            listOld[oldItemPosition].id == listNew[newItemPosition].id
+
+        override fun getOldListSize(): Int = listOld.size
+
+        override fun getNewListSize(): Int = listNew.size
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            currentFilter == newFilter
+    }
+
+    var onClickListener: ((Character) -> Unit)? = null
+
+    fun setData(newData: List<Character>) {
+        diffCallback.listOld = data
+        diffCallback.listNew = newData
         val diffResult = DiffUtil.calculateDiff(diffCallback)
 
-        characterList.clear()
-        characterList.addAll(newCharacters)
+        data.clear()
+        data.addAll(newData)
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -37,19 +54,21 @@ class CharactersAdapter(
         diffCallback.currentFilter = diffCallback.newFilter
     }
 
-    override fun getItemCount(): Int = characterList.size
+    override fun getItemCount(): Int = data.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         UserViewHolder.create(parent)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-        (holder as UserViewHolder).bin(characterList[position], onClickListener, searchFilter)
+        (holder as UserViewHolder).bin(data[position], onClickListener, searchFilter)
+
+
 }
 
 private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bin(
         character: Character,
-        onClickListener: ((Int) -> Unit)?,
+        onClickListener: ((Character) -> Unit)?,
         searchFilter: () -> CharacterFilterParameter
     ) {
         itemView.run {
@@ -62,7 +81,7 @@ private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
             Glide.with(itemView).load(character.image).into(photo)
             setOnClickListener {
-                onClickListener?.invoke(character.id)
+                onClickListener?.invoke(character)
             }
         }
     }

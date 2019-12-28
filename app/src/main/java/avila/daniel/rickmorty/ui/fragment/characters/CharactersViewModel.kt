@@ -7,7 +7,7 @@ import avila.daniel.rickmorty.base.PaginationViewModel
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
 import avila.daniel.rickmorty.ui.model.CharacterParcelable
 import avila.daniel.rickmorty.ui.model.mapper.CharacterParcelableMapper
-import avila.daniel.rickmorty.ui.util.IReloadData
+import avila.daniel.rickmorty.ui.util.IDataChanged
 import avila.daniel.rickmorty.ui.util.data.Resource
 import avila.daniel.rickmorty.util.SingleLiveEvent
 
@@ -16,7 +16,7 @@ class CharactersViewModel(
     private val characterParcelableMapper: CharacterParcelableMapper,
     scheduleProvider: IScheduleProvider,
     initialPage: Int
-) : PaginationViewModel<Character, Character>(scheduleProvider, initialPage), IReloadData {
+) : PaginationViewModel<Character, Character>(scheduleProvider, initialPage), IDataChanged {
 
     val characterParcelabeLiveData = SingleLiveEvent<Resource<CharacterParcelable>>()
     val refreshLiveData = SingleLiveEvent<Resource<Boolean>>()

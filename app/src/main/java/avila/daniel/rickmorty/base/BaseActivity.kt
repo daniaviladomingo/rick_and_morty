@@ -15,8 +15,6 @@ import kotlinx.android.synthetic.main.view_error.*
 
 abstract class BaseActivity : AppCompatActivity() {
 
-    private lateinit var activityView: View
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -26,9 +24,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_base)
 
-        activityView = layoutInflater.inflate(getLayoutId(), null)
         (view as FrameLayout).addView(
-            activityView,
+            layoutInflater.inflate(getLayoutId(), null),
             LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
         )
 

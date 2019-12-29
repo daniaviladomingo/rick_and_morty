@@ -2,6 +2,7 @@ package avila.daniel.data_cache_db.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import avila.daniel.data_cache_db.model.CharacterDb
 import avila.daniel.data_cache_db.model.CharacterComplete
 import io.reactivex.Completable
@@ -9,6 +10,7 @@ import io.reactivex.Single
 
 @Dao
 abstract class CharacterDao : BaseDao<CharacterDb> {
+    @Transaction
     @Query("SELECT * FROM character")
     abstract fun getCharacters(): Single<List<CharacterComplete>>
 

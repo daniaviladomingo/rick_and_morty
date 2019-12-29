@@ -3,13 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
 
         <variable
-            name="viewModel"
+            name="location"
             type="avila.daniel.rickmorty.ui.model.LocationUI" />
     </data>
 
@@ -34,7 +33,7 @@
                 style="@style/LocationName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.name}" />
+                android:text="@{location.name}" />
 
 
             <LinearLayout
@@ -54,7 +53,7 @@
                     style="@style/Content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.type}" />
+                    android:text="@{location.type}" />
             </LinearLayout>
 
             <LinearLayout
@@ -74,7 +73,7 @@
                     style="@style/Content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.dimension}" />
+                    android:text="@{location.dimension}" />
             </LinearLayout>
 
             <LinearLayout
@@ -94,7 +93,7 @@
                     style="@style/Content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{Integer.toString(viewModel.population)}" />
+                    android:text="@{Integer.toString(location.population)}" />
             </LinearLayout>
         </LinearLayout>
 

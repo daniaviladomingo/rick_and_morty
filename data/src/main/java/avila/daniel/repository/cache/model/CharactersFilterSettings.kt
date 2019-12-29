@@ -1,11 +1,11 @@
 package avila.daniel.repository.cache.model
 
 import avila.daniel.repository.cache.model.compose.CharacterFilterGenderParameter
-import avila.daniel.repository.cache.model.compose.CharacterFilterParameter
+import avila.daniel.repository.cache.model.compose.CharacterFilter
 import avila.daniel.repository.cache.model.compose.CharacterFilterStatusParameter
 
 data class CharactersFilterSettings(
-    val parameterFilter: CharacterFilterParameter,
+    val parameterFilter: CharacterFilter,
     val status: CharacterFilterStatusParameter,
     val gender: CharacterFilterGenderParameter
 )

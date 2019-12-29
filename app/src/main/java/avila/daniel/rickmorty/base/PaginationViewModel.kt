@@ -11,7 +11,7 @@ abstract class PaginationViewModel<T, U>(
     private val initialPage: Int
 ) : BaseViewModel() {
 
-    private val locationsList = mutableListOf<U>()
+    private val dataList = mutableListOf<U>()
 
     private var isLoading = false
     private var currentPage = initialPage
@@ -35,7 +35,7 @@ abstract class PaginationViewModel<T, U>(
     }
 
     protected fun clearNReload() {
-        locationsList.clear()
+        dataList.clear()
         currentPage = initialPage
         totalPage = initialPage
         load()
@@ -49,8 +49,8 @@ abstract class PaginationViewModel<T, U>(
                 .observeOn(scheduleProvider.ui())
                 .subscribeOn(scheduleProvider.io())
                 .subscribe({ items ->
-                    locationsList.addAll(mapper()?.map(items.second) ?: items.second as List<U>)
-                    itemsLiveData.value = Resource.success(locationsList)
+                    dataList.addAll(mapper()?.map(items.second) ?: items.second as List<U>)
+                    itemsLiveData.value = Resource.success(dataList)
                     totalPage = items.first
                     isLoading = false
                 }) {

@@ -13,7 +13,6 @@ import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.ID
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.TITLE
 import avila.daniel.rickmorty.ui.model.CharactersSource
-import avila.daniel.rickmorty.ui.model.EpisodeUI
 import avila.daniel.rickmorty.ui.util.ISearchText
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import com.yuyang.stickyheaders.StickyLinearLayoutManager
@@ -24,7 +23,6 @@ class EpisodesFragment : InitialLoadFragment(), ISearchText {
 
     private val episodesViewModel: EpisodesViewModel by viewModel()
 
-    private val episodesList = mutableListOf<Any>()
     private var adapter = EpisodesAdapter()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -66,38 +64,11 @@ class EpisodesFragment : InitialLoadFragment(), ISearchText {
                 managementResourceState(status, message)
                 if (status == ResourceState.SUCCESS) {
                     data?.run {
-//                        managementHeaders(this)
-//                        episodesList.addAll(this)
                         adapter.setData(this)
                     }
                 }
             }
         })
-    }
-
-    private fun managementHeaders(episodes: List<EpisodeUI>) {
-        if (episodesList.size == 0) {
-            episodesList.add(ItemHeader("${episodes[0].season}"))
-        } else {
-            val lastItem = episodesList[episodesList.size - 1] as EpisodeUI
-            val firstItem = episodes[0]
-            if (lastItem.season != firstItem.season) {
-                episodesList.add(ItemHeader("${firstItem.season}"))
-            }
-        }
-
-        episodes.forEachIndexed { index, _ ->
-            if (index > 0) {
-                val item0 = episodes[index - 1]
-                val item1 = episodes[index]
-                if (item0.season != item1.season) {
-                    episodesList.add(ItemHeader("${item1.season}"))
-                }
-                episodesList.add(item1)
-            } else {
-                episodesList.add(episodes[0])
-            }
-        }
     }
 
     override fun initialLoad() {

@@ -19,7 +19,7 @@ import avila.daniel.domain.IRepository
 import avila.daniel.domain.interactor.*
 import avila.daniel.repository.RepositoryImp
 import avila.daniel.repository.cache.IDataCache
-import avila.daniel.repository.cache.model.compose.CharacterFilterParameter
+import avila.daniel.repository.cache.model.compose.CharacterFilter
 import avila.daniel.repository.remote.IDataRemote
 import avila.daniel.repository.remote.model.mapper.CharacterApiMapper
 import avila.daniel.repository.remote.model.mapper.EpisodeApiMapper
@@ -59,7 +59,7 @@ var characterReload: IDataChanged? = null
 val appModule = module {
     single { PreferenceManager.getDefaultSharedPreferences(androidContext()) }
 
-    single { CharacterFilterParameter.NAME }
+    single { CharacterFilter.NAME }
 }
 
 val activityModule = module {

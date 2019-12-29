@@ -53,7 +53,7 @@ class LocationsAdapter : RecyclerView.Adapter<LocationsAdapter.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
         fun bind(location: LocationUI) {
             with(binding) {
-                viewModel = location
+                this.location = location
                 executePendingBindings()
             }
         }

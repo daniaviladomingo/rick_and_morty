@@ -52,23 +52,25 @@ class EpisodesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Adapter
 
     fun setData(newData: List<EpisodeUI>) {
         diffCallback.listOld = data
-        managementHeaders(newData)
-        diffCallback.listNew = data
+        val newDataWithHeader = managementHeaders(newData)
+        diffCallback.listNew = newDataWithHeader
         val diffResult = DiffUtil.calculateDiff(diffCallback)
 
-//        data.clear()
-//        data.addAll(newDataWithHeader)
+        data.clear()
+        data.addAll(newDataWithHeader)
         diffResult.dispatchUpdatesTo(this)
     }
 
-    private fun managementHeaders(episodes: List<EpisodeUI>) {
+    private fun managementHeaders(episodes: List<EpisodeUI>): List<Any> {
+        val newList = mutableListOf<Any>()
+
         if (data.size == 0) {
-            data.add(ItemHeader("${episodes[0].season}"))
+            newList.add(ItemHeader("${episodes[0].season}"))
         } else {
             val lastItem = data[data.size - 1] as EpisodeUI
             val firstItem = episodes[0]
             if (lastItem.season != firstItem.season) {
-                data.add(ItemHeader("${firstItem.season}"))
+                newList.add(ItemHeader("${firstItem.season}"))
             }
         }
 
@@ -77,13 +79,15 @@ class EpisodesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Adapter
                 val item0 = episodes[index - 1]
                 val item1 = episodes[index]
                 if (item0.season != item1.season) {
-                    data.add(ItemHeader("${item1.season}"))
+                    newList.add(ItemHeader("${item1.season}"))
                 }
-                data.add(item1)
+                newList.add(item1)
             } else {
-                data.add(episodes[0])
+                newList.add(episodes[0])
             }
         }
+
+        return newList
     }
 
     override fun getItemCount(): Int = data.size

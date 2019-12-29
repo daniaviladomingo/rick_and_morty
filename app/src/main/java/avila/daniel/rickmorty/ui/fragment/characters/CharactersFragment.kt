@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import avila.daniel.repository.cache.model.compose.CharacterFilterParameter
+import avila.daniel.repository.cache.model.compose.CharacterFilter
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.InitialLoadFragment
 import avila.daniel.rickmorty.di.qualifiers.SearchFilterCharacters
@@ -20,7 +20,7 @@ class CharactersFragment : InitialLoadFragment(), ISearchText {
 
     private val charactersViewModel: CharactersViewModel by viewModel()
 
-    private var adapter = CharactersAdapter(inject<() -> CharacterFilterParameter>(SearchFilterCharacters).value)
+    private var adapter = CharactersAdapter(inject<() -> CharacterFilter>(SearchFilterCharacters).value)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

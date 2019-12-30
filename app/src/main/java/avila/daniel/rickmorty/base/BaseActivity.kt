@@ -1,19 +1,22 @@
 package avila.daniel.rickmorty.base
 
 import android.os.Bundle
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.activity_base.*
 import kotlinx.android.synthetic.main.view_error.*
 
 abstract class BaseActivity : AppCompatActivity() {
+
+    protected lateinit var binding: ViewDataBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,8 +27,11 @@ abstract class BaseActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_base)
 
+        binding =
+            DataBindingUtil.inflate<ViewDataBinding>(layoutInflater, getLayoutId(), null, false)
+
         (view as FrameLayout).addView(
-            layoutInflater.inflate(getLayoutId(), null),
+            binding.root,
             LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
         )
 

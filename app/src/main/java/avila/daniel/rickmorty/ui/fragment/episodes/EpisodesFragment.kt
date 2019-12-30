@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
-import avila.daniel.rickmorty.base.InitialLoadFragment
+import avila.daniel.rickmorty.base.BaseFragment
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.CHARACTERS_SOURCE
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.ID
@@ -19,7 +19,7 @@ import com.yuyang.stickyheaders.StickyLinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_episodes.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class EpisodesFragment : InitialLoadFragment(), ISearchText {
+class EpisodesFragment : BaseFragment(), ISearchText {
 
     private val episodesViewModel: EpisodesViewModel by viewModel()
 
@@ -56,6 +56,8 @@ class EpisodesFragment : InitialLoadFragment(), ISearchText {
                 }
             }
         })
+
+        episodesViewModel.load()
     }
 
     private fun setListener() {
@@ -69,10 +71,6 @@ class EpisodesFragment : InitialLoadFragment(), ISearchText {
                 }
             }
         })
-    }
-
-    override fun initialLoad() {
-        episodesViewModel.load()
     }
 
     override fun searchText(searchText: String) {

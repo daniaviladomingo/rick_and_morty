@@ -3,15 +3,13 @@ package avila.daniel.rickmorty.ui.activity.character
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import avila.daniel.domain.model.Character
-import avila.daniel.domain.model.compose.Status
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseActivity
+import avila.daniel.rickmorty.databinding.ActivityCharacterBinding
 import avila.daniel.rickmorty.ui.util.data.ResourceState
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_character.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -43,7 +41,7 @@ class CharacterActivity : BaseActivity() {
                     data?.run {
                         supportActionBar?.title = this.name
                         character = this
-                        draw(this)
+                        (binding as ActivityCharacterBinding).character = this
                     }
                 }
             }
@@ -77,41 +75,6 @@ class CharacterActivity : BaseActivity() {
                 }
             }
         })
-    }
-
-    private fun draw(character: Character) {
-        character.run {
-            Glide.with(image_view).load(image).into(image_view)
-            name_info.text = this.name
-            species_info.text = this.species
-            this.origin.name.run {
-                if (this == "unknown") {
-                    origin_unknow.visibility = View.VISIBLE
-                    origin_info.visibility = View.GONE
-                } else {
-                    origin_unknow.visibility = View.GONE
-                    origin_info.text = this
-                }
-            }
-
-            this.location.name.run {
-                if (this == "unknown") {
-                    location_unknow.visibility = View.VISIBLE
-                    location_info.visibility = View.GONE
-                } else {
-                    location_unknow.visibility = View.GONE
-                    location_info.text = this
-                }
-            }
-
-            icon_status.setImageResource(
-                when (this.status) {
-                    Status.ALIVE -> R.drawable.ic_alive
-                    Status.DEAD -> R.drawable.ic_dead
-                    else -> R.drawable.ic_unknown
-                }
-            )
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

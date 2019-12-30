@@ -7,19 +7,18 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
-import avila.daniel.rickmorty.base.InitialLoadFragment
+import avila.daniel.rickmorty.base.BaseFragment
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.CHARACTERS_SOURCE
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.ID
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.TITLE
 import avila.daniel.rickmorty.ui.model.CharactersSource
-import avila.daniel.rickmorty.ui.model.LocationUI
 import avila.daniel.rickmorty.ui.util.ISearchText
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.fragment_locations.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class LocationsFragment : InitialLoadFragment(), ISearchText {
+class LocationsFragment : BaseFragment(), ISearchText {
 
     private val locationsViewModel: LocationsViewModel by viewModel()
 
@@ -64,8 +63,7 @@ class LocationsFragment : InitialLoadFragment(), ISearchText {
                 }
             }
         })
-    }
-    override fun initialLoad() {
+
         locationsViewModel.load()
     }
 

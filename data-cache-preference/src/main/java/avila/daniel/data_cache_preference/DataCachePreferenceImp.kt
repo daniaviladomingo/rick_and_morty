@@ -6,7 +6,7 @@ import avila.daniel.data_cache_preference.model.mapper.PreferenceGenderMapper
 import avila.daniel.data_cache_preference.model.mapper.PreferenceStatusMapper
 import avila.daniel.repository.cache.model.CharactersFilterSettings
 import avila.daniel.repository.cache.model.LocationFilterParameter
-import avila.daniel.repository.cache.model.compose.CharacterFilter
+import avila.daniel.repository.cache.model.compose.CharacterSearchFilter
 import io.reactivex.Single
 
 class DataCachePreferenceImp(
@@ -23,19 +23,19 @@ class DataCachePreferenceImp(
     private val preferenceStatusMapper: PreferenceStatusMapper
 ) : IDataCachePreference {
 
-    fun getCharacterSearchFilter(): CharacterFilter =
+    fun getCharacterSearchFilter(): CharacterSearchFilter =
         when {
             defaultSharedPreferences.getBoolean(keyNameCharacter, true) -> {
-                CharacterFilter.NAME
+                CharacterSearchFilter.NAME
             }
             defaultSharedPreferences.getBoolean(keySpecie, true) -> {
-                CharacterFilter.SPECIES
+                CharacterSearchFilter.SPECIES
             }
             defaultSharedPreferences.getBoolean(keyTypeCharacter, true) -> {
-                CharacterFilter.TYPE
+                CharacterSearchFilter.TYPE
             }
             else -> {
-                CharacterFilter.NAME
+                CharacterSearchFilter.NAME
             }
         }
 

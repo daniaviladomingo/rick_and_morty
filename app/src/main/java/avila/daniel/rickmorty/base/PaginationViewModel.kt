@@ -63,6 +63,4 @@ abstract class PaginationViewModel<T, U>(
     protected abstract fun query(): SingleUseCaseWithParameter<Pair<String, Int>, Pair<Int, List<T>>>
 
     protected open fun mapper(): Mapper<T, U>? = null
-
-
 }

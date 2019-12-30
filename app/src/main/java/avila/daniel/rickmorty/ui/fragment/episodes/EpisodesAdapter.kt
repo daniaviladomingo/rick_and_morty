@@ -1,16 +1,16 @@
 package avila.daniel.rickmorty.ui.fragment.episodes
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
+import avila.daniel.rickmorty.databinding.ItemEpisodeBinding
+import avila.daniel.rickmorty.databinding.ItemHeaderEpisodeBinding
 import avila.daniel.rickmorty.ui.model.EpisodeUI
 import com.yuyang.stickyheaders.AdapterDataProvider
 import com.yuyang.stickyheaders.StickyHeaderModel
-import kotlinx.android.synthetic.main.header_episode.view.*
-import kotlinx.android.synthetic.main.item_episode.view.*
 
 class EpisodesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AdapterDataProvider {
 
@@ -94,15 +94,25 @@ class EpisodesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Adapter
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         if (viewType == 0) {
-            UserViewHolder.create(parent)
+            EpisodeViewHolder(
+                DataBindingUtil.inflate(
+                    LayoutInflater.from(parent.context),
+                    R.layout.item_episode, parent, false
+                ), onClickListener
+            )
         } else {
-            HeaderViewHolder.create(parent)
+            HeaderViewHolder(
+                DataBindingUtil.inflate(
+                    LayoutInflater.from(parent.context),
+                    R.layout.item_header_episode, parent, false
+                )
+            )
         }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = data[position]
         if (item is EpisodeUI) {
-            (holder as UserViewHolder).bin(data[position] as EpisodeUI, onClickListener)
+            (holder as EpisodeViewHolder).bin(data[position] as EpisodeUI)
         } else if (item is StickyHeaderModel) {
             (holder as HeaderViewHolder).bin(data[position] as ItemHeader)
         }
@@ -116,48 +126,35 @@ class EpisodesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Adapter
         }
 
     override fun getAdapterData(): List<Any> = data
-}
 
-private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bin(episode: EpisodeUI, onClickListener: ((Int, String) -> Unit)?) {
-        itemView.run {
-            name.text = episode.name
-            this.episode.text = "${episode.number}"
-            on_air.text = episode.airDate
-            characters.text = "${episode.characters}"
-            setOnClickListener {
-                onClickListener?.invoke(episode.id, episode.name)
+    data class ItemHeader(val title: String) : StickyHeaderModel
+
+    class EpisodeViewHolder(
+        private val binding: ItemEpisodeBinding,
+        onClickListener: ((Int, String) -> Unit)?
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.setClickListener {
+                binding.episode?.let {
+                    onClickListener?.invoke(it.id, it.name)
+                }
+            }
+        }
+
+        fun bin(episode: EpisodeUI) {
+            with(binding) {
+                this.episode = episode
             }
         }
     }
 
-    companion object {
-        fun create(parent: ViewGroup): UserViewHolder =
-            UserViewHolder(
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.item_episode,
-                    parent,
-                    false
-                )
-            )
-    }
-}
-
-private class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bin(header: ItemHeader) {
-        itemView.run {
-            title_header.text = String.format("Season %s", header.title)
+    class HeaderViewHolder(private val binding: ItemHeaderEpisodeBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bin(header: ItemHeader) {
+            with(binding) {
+                title = String.format("Season %s", header.title)
+            }
         }
-    }
-
-    companion object {
-        fun create(parent: ViewGroup): HeaderViewHolder =
-            HeaderViewHolder(
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.header_episode,
-                    parent,
-                    false
-                )
-            )
     }
 }

@@ -1,35 +1,35 @@
 package avila.daniel.data_cache_preference.model.mapper
 
 import avila.daniel.domain.model.mapper.Mapper
-import avila.daniel.repository.cache.model.compose.CharacterFilterStatusParameter
+import avila.daniel.repository.cache.model.compose.CharacterStatusFilter
 
 class PreferenceStatusMapper(
     private val alive: String,
     private val dead: String,
     private val unknown: String,
     private val any: String
-) : Mapper<String, CharacterFilterStatusParameter>() {
-    override fun map(model: String): CharacterFilterStatusParameter = model.run {
+) : Mapper<String, CharacterStatusFilter>() {
+    override fun map(model: String): CharacterStatusFilter = model.run {
         when {
             this == alive -> {
-                CharacterFilterStatusParameter.ALIVE
+                CharacterStatusFilter.ALIVE
             }
             this == dead -> {
-                CharacterFilterStatusParameter.DEAD
+                CharacterStatusFilter.DEAD
             }
             this == unknown -> {
-                CharacterFilterStatusParameter.UNKNOWN
+                CharacterStatusFilter.UNKNOWN
             }
             this == any -> {
-                CharacterFilterStatusParameter.ANY
+                CharacterStatusFilter.ANY
             }
             else -> {
-                CharacterFilterStatusParameter.ANY
+                CharacterStatusFilter.ANY
             }
         }
     }
 
-    override fun inverseMap(model: CharacterFilterStatusParameter): String {
+    override fun inverseMap(model: CharacterStatusFilter): String {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

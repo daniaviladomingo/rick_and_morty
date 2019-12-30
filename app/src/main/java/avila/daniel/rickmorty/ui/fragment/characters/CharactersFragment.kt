@@ -5,9 +5,9 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import avila.daniel.repository.cache.model.compose.CharacterFilter
+import avila.daniel.repository.cache.model.compose.CharacterSearchFilter
 import avila.daniel.rickmorty.R
-import avila.daniel.rickmorty.base.InitialLoadFragment
+import avila.daniel.rickmorty.base.BaseFragment
 import avila.daniel.rickmorty.di.qualifiers.SearchFilterCharacters
 import avila.daniel.rickmorty.ui.activity.character.CharacterActivity
 import avila.daniel.rickmorty.ui.util.ISearchText
@@ -16,11 +16,11 @@ import kotlinx.android.synthetic.main.fragment_characters.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class CharactersFragment : InitialLoadFragment(), ISearchText {
+class CharactersFragment : BaseFragment(), ISearchText {
 
     private val charactersViewModel: CharactersViewModel by viewModel()
 
-    private var adapter = CharactersAdapter(inject<() -> CharacterFilter>(SearchFilterCharacters).value)
+    private var adapter = CharactersAdapter(inject<() -> CharacterSearchFilter>(SearchFilterCharacters).value)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -44,6 +44,8 @@ class CharactersFragment : InitialLoadFragment(), ISearchText {
                 }
             }
         })
+
+        charactersViewModel.load()
     }
 
     private fun setListener() {
@@ -87,10 +89,6 @@ class CharactersFragment : InitialLoadFragment(), ISearchText {
                     }
                 }
             })
-    }
-
-    override fun initialLoad() {
-        charactersViewModel.load()
     }
 
     override fun searchText(searchText: String) {

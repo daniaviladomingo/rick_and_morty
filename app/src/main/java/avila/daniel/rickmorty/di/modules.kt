@@ -19,7 +19,7 @@ import avila.daniel.domain.IRepository
 import avila.daniel.domain.interactor.*
 import avila.daniel.repository.RepositoryImp
 import avila.daniel.repository.cache.IDataCache
-import avila.daniel.repository.cache.model.compose.CharacterFilter
+import avila.daniel.repository.cache.model.compose.CharacterSearchFilter
 import avila.daniel.repository.remote.IDataRemote
 import avila.daniel.repository.remote.model.mapper.CharacterApiMapper
 import avila.daniel.repository.remote.model.mapper.EpisodeApiMapper
@@ -54,12 +54,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-var characterReload: IDataChanged? = null
+lateinit var characterReload: IDataChanged
 
 val appModule = module {
     single { PreferenceManager.getDefaultSharedPreferences(androidContext()) }
 
-    single { CharacterFilter.NAME }
+    single { CharacterSearchFilter.NAME }
 }
 
 val activityModule = module {
@@ -67,9 +67,7 @@ val activityModule = module {
         //        LifecycleManager(get(), lifecycle)
         Unit
     }
-    single { { characterReload?.reload() } }
-
-    single(RefreshData) { { characterReload?.refresh() } }
+    single { characterReload }
 }
 
 val viewModelModule = module {

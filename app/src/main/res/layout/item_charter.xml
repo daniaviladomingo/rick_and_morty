@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
@@ -13,13 +14,14 @@
 
         <variable
             name="characterFilter"
-            type="kotlin.jvm.functions.Function0&lt;avila.daniel.repository.cache.model.compose.CharacterFilter>" />
+            type="kotlin.jvm.functions.Function0&lt;avila.daniel.repository.cache.model.compose.CharacterSearchFilter>" />
 
     </data>
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="@{clickListener}"
         app:cardCornerRadius="2dp"
         app:cardElevation="3dp"
         app:cardUseCompatPadding="true">
@@ -29,7 +31,6 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/photo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -38,7 +39,6 @@
                 app:imageUrl="@{character.image}" />
 
             <TextView
-                android:id="@+id/name"
                 style="@style/CharacterName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                 android:background="@color/gray_transparent"
                 android:gravity="center_horizontal"
                 app:character="@{character}"
-                app:characterFilter="@{characterFilter}"/>
+                app:characterFilter="@{characterFilter}" />
 
         </RelativeLayout>
 

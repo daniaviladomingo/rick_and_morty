@@ -1,6 +1,6 @@
 package avila.daniel.repository.cache.model.compose
 
-enum class CharacterFilter {
+enum class CharacterSearchFilter {
     NAME,
     SPECIES,
     TYPE

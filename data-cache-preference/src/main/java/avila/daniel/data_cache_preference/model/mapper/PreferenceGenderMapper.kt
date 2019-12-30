@@ -1,7 +1,7 @@
 package avila.daniel.data_cache_preference.model.mapper
 
 import avila.daniel.domain.model.mapper.Mapper
-import avila.daniel.repository.cache.model.compose.CharacterFilterGenderParameter
+import avila.daniel.repository.cache.model.compose.CharacterGenderFilter
 
 class PreferenceGenderMapper(
     private val male: String,
@@ -9,31 +9,31 @@ class PreferenceGenderMapper(
     private val genderless: String,
     private val unknown: String,
     private val any: String
-) : Mapper<String, CharacterFilterGenderParameter>() {
-    override fun map(model: String): CharacterFilterGenderParameter = model.run {
+) : Mapper<String, CharacterGenderFilter>() {
+    override fun map(model: String): CharacterGenderFilter = model.run {
         when {
             this == male -> {
-                CharacterFilterGenderParameter.MALE
+                CharacterGenderFilter.MALE
             }
             this == female -> {
-                CharacterFilterGenderParameter.FEMALE
+                CharacterGenderFilter.FEMALE
             }
             this == genderless -> {
-                CharacterFilterGenderParameter.GENDERLESS
+                CharacterGenderFilter.GENDERLESS
             }
             this == unknown -> {
-                CharacterFilterGenderParameter.UNKNOWN
+                CharacterGenderFilter.UNKNOWN
             }
             this == any -> {
-                CharacterFilterGenderParameter.ANY
+                CharacterGenderFilter.ANY
             }
             else -> {
-                CharacterFilterGenderParameter.ANY
+                CharacterGenderFilter.ANY
             }
         }
     }
 
-    override fun inverseMap(model: CharacterFilterGenderParameter): String {
+    override fun inverseMap(model: CharacterGenderFilter): String {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

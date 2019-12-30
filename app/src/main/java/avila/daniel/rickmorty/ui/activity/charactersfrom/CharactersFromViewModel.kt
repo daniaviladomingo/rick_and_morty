@@ -22,7 +22,6 @@ class CharactersFromViewModel(
     val charactersLiveData = SingleLiveEvent<Resource<List<Character>>>()
     val characterParcelabeLiveData = SingleLiveEvent<Resource<CharacterParcelable>>()
 
-
     fun loadCharactersFromEpisode(id: Int) {
         charactersLiveData.value = Resource.loading()
         addDisposable(getEpisodeCharactersUseCase.execute(id)
@@ -30,9 +29,7 @@ class CharactersFromViewModel(
             .subscribeOn(scheduleProvider.io())
             .subscribe({ characters ->
                 charactersLiveData.value = Resource.success(characters)
-
             }) {
-
                 charactersLiveData.value = Resource.error(it.localizedMessage)
             })
     }
@@ -44,9 +41,7 @@ class CharactersFromViewModel(
             .subscribeOn(scheduleProvider.io())
             .subscribe({ characters ->
                 charactersLiveData.value = Resource.success(characters)
-
             }) {
-
                 charactersLiveData.value = Resource.error(it.localizedMessage)
             })
     }

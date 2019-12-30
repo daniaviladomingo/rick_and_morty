@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
-import avila.daniel.repository.cache.model.compose.CharacterFilter
+import avila.daniel.repository.cache.model.compose.CharacterSearchFilter
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseActivity
 import avila.daniel.rickmorty.di.qualifiers.SearchFilterCharacters
@@ -23,7 +23,7 @@ class CharactersFromActivity : BaseActivity() {
 
     private lateinit var charactersSource: CharactersSource
 
-    private var adapter = CharactersAdapter(inject<() -> CharacterFilter>(
+    private var adapter = CharactersAdapter(inject<() -> CharacterSearchFilter>(
         SearchFilterCharacters
     ).value)
 

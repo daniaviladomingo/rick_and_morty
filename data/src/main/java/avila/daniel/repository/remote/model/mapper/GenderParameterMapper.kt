@@ -1,7 +1,7 @@
 package avila.daniel.repository.remote.model.mapper
 
 import avila.daniel.domain.model.mapper.Mapper
-import avila.daniel.repository.cache.model.compose.CharacterFilterGenderParameter
+import avila.daniel.repository.cache.model.compose.CharacterGenderFilter
 
 class GenderParameterMapper(
     private val male: String,
@@ -9,18 +9,18 @@ class GenderParameterMapper(
     private val genderless: String,
     private val unknown: String,
     private val any: String
-) : Mapper<CharacterFilterGenderParameter, String>() {
-    override fun map(model: CharacterFilterGenderParameter): String = model.run {
+) : Mapper<CharacterGenderFilter, String>() {
+    override fun map(model: CharacterGenderFilter): String = model.run {
         when (this) {
-            CharacterFilterGenderParameter.MALE -> male
-            CharacterFilterGenderParameter.FEMALE -> female
-            CharacterFilterGenderParameter.GENDERLESS -> genderless
-            CharacterFilterGenderParameter.UNKNOWN -> unknown
-            CharacterFilterGenderParameter.ANY -> any
+            CharacterGenderFilter.MALE -> male
+            CharacterGenderFilter.FEMALE -> female
+            CharacterGenderFilter.GENDERLESS -> genderless
+            CharacterGenderFilter.UNKNOWN -> unknown
+            CharacterGenderFilter.ANY -> any
         }
     }
 
-    override fun inverseMap(model: String): CharacterFilterGenderParameter {
+    override fun inverseMap(model: String): CharacterGenderFilter {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

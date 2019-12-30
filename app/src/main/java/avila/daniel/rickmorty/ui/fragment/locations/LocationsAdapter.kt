@@ -31,7 +31,8 @@ class LocationsAdapter : RecyclerView.Adapter<LocationsAdapter.ViewHolder>() {
         DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
             R.layout.item_location, parent, false
-        )
+        ),
+        onClickListener
     )
 
     override fun getItemCount(): Int = data.size
@@ -49,8 +50,20 @@ class LocationsAdapter : RecyclerView.Adapter<LocationsAdapter.ViewHolder>() {
         diffResult.dispatchUpdatesTo(this)
     }
 
-    class ViewHolder(private val binding: ItemLocationBinding) :
+    class ViewHolder(
+        private val binding: ItemLocationBinding,
+        var onClickListener: ((Int, String) -> Unit)?
+    ) :
         RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.setClickListener {
+                binding.location?.let {
+                    onClickListener?.invoke(it.id, it.name)
+                }
+            }
+        }
+
         fun bind(location: LocationUI) {
             with(binding) {
                 this.location = location

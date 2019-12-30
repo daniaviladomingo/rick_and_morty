@@ -6,12 +6,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.domain.model.Character
-import avila.daniel.repository.cache.model.compose.CharacterFilter
+import avila.daniel.repository.cache.model.compose.CharacterSearchFilter
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.databinding.ItemCharterBinding
 
 class CharactersAdapter(
-    private val characterFilter: () -> CharacterFilter
+    private val characterSearchFilter: () -> CharacterSearchFilter
 ) : RecyclerView.Adapter<CharactersAdapter.ViewHolder>() {
 
     private val data = mutableListOf<Character>()
@@ -19,8 +19,8 @@ class CharactersAdapter(
         lateinit var listOld: List<Character>
         lateinit var listNew: List<Character>
 
-        var currentFilter: CharacterFilter? = null
-        var newFilter: CharacterFilter? = null
+        var currentFilter: CharacterSearchFilter? = null
+        var newFilter: CharacterSearchFilter? = null
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
             listOld[oldItemPosition].id == listNew[newItemPosition].id
@@ -45,7 +45,7 @@ class CharactersAdapter(
     }
 
     fun refresh() {
-        diffCallback.newFilter = characterFilter()
+        diffCallback.newFilter = characterSearchFilter()
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         diffResult.dispatchUpdatesTo(this)
         diffCallback.currentFilter = diffCallback.newFilter
@@ -57,22 +57,34 @@ class CharactersAdapter(
         DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
             R.layout.item_charter, parent, false
-        )
+        ), onClickListener
     )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        holder.bin(data[position], onClickListener, characterFilter)
+        holder.bin(data[position], characterSearchFilter)
 
-    class ViewHolder(private val binding: ItemCharterBinding) :
+    class ViewHolder(
+        private val binding: ItemCharterBinding,
+        onClickListener: ((Character) -> Unit)?
+    ) :
         RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.setClickListener {
+                binding.character?.let {
+                    onClickListener?.invoke(it)
+                }
+
+            }
+        }
+
         fun bin(
             character: Character,
-            onClickListener: ((Character) -> Unit)?,
-            characterFilter: () -> CharacterFilter
+            characterSearchFilter: () -> CharacterSearchFilter
         ) {
             with(binding) {
                 this.character = character
-                this.characterFilter = characterFilter
+                this.characterFilter = characterSearchFilter
             }
         }
     }

@@ -6,7 +6,7 @@ import avila.daniel.domain.model.Episode
 import avila.daniel.domain.model.Location
 import avila.daniel.repository.cache.IDataCache
 import avila.daniel.repository.cache.model.LocationFilterParameter
-import avila.daniel.repository.cache.model.compose.CharacterFilter
+import avila.daniel.repository.cache.model.compose.CharacterSearchFilter
 import avila.daniel.repository.remote.IDataRemote
 import avila.daniel.repository.remote.model.mapper.CharacterApiMapper
 import avila.daniel.repository.remote.model.mapper.EpisodeApiMapper
@@ -34,10 +34,10 @@ class RepositoryImp(
             var filterSpecie = ""
             var filterType = ""
 
-            when (filterSettings.parameterFilter) {
-                CharacterFilter.NAME -> filterName = searchFilter
-                CharacterFilter.SPECIES -> filterSpecie = searchFilter
-                CharacterFilter.TYPE -> filterType = searchFilter
+            when (filterSettings.search) {
+                CharacterSearchFilter.NAME -> filterName = searchFilter
+                CharacterSearchFilter.SPECIES -> filterSpecie = searchFilter
+                CharacterSearchFilter.TYPE -> filterType = searchFilter
             }
 
             dataRemote.getCharacters(

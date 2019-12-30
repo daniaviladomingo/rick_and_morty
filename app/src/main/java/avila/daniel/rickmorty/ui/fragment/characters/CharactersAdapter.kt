@@ -74,7 +74,6 @@ class CharactersAdapter(
                 binding.character?.let {
                     onClickListener?.invoke(it)
                 }
-
             }
         }
 

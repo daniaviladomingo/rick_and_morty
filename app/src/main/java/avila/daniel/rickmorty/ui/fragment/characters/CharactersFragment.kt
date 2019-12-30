@@ -20,7 +20,8 @@ class CharactersFragment : BaseFragment(), ISearchText {
 
     private val charactersViewModel: CharactersViewModel by viewModel()
 
-    private var adapter = CharactersAdapter(inject<() -> CharacterSearchFilter>(SearchFilterCharacters).value)
+    private var adapter =
+        CharactersAdapter(inject<() -> CharacterSearchFilter>(SearchFilterCharacters).value)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -60,16 +61,9 @@ class CharactersFragment : BaseFragment(), ISearchText {
             }
         })
 
-        charactersViewModel.refreshLiveData.observe(viewLifecycleOwner, Observer { resource ->
-            resource?.run {
-                managementResourceState(status, message)
-                if (status == ResourceState.SUCCESS) {
-                    data?.run {
-                        adapter.refresh()
-                    }
-                }
-            }
-        })
+        charactersViewModel.refreshLiveData.observe(
+            viewLifecycleOwner,
+            Observer { adapter.refresh() })
 
         charactersViewModel.characterParcelabeLiveData.observe(
             viewLifecycleOwner,

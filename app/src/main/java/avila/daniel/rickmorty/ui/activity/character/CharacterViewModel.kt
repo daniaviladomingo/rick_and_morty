@@ -23,9 +23,11 @@ class CharacterViewModel(
     val favoriteLiveData = SingleLiveEvent<Resource<Boolean>>()
     val isFavoriteLiveData = SingleLiveEvent<Resource<Boolean>>()
 
+    private lateinit var character: Character
+
     fun getCharacter(characterParcelable: CharacterParcelable) {
         characterLiveData.value = Resource.loading()
-        val character = characterParcelableMapper.inverseMap(characterParcelable)
+        character = characterParcelableMapper.inverseMap(characterParcelable)
         characterLiveData.value = Resource.success(character)
 
         addDisposable(isFavoriteUseCase.execute(character.id)
@@ -37,7 +39,7 @@ class CharacterViewModel(
             })
     }
 
-    fun addFavorite(character: Character) {
+    fun addFavorite() {
         favoriteLiveData.value = Resource.loading()
         addDisposable(addCharacterToFavoriteUseCase.execute(character)
             .observeOn(scheduleProvider.ui())
@@ -49,9 +51,9 @@ class CharacterViewModel(
             })
     }
 
-    fun removeFavorite(id: Int) {
+    fun removeFavorite() {
         favoriteLiveData.value = Resource.loading()
-        addDisposable(removeCharacterFromFavoriteUseCase.execute(id)
+        addDisposable(removeCharacterFromFavoriteUseCase.execute(character.id)
             .observeOn(scheduleProvider.ui())
             .subscribeOn(scheduleProvider.io())
             .subscribe({

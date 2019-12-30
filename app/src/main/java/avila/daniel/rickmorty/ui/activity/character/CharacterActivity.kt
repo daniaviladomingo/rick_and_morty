@@ -5,7 +5,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import avila.daniel.domain.model.Character
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseActivity
 import avila.daniel.rickmorty.databinding.ActivityCharacterBinding
@@ -15,8 +14,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class CharacterActivity : BaseActivity() {
     private val characterViewModel: CharacterViewModel by viewModel()
-
-    private lateinit var character: Character
 
     private var favorite = false
 
@@ -38,9 +35,7 @@ class CharacterActivity : BaseActivity() {
             resource?.run {
                 managementResourceState(status, message)
                 if (status == ResourceState.SUCCESS) {
-                    data?.run {
-                        supportActionBar?.title = this.name
-                        character = this
+                    data!!.run {
                         (binding as ActivityCharacterBinding).character = this
                     }
                 }
@@ -51,7 +46,7 @@ class CharacterActivity : BaseActivity() {
             resource?.run {
                 managementResourceState(status, message)
                 if (status == ResourceState.SUCCESS) {
-                    data?.run {
+                    data!!.run {
                         favorite = this
                         invalidateOptionsMenu()
                         Toast.makeText(
@@ -68,7 +63,7 @@ class CharacterActivity : BaseActivity() {
             resource?.run {
                 managementResourceState(status, message)
                 if (status == ResourceState.SUCCESS) {
-                    data?.run {
+                    data!!.run {
                         favorite = this
                         invalidateOptionsMenu()
                     }
@@ -77,24 +72,22 @@ class CharacterActivity : BaseActivity() {
         })
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
                 true
             }
             R.id.action_favorite -> {
-                characterViewModel.addFavorite(character)
+                characterViewModel.addFavorite()
                 true
             }
             R.id.action_unfavorite -> {
-                characterViewModel.removeFavorite(character.id)
+                characterViewModel.removeFavorite()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
-
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(if (favorite) R.menu.menu_favorite else R.menu.menu_unfavorite, menu)

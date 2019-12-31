@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.repository.cache.model.compose.CharacterSearchFilter
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseFragment
+import avila.daniel.rickmorty.databinding.FragmentCharactersBinding
 import avila.daniel.rickmorty.di.qualifiers.SearchFilterCharacters
 import avila.daniel.rickmorty.ui.activity.character.CharacterActivity
 import avila.daniel.rickmorty.ui.util.ISearchText
@@ -25,6 +26,8 @@ class CharactersFragment : BaseFragment(), ISearchText {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        (binding as FragmentCharactersBinding).viewModel = charactersViewModel
 
         setListener()
 
@@ -50,16 +53,9 @@ class CharactersFragment : BaseFragment(), ISearchText {
     }
 
     private fun setListener() {
-        charactersViewModel.itemsLiveData.observe(viewLifecycleOwner, Observer { resource ->
-            resource?.run {
-                managementResourceState(status, message)
-                if (status == ResourceState.SUCCESS) {
-                    data?.run {
-                        adapter.setData(this)
-                    }
-                }
-            }
-        })
+        charactersViewModel.itemsLiveData.observe(
+            viewLifecycleOwner,
+            Observer { resource -> resource?.run { managementResourceState(status, message) } })
 
         charactersViewModel.refreshLiveData.observe(
             viewLifecycleOwner,

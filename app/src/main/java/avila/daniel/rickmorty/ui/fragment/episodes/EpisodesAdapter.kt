@@ -9,10 +9,12 @@ import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.databinding.ItemEpisodeBinding
 import avila.daniel.rickmorty.databinding.ItemHeaderEpisodeBinding
 import avila.daniel.rickmorty.ui.model.EpisodeUI
+import avila.daniel.rickmorty.ui.util.IDataSet
 import com.yuyang.stickyheaders.AdapterDataProvider
 import com.yuyang.stickyheaders.StickyHeaderModel
 
-class EpisodesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AdapterDataProvider {
+class EpisodesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AdapterDataProvider,
+    IDataSet<EpisodeUI> {
 
     private val data = mutableListOf<Any>()
     var onClickListener: ((Int, String) -> Unit)? = null
@@ -50,7 +52,7 @@ class EpisodesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Adapter
         }
     }
 
-    fun setData(newData: List<EpisodeUI>) {
+    override fun setData(newData: List<EpisodeUI>) {
         diffCallback.listOld = data
         val newDataWithHeader = managementHeaders(newData)
         diffCallback.listNew = newDataWithHeader
@@ -64,26 +66,28 @@ class EpisodesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Adapter
     private fun managementHeaders(episodes: List<EpisodeUI>): List<Any> {
         val newList = mutableListOf<Any>()
 
-        if (data.size == 0) {
-            newList.add(ItemHeader("${episodes[0].season}"))
-        } else {
-            val lastItem = data[data.size - 1] as EpisodeUI
-            val firstItem = episodes[0]
-            if (lastItem.season != firstItem.season) {
-                newList.add(ItemHeader("${firstItem.season}"))
-            }
-        }
-
-        episodes.forEachIndexed { index, _ ->
-            if (index > 0) {
-                val item0 = episodes[index - 1]
-                val item1 = episodes[index]
-                if (item0.season != item1.season) {
-                    newList.add(ItemHeader("${item1.season}"))
-                }
-                newList.add(item1)
+        if (episodes.isNotEmpty()) {
+            if (data.isEmpty()) {
+                newList.add(ItemHeader("${episodes[0].season}"))
             } else {
-                newList.add(episodes[0])
+                val lastItem = data[data.size - 1] as EpisodeUI
+                val firstItem = episodes[0]
+                if (lastItem.season != firstItem.season) {
+                    newList.add(ItemHeader("${firstItem.season}"))
+                }
+            }
+
+            episodes.forEachIndexed { index, _ ->
+                if (index > 0) {
+                    val item0 = episodes[index - 1]
+                    val item1 = episodes[index]
+                    if (item0.season != item1.season) {
+                        newList.add(ItemHeader("${item1.season}"))
+                    }
+                    newList.add(item1)
+                } else {
+                    newList.add(episodes[0])
+                }
             }
         }
 

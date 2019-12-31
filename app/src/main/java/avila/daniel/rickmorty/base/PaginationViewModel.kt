@@ -1,5 +1,6 @@
 package avila.daniel.rickmorty.base
 
+import androidx.lifecycle.MutableLiveData
 import avila.daniel.domain.interactor.type.SingleUseCaseWithParameter
 import avila.daniel.domain.model.mapper.Mapper
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
@@ -19,6 +20,7 @@ abstract class PaginationViewModel<T, U>(
     private var currentSearchText = ""
 
     val itemsLiveData = SingleLiveEvent<Resource<List<U>>>()
+    val items = MutableLiveData<List<U>>().apply { value = emptyList() }
 
     fun scrollEnd() {
         if (!isLoading) {
@@ -48,10 +50,11 @@ abstract class PaginationViewModel<T, U>(
             addDisposable(query().execute(Pair(currentSearchText, currentPage++))
                 .observeOn(scheduleProvider.ui())
                 .subscribeOn(scheduleProvider.io())
-                .subscribe({ items ->
-                    dataList.addAll(mapper()?.map(items.second) ?: items.second as List<U>)
-                    itemsLiveData.value = Resource.success(dataList)
-                    totalPage = items.first
+                .subscribe({ data ->
+                    itemsLiveData.value = Resource.loadingFinish()
+                    dataList.addAll(mapper()?.map(data.second) ?: data.second as List<U>)
+                    items.value = dataList
+                    totalPage = data.first
                     isLoading = false
                 }) {
                     isLoading = false

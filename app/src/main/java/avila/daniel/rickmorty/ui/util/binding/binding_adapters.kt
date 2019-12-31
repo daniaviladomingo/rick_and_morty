@@ -9,7 +9,6 @@ import avila.daniel.domain.model.Character
 import avila.daniel.domain.model.compose.Status
 import avila.daniel.repository.cache.model.compose.CharacterSearchFilter
 import avila.daniel.rickmorty.R
-import avila.daniel.rickmorty.ui.fragment.characters.CharactersAdapter
 import avila.daniel.rickmorty.ui.util.IDataSet
 import com.bumptech.glide.Glide
 

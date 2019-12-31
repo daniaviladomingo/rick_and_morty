@@ -8,8 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.databinding.ItemLocationBinding
 import avila.daniel.rickmorty.ui.model.LocationUI
+import avila.daniel.rickmorty.ui.util.IDataSet
 
-class LocationsAdapter : RecyclerView.Adapter<LocationsAdapter.ViewHolder>() {
+class LocationsAdapter : RecyclerView.Adapter<LocationsAdapter.ViewHolder>(), IDataSet<LocationUI> {
     private val data = mutableListOf<LocationUI>()
     var onClickListener: ((Int, String) -> Unit)? = null
     private val diffCallback = object : DiffUtil.Callback() {
@@ -39,7 +40,7 @@ class LocationsAdapter : RecyclerView.Adapter<LocationsAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(data[position])
 
-    fun setData(newData: List<LocationUI>) {
+    override fun setData(newData: List<LocationUI>) {
         diffCallback.listOld = data
         diffCallback.listNew = newData
 

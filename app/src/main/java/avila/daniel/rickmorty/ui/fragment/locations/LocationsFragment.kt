@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseFragment
+import avila.daniel.rickmorty.databinding.FragmentLocationsBinding
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.CHARACTERS_SOURCE
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.ID
@@ -27,16 +28,9 @@ class LocationsFragment : BaseFragment(), ISearchText {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        locationsViewModel.itemsLiveData.observe(viewLifecycleOwner, Observer { resource ->
-            resource?.run {
-                managementResourceState(status, message)
-                if (status == ResourceState.SUCCESS) {
-                    data?.run {
-                        adapter.setData(this)
-                    }
-                }
-            }
-        })
+        locationsViewModel.itemsLiveData.observe(
+            viewLifecycleOwner,
+            Observer { resource -> resource?.run { managementResourceState(status, message) } })
 
         adapter.onClickListener = { id, name ->
             startActivity(
@@ -65,6 +59,8 @@ class LocationsFragment : BaseFragment(), ISearchText {
         })
 
         locationsViewModel.load()
+
+        (binding as FragmentLocationsBinding).viewModel = locationsViewModel
     }
 
     override fun searchText(searchText: String) {

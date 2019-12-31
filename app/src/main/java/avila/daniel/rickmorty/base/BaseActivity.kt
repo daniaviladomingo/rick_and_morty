@@ -49,7 +49,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 view_empty.visibility = GONE
                 view_progress.visibility = VISIBLE
             }
-            ResourceState.LOADING_FINISH->{
+            ResourceState.LOADING_FINISH -> {
                 view.visibility = VISIBLE
                 view_error.visibility = GONE
                 view_empty.visibility = GONE

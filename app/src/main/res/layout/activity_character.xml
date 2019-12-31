@@ -4,8 +4,8 @@
     <data>
 
         <variable
-            name="character"
-            type="avila.daniel.domain.model.Character" />
+            name="viewModel"
+            type="avila.daniel.rickmorty.ui.activity.character.CharacterViewModel" />
     </data>
 
     <LinearLayout
@@ -15,7 +15,7 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            app:title="@{character.name}"
+            app:title="@{viewModel.characterLive.name}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
@@ -40,7 +40,7 @@
                     android:layout_marginBottom="25dp"
                     app:civ_border_color="@color/colorPrimary"
                     app:civ_border_width="2dp"
-                    app:imageUrl="@{character.image}" />
+                    app:imageUrl="@{viewModel.characterLive.image}" />
 
                 <TextView
                     style="@style/CharacterTitle"
@@ -52,7 +52,7 @@
                     style="@style/CharacterContent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{character.name}" />
+                    android:text="@{viewModel.characterLive.name}" />
 
                 <TextView
                     style="@style/CharacterTitle"
@@ -65,7 +65,7 @@
                     style="@style/CharacterContent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{character.species}" />
+                    android:text="@{viewModel.characterLive.species}" />
 
                 <TextView
                     style="@style/CharacterTitle"
@@ -78,7 +78,7 @@
                     style="@style/CharacterContent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:location="@{character.origin.name}" />
+                    app:location="@{viewModel.characterLive.origin.name}" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -86,7 +86,7 @@
                     android:layout_marginTop="5dp"
                     android:contentDescription="@null"
                     android:src="@drawable/ic_unknown"
-                    app:location="@{character.origin.name}" />
+                    app:location="@{viewModel.characterLive.origin.name}" />
 
                 <TextView
                     style="@style/CharacterTitle"
@@ -99,7 +99,7 @@
                     style="@style/CharacterContent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:location="@{character.location.name}" />
+                    app:location="@{viewModel.characterLive.location.name}" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -107,7 +107,7 @@
                     android:layout_marginTop="5dp"
                     android:contentDescription="@null"
                     android:src="@drawable/ic_unknown"
-                    app:location="@{character.location.name}" />
+                    app:location="@{viewModel.characterLive.location.name}" />
 
                 <TextView
                     style="@style/CharacterTitle"
@@ -121,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:contentDescription="@null"
-                    app:status="@{character.status}" />
+                    app:status="@{viewModel.characterLive.status}" />
 
             </LinearLayout>
         </ScrollView>

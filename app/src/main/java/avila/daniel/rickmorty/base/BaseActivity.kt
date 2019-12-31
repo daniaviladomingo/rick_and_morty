@@ -27,8 +27,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_base)
 
-        binding =
-            DataBindingUtil.inflate<ViewDataBinding>(layoutInflater, getLayoutId(), null, false)
+        binding = DataBindingUtil.inflate<ViewDataBinding>(layoutInflater, getLayoutId(), null, false)
+        binding.lifecycleOwner = this
 
         (view as FrameLayout).addView(
             binding.root,
@@ -48,6 +48,12 @@ abstract class BaseActivity : AppCompatActivity() {
                 view_error.visibility = GONE
                 view_empty.visibility = GONE
                 view_progress.visibility = VISIBLE
+            }
+            ResourceState.LOADING_FINISH->{
+                view.visibility = VISIBLE
+                view_error.visibility = GONE
+                view_empty.visibility = GONE
+                view_progress.visibility = GONE
             }
             ResourceState.SUCCESS -> {
                 view.visibility = VISIBLE

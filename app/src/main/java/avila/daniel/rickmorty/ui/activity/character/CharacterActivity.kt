@@ -28,19 +28,14 @@ class CharacterActivity : BaseActivity() {
         intent.extras?.run {
             characterViewModel.getCharacter(getParcelable(CHARACTER)!!)
         }
+
+        (binding as ActivityCharacterBinding).viewModel = characterViewModel
     }
 
     private fun setListener() {
-        characterViewModel.characterLiveData.observe(this, Observer { resource ->
-            resource?.run {
-                managementResourceState(status, message)
-                if (status == ResourceState.SUCCESS) {
-                    data!!.run {
-                        (binding as ActivityCharacterBinding).character = this
-                    }
-                }
-            }
-        })
+        characterViewModel.characterLiveData.observe(
+            this,
+            Observer { resource -> resource?.run { managementResourceState(status, message) } })
 
         characterViewModel.favoriteLiveData.observe(this, Observer { resource ->
             resource?.run {

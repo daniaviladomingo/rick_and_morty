@@ -9,10 +9,11 @@ import avila.daniel.domain.model.Character
 import avila.daniel.repository.cache.model.compose.CharacterSearchFilter
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.databinding.ItemCharterBinding
+import avila.daniel.rickmorty.ui.util.IDataSet
 
 class CharactersAdapter(
     private val characterSearchFilter: () -> CharacterSearchFilter
-) : RecyclerView.Adapter<CharactersAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<CharactersAdapter.ViewHolder>(), IDataSet<Character> {
 
     private val data = mutableListOf<Character>()
     private val diffCallback = object : DiffUtil.Callback() {
@@ -34,7 +35,7 @@ class CharactersAdapter(
     }
     var onClickListener: ((Character) -> Unit)? = null
 
-    fun setData(newData: List<Character>) {
+    override fun setData(newData: List<Character>) {
         diffCallback.listOld = data
         diffCallback.listNew = newData
         val diffResult = DiffUtil.calculateDiff(diffCallback)

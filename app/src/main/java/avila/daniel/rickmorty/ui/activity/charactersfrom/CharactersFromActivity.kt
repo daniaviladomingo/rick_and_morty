@@ -3,11 +3,11 @@ package avila.daniel.rickmorty.ui.activity.charactersfrom
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.lifecycle.Observer
 import avila.daniel.repository.cache.model.compose.CharacterSearchFilter
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseActivity
+import avila.daniel.rickmorty.databinding.ActivityCharactersFromBinding
 import avila.daniel.rickmorty.di.qualifiers.SearchFilterCharacters
 import avila.daniel.rickmorty.ui.activity.character.CharacterActivity
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersAdapter
@@ -23,9 +23,11 @@ class CharactersFromActivity : BaseActivity() {
 
     private lateinit var charactersSource: CharactersSource
 
-    private var adapter = CharactersAdapter(inject<() -> CharacterSearchFilter>(
-        SearchFilterCharacters
-    ).value)
+    private var adapter = CharactersAdapter(
+        inject<() -> CharacterSearchFilter>(
+            SearchFilterCharacters
+        ).value
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +61,8 @@ class CharactersFromActivity : BaseActivity() {
 
             supportActionBar?.title = getString(TITLE)
         }
+
+        (binding as ActivityCharactersFromBinding).viewModel = charactersFromViewModel
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -76,17 +80,9 @@ class CharactersFromActivity : BaseActivity() {
     }
 
     private fun setListener() {
-        charactersFromViewModel.charactersLiveData.observe(this, Observer { resource ->
-            resource?.run {
-                managementResourceState(status, message)
-                if (status == ResourceState.SUCCESS) {
-                    data?.run {
-                        adapter.setData(this)
-                        no_favorite.visibility = if (this.isEmpty()) View.VISIBLE else View.GONE
-                    }
-                }
-            }
-        })
+        charactersFromViewModel.charactersLiveData.observe(
+            this,
+            Observer { resource -> resource?.run { managementResourceState(status, message) } })
 
         charactersFromViewModel.characterParcelabeLiveData.observe(
             this,

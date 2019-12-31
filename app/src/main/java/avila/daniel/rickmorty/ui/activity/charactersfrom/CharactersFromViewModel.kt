@@ -1,5 +1,6 @@
 package avila.daniel.rickmorty.ui.activity.charactersfrom
 
+import androidx.lifecycle.MutableLiveData
 import avila.daniel.domain.interactor.GetCharactersFavoriteUseCase
 import avila.daniel.domain.interactor.GetEpisodeCharactersUseCase
 import avila.daniel.domain.interactor.GetLocationCharactersUseCase
@@ -19,6 +20,7 @@ class CharactersFromViewModel(
     private val scheduleProvider: IScheduleProvider
 ) : BaseViewModel() {
 
+    val items = MutableLiveData<List<Character>>().apply { value = emptyList() }
     val charactersLiveData = SingleLiveEvent<Resource<List<Character>>>()
     val characterParcelabeLiveData = SingleLiveEvent<Resource<CharacterParcelable>>()
 
@@ -28,7 +30,8 @@ class CharactersFromViewModel(
             .observeOn(scheduleProvider.ui())
             .subscribeOn(scheduleProvider.io())
             .subscribe({ characters ->
-                charactersLiveData.value = Resource.success(characters)
+                charactersLiveData.value = Resource.loadingFinish()
+                items.value = characters
             }) {
                 charactersLiveData.value = Resource.error(it.localizedMessage)
             })
@@ -40,7 +43,8 @@ class CharactersFromViewModel(
             .observeOn(scheduleProvider.ui())
             .subscribeOn(scheduleProvider.io())
             .subscribe({ characters ->
-                charactersLiveData.value = Resource.success(characters)
+                charactersLiveData.value = Resource.loadingFinish()
+                items.value = characters
             }) {
                 charactersLiveData.value = Resource.error(it.localizedMessage)
             })
@@ -53,7 +57,8 @@ class CharactersFromViewModel(
                 .observeOn(scheduleProvider.ui())
                 .subscribeOn(scheduleProvider.io())
                 .subscribe({ characters ->
-                    charactersLiveData.value = Resource.success(characters)
+                    charactersLiveData.value = Resource.loadingFinish()
+                    items.value = characters
                 }) {
                     charactersLiveData.value = Resource.error(it.localizedMessage)
                 })

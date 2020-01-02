@@ -20,16 +20,16 @@ class CharacterActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setListener()
+        (binding as ActivityCharacterBinding).viewModel = characterViewModel
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        setListener()
+
         intent.extras?.run {
             characterViewModel.getCharacter(getParcelable(CHARACTER)!!)
         }
-
-        (binding as ActivityCharacterBinding).viewModel = characterViewModel
     }
 
     private fun setListener() {

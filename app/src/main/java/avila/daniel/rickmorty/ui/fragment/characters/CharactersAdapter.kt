@@ -10,9 +10,10 @@ import avila.daniel.repository.cache.model.compose.CharacterSearchFilter
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.databinding.ItemCharterBinding
 import avila.daniel.rickmorty.ui.util.IDataSet
+import avila.daniel.rickmorty.ui.util.IViewModelManagementCharacter
 
 class CharactersAdapter(
-    private val characterSearchFilter: () -> CharacterSearchFilter
+    private val viewModel: IViewModelManagementCharacter
 ) : RecyclerView.Adapter<CharactersAdapter.ViewHolder>(), IDataSet<Character> {
 
     private val data = mutableListOf<Character>()
@@ -33,7 +34,6 @@ class CharactersAdapter(
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
             currentFilter == newFilter
     }
-    var onClickListener: ((Character) -> Unit)? = null
 
     override fun setData(newData: List<Character>) {
         diffCallback.listOld = data
@@ -46,7 +46,7 @@ class CharactersAdapter(
     }
 
     fun refresh() {
-        diffCallback.newFilter = characterSearchFilter()
+        diffCallback.newFilter = viewModel.searchFilter()
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         diffResult.dispatchUpdatesTo(this)
         diffCallback.currentFilter = diffCallback.newFilter
@@ -58,33 +58,23 @@ class CharactersAdapter(
         DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
             R.layout.item_charter, parent, false
-        ), onClickListener
+        )
     )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        holder.bin(data[position], characterSearchFilter)
+        holder.bin(viewModel, data[position])
 
-    class ViewHolder(
-        private val binding: ItemCharterBinding,
-        onClickListener: ((Character) -> Unit)?
-    ) :
+    class ViewHolder(private val binding: ItemCharterBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        init {
-            binding.setClickListener {
-                binding.character?.let {
-                    onClickListener?.invoke(it)
-                }
-            }
-        }
-
         fun bin(
-            character: Character,
-            characterSearchFilter: () -> CharacterSearchFilter
+            viewModel: IViewModelManagementCharacter,
+            character: Character
         ) {
             with(binding) {
+                this.viewModel = viewModel
                 this.character = character
-                this.characterFilter = characterSearchFilter
+                executePendingBindings()
             }
         }
     }

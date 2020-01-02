@@ -13,7 +13,9 @@ import avila.daniel.rickmorty.ui.util.IDataSet
 import com.yuyang.stickyheaders.AdapterDataProvider
 import com.yuyang.stickyheaders.StickyHeaderModel
 
-class EpisodesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AdapterDataProvider,
+class EpisodesAdapter(
+    private val viewModel: EpisodesViewModel
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AdapterDataProvider,
     IDataSet<EpisodeUI> {
 
     private val data = mutableListOf<Any>()
@@ -149,6 +151,7 @@ class EpisodesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Adapter
         fun bin(episode: EpisodeUI) {
             with(binding) {
                 this.episode = episode
+                executePendingBindings()
             }
         }
     }

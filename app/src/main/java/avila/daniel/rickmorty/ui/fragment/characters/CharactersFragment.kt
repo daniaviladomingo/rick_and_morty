@@ -5,24 +5,20 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import avila.daniel.repository.cache.model.compose.CharacterSearchFilter
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseFragment
 import avila.daniel.rickmorty.databinding.FragmentCharactersBinding
-import avila.daniel.rickmorty.di.qualifiers.SearchFilterCharacters
 import avila.daniel.rickmorty.ui.activity.character.CharacterActivity
 import avila.daniel.rickmorty.ui.util.ISearchText
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.fragment_characters.*
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class CharactersFragment : BaseFragment(), ISearchText {
 
     private val charactersViewModel: CharactersViewModel by viewModel()
 
-    private var adapter =
-        CharactersAdapter(inject<() -> CharacterSearchFilter>(SearchFilterCharacters).value)
+    private lateinit var adapter: CharactersAdapter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -31,10 +27,7 @@ class CharactersFragment : BaseFragment(), ISearchText {
 
         setListener()
 
-        adapter.onClickListener = {
-            charactersViewModel.openCharacterDetail(it)
-        }
-
+        adapter = CharactersAdapter(charactersViewModel)
         list_characters.adapter = adapter
         list_characters.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

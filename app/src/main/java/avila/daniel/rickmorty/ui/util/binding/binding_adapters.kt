@@ -23,10 +23,10 @@ fun bindImageUrl(imageView: ImageView, imageUrl: String?) {
 fun bindTitleCharacter(
     textView: TextView,
     character: Character,
-    characterSearchFilter: () -> CharacterSearchFilter
+    searchFilter: CharacterSearchFilter
 ) {
     textView.text =
-        when (characterSearchFilter()) {
+        when (searchFilter) {
             CharacterSearchFilter.NAME -> character.name
             CharacterSearchFilter.SPECIES -> character.species
             CharacterSearchFilter.TYPE -> character.type

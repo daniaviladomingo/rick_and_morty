@@ -23,25 +23,17 @@ class CharactersFromActivity : BaseActivity() {
 
     private lateinit var charactersSource: CharactersSource
 
-    private var adapter = CharactersAdapter(
-        inject<() -> CharacterSearchFilter>(
-            SearchFilterCharacters
-        ).value
-    )
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        (binding as ActivityCharactersFromBinding).viewModel = charactersFromViewModel
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         setListener()
 
-        adapter.onClickListener = {
-            charactersFromViewModel.openCharacterDetail(it)
-        }
-
-        list_characters.adapter = adapter
+        list_characters.adapter = CharactersAdapter(charactersFromViewModel)
 
         intent.extras?.run {
             charactersSource = getParcelable(CHARACTERS_SOURCE)!!
@@ -61,8 +53,6 @@ class CharactersFromActivity : BaseActivity() {
 
             supportActionBar?.title = getString(TITLE)
         }
-
-        (binding as ActivityCharactersFromBinding).viewModel = charactersFromViewModel
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -84,7 +74,7 @@ class CharactersFromActivity : BaseActivity() {
             this,
             Observer { resource -> resource?.run { managementResourceState(status, message) } })
 
-        charactersFromViewModel.characterParcelabeLiveData.observe(
+        charactersFromViewModel.characterParcelableLiveData.observe(
             this,
             Observer
             { resource ->

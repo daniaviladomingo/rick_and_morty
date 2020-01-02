@@ -5,23 +5,19 @@
     <data>
 
         <variable
-            name="clickListener"
-            type="android.view.View.OnClickListener" />
+            name="viewModel"
+            type="avila.daniel.rickmorty.ui.util.IViewModelManagementCharacter" />
 
         <variable
             name="character"
             type="avila.daniel.domain.model.Character" />
-
-        <variable
-            name="characterFilter"
-            type="kotlin.jvm.functions.Function0&lt;avila.daniel.repository.cache.model.compose.CharacterSearchFilter>" />
 
     </data>
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="@{clickListener}"
+        android:onClick="@{() -> viewModel.openDetail(character)}"
         app:cardCornerRadius="2dp"
         app:cardElevation="3dp"
         app:cardUseCompatPadding="true">
@@ -47,7 +43,7 @@
                 android:background="@color/gray_transparent"
                 android:gravity="center_horizontal"
                 app:character="@{character}"
-                app:characterFilter="@{characterFilter}" />
+                app:characterFilter="@{viewModel.searchFilter}" />
 
         </RelativeLayout>
 

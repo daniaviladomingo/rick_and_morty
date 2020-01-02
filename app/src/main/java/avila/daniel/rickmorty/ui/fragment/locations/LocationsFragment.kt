@@ -15,7 +15,6 @@ import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.TITLE
 import avila.daniel.rickmorty.ui.model.CharactersSource
 import avila.daniel.rickmorty.ui.util.ISearchText
-import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.fragment_locations.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -23,15 +22,18 @@ class LocationsFragment : BaseFragment(), ISearchText {
 
     private val locationsViewModel: LocationsViewModel by viewModel()
 
-    private var adapter = LocationsAdapter()
+    private lateinit var adapter: LocationsAdapter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        (binding as FragmentLocationsBinding).viewModel = locationsViewModel
 
         locationsViewModel.itemsLiveData.observe(
             viewLifecycleOwner,
             Observer { resource -> resource?.run { managementResourceState(status, message) } })
 
+        adapter = LocationsAdapter(locationsViewModel)
         adapter.onClickListener = { id, name ->
             startActivity(
                 Intent(
@@ -59,8 +61,6 @@ class LocationsFragment : BaseFragment(), ISearchText {
         })
 
         locationsViewModel.load()
-
-        (binding as FragmentLocationsBinding).viewModel = locationsViewModel
     }
 
     override fun searchText(searchText: String) {

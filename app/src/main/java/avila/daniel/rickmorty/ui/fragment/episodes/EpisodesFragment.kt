@@ -15,7 +15,6 @@ import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.TITLE
 import avila.daniel.rickmorty.ui.model.CharactersSource
 import avila.daniel.rickmorty.ui.util.ISearchText
-import avila.daniel.rickmorty.ui.util.data.ResourceState
 import com.yuyang.stickyheaders.StickyLinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_episodes.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -24,13 +23,14 @@ class EpisodesFragment : BaseFragment(), ISearchText {
 
     private val episodesViewModel: EpisodesViewModel by viewModel()
 
-    private var adapter = EpisodesAdapter()
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        (binding as FragmentEpisodesBinding).viewModel = episodesViewModel
+
         setListener()
 
+        val adapter = EpisodesAdapter(episodesViewModel)
         adapter.onClickListener = { id, name ->
             startActivity(Intent(
                 activity,
@@ -59,8 +59,6 @@ class EpisodesFragment : BaseFragment(), ISearchText {
         })
 
         episodesViewModel.load()
-
-        (binding as FragmentEpisodesBinding).viewModel = episodesViewModel
     }
 
     private fun setListener() {

@@ -72,7 +72,13 @@ val activityModule = module {
 
 val viewModelModule = module {
     viewModel {
-        CharactersViewModel(get(), get(), get(), get(InitialPage)).apply {
+        CharactersViewModel(
+            get(),
+            get(),
+            get(SearchFilterCharacters),
+            get(),
+            get(InitialPage)
+        ).apply {
             characterReload = this
         }
     }
@@ -84,6 +90,7 @@ val viewModelModule = module {
             get(),
             get(),
             get(),
+            get(SearchFilterCharacters),
             get()
         )
     }

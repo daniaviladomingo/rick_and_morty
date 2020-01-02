@@ -10,7 +10,9 @@ import avila.daniel.rickmorty.databinding.ItemLocationBinding
 import avila.daniel.rickmorty.ui.model.LocationUI
 import avila.daniel.rickmorty.ui.util.IDataSet
 
-class LocationsAdapter : RecyclerView.Adapter<LocationsAdapter.ViewHolder>(), IDataSet<LocationUI> {
+class LocationsAdapter(
+    private val viewModel: LocationsViewModel
+) : RecyclerView.Adapter<LocationsAdapter.ViewHolder>(), IDataSet<LocationUI> {
     private val data = mutableListOf<LocationUI>()
     var onClickListener: ((Int, String) -> Unit)? = null
     private val diffCallback = object : DiffUtil.Callback() {

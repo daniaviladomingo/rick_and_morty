@@ -21,10 +21,9 @@ class CharacterViewModel(
 ) : BaseViewModel() {
 
     val characterLive = MutableLiveData<Character>()
-    val characterLiveData = SingleLiveEvent<Resource<Character>>()
+    val characterLiveData = SingleLiveEvent<Resource<Void>>()
     val favoriteLiveData = SingleLiveEvent<Resource<Boolean>>()
     val isFavoriteLiveData = SingleLiveEvent<Resource<Boolean>>()
-
 
     fun getCharacter(characterParcelable: CharacterParcelable) {
         characterLiveData.value = Resource.loading()

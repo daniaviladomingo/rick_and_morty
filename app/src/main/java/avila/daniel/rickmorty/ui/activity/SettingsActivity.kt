@@ -7,32 +7,24 @@ import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import avila.daniel.rickmorty.R
+import avila.daniel.rickmorty.base.BaseActivity
 import avila.daniel.rickmorty.ui.util.IDataChanged
 import kotlinx.android.synthetic.main.activity_settings.*
 import org.koin.android.ext.android.inject
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
-        supportFragmentManager
-            .beginTransaction()
-            .replace(
-                R.id.settings,
-                SettingsFragment()
-            )
-            .commit()
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            onBackPressed()
-        }
-        return super.onOptionsItemSelected(item)
-    }
+    override fun getLayoutId(): Int = R.layout.activity_settings
+
+    override fun checkAgain(): () -> Unit = {}
+
+    override fun tryAgain(): () -> Unit = {}
 
     class SettingsFragment : PreferenceFragmentCompat() {
 

@@ -69,10 +69,6 @@ class CharacterDetailActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
         when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
             R.id.action_favorite -> {
                 characterDetailViewModel.addFavorite()
                 true

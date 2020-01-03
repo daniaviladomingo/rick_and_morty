@@ -1,6 +1,7 @@
 package avila.daniel.rickmorty.base
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -37,6 +38,13 @@ abstract class BaseActivity : AppCompatActivity() {
 
         view_empty.emptyListener = checkAgain()
         view_error.errorListener = tryAgain()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     protected abstract fun getLayoutId(): Int

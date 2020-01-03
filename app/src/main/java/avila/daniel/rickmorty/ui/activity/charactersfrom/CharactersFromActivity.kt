@@ -2,7 +2,6 @@ package avila.daniel.rickmorty.ui.activity.charactersfrom
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.lifecycle.Observer
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseActivity
@@ -50,13 +49,6 @@ class CharactersFromActivity : BaseActivity() {
 
             supportActionBar?.title = getString(TITLE)
         }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            onBackPressed()
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {

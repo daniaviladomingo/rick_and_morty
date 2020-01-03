@@ -4,17 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.lifecycle.Observer
-import avila.daniel.repository.cache.model.compose.CharacterSearchFilter
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseActivity
 import avila.daniel.rickmorty.databinding.ActivityCharactersFromBinding
-import avila.daniel.rickmorty.di.qualifiers.SearchFilterCharacters
-import avila.daniel.rickmorty.ui.activity.character.CharacterActivity
+import avila.daniel.rickmorty.ui.activity.character.CharacterDetailActivity
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersAdapter
 import avila.daniel.rickmorty.ui.model.CharactersSource
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.activity_characters_from.*
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class CharactersFromActivity : BaseActivity() {
@@ -85,9 +82,9 @@ class CharactersFromActivity : BaseActivity() {
                             startActivity(
                                 Intent(
                                     this@CharactersFromActivity,
-                                    CharacterActivity::class.java
+                                    CharacterDetailActivity::class.java
                                 ).apply {
-                                    putExtra(CharacterActivity.CHARACTER, it)
+                                    putExtra(CharacterDetailActivity.CHARACTER, it)
                                 })
                         }
                     }

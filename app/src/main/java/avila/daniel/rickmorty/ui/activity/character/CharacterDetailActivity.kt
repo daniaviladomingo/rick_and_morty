@@ -12,15 +12,15 @@ import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.activity_character.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class CharacterActivity : BaseActivity() {
-    private val characterViewModel: CharacterViewModel by viewModel()
+class CharacterDetailActivity : BaseActivity() {
+    private val characterDetailViewModel: CharacterDetailViewModel by viewModel()
 
     private var favorite = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (binding as ActivityCharacterBinding).viewModel = characterViewModel
+        (binding as ActivityCharacterBinding).viewModel = characterDetailViewModel
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -28,16 +28,16 @@ class CharacterActivity : BaseActivity() {
         setListener()
 
         intent.extras?.run {
-            characterViewModel.getCharacter(getParcelable(CHARACTER)!!)
+            characterDetailViewModel.getCharacter(getParcelable(CHARACTER)!!)
         }
     }
 
     private fun setListener() {
-        characterViewModel.characterLiveData.observe(
+        characterDetailViewModel.characterLiveData.observe(
             this,
             Observer { resource -> resource?.run { managementResourceState(status, message) } })
 
-        characterViewModel.favoriteLiveData.observe(this, Observer { resource ->
+        characterDetailViewModel.favoriteLiveData.observe(this, Observer { resource ->
             resource?.run {
                 managementResourceState(status, message)
                 if (status == ResourceState.SUCCESS) {
@@ -45,7 +45,7 @@ class CharacterActivity : BaseActivity() {
                         favorite = this
                         invalidateOptionsMenu()
                         Toast.makeText(
-                            this@CharacterActivity,
+                            this@CharacterDetailActivity,
                             if (this) R.string.favorite_added else R.string.favorite_removed,
                             Toast.LENGTH_SHORT
                         ).show()
@@ -54,7 +54,7 @@ class CharacterActivity : BaseActivity() {
             }
         })
 
-        characterViewModel.isFavoriteLiveData.observe(this, Observer { resource ->
+        characterDetailViewModel.isFavoriteLiveData.observe(this, Observer { resource ->
             resource?.run {
                 managementResourceState(status, message)
                 if (status == ResourceState.SUCCESS) {
@@ -74,11 +74,11 @@ class CharacterActivity : BaseActivity() {
                 true
             }
             R.id.action_favorite -> {
-                characterViewModel.addFavorite()
+                characterDetailViewModel.addFavorite()
                 true
             }
             R.id.action_unfavorite -> {
-                characterViewModel.removeFavorite()
+                characterDetailViewModel.removeFavorite()
                 true
             }
             else -> super.onOptionsItemSelected(item)

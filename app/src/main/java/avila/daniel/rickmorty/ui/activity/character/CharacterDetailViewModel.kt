@@ -12,7 +12,7 @@ import avila.daniel.rickmorty.ui.model.mapper.CharacterParcelableMapper
 import avila.daniel.rickmorty.ui.util.data.Resource
 import avila.daniel.rickmorty.util.SingleLiveEvent
 
-class CharacterViewModel(
+class CharacterDetailViewModel(
     private val addCharacterToFavoriteUseCase: AddCharacterToFavoriteUseCase,
     private val removeCharacterFromFavoriteUseCase: RemoveCharacterFromFavoriteUseCase,
     private val isFavoriteUseCase: IsFavoriteUseCase,

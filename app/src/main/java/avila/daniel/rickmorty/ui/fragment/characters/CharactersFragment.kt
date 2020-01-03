@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseFragment
 import avila.daniel.rickmorty.databinding.FragmentCharactersBinding
-import avila.daniel.rickmorty.ui.activity.character.CharacterActivity
+import avila.daniel.rickmorty.ui.activity.character.CharacterDetailActivity
 import avila.daniel.rickmorty.ui.util.ISearchText
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.fragment_characters.*
@@ -64,9 +64,9 @@ class CharactersFragment : BaseFragment(), ISearchText {
                             startActivity(
                                 Intent(
                                     activity,
-                                    CharacterActivity::class.java
+                                    CharacterDetailActivity::class.java
                                 ).apply {
-                                    putExtra(CharacterActivity.CHARACTER, it)
+                                    putExtra(CharacterDetailActivity.CHARACTER, it)
                                 })
                         }
                     }

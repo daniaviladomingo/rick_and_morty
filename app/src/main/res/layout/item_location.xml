@@ -1,87 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="4dp"
-    android:layout_marginLeft="4dp"
-    android:layout_marginTop="4dp"
-    app:cardCornerRadius="2dp"
-    app:cardElevation="3dp"
-    app:cardUseCompatPadding="true">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:padding="5dp"
+    <data>
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="location"
+            type="avila.daniel.rickmorty.ui.model.LocationUI" />
+    </data>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/name"
-            style="@style/LocationName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/Label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Type: " />
-
-            <TextView
-                android:id="@+id/type"
-                style="@style/Content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:onClick="@{clickListener}"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="3dp"
+        app:cardUseCompatPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:padding="5dp">
 
             <TextView
-                style="@style/Label"
+                style="@style/LocationName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dimension: " />
+                android:text="@{location.name}" />
 
-            <TextView
-                android:id="@+id/dimension"
-                style="@style/Content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/Label"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Population: " />
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/population"
-                style="@style/Content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/type_item" />
+
+                <TextView
+                    style="@style/Content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{location.type}" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dimension" />
+
+                <TextView
+                    style="@style/Content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{location.dimension}" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/population" />
+
+                <TextView
+                    style="@style/Content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{Integer.toString(location.population)}" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
 
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+
+</layout>
+
 
 

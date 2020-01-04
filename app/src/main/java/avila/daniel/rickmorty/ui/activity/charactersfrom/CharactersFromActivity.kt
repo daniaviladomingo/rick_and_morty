@@ -2,21 +2,15 @@ package avila.daniel.rickmorty.ui.activity.charactersfrom
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
-import android.view.View
-import avila.daniel.domain.model.Character
 import androidx.lifecycle.Observer
-import avila.daniel.repository.cache.model.compose.CharacterFilterParameter
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseActivity
-import avila.daniel.rickmorty.di.qualifiers.SearchFilterCharacters
-import avila.daniel.rickmorty.ui.activity.character.CharacterActivity
+import avila.daniel.rickmorty.databinding.ActivityCharactersFromBinding
+import avila.daniel.rickmorty.ui.activity.character.CharacterDetailActivity
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersAdapter
-import avila.daniel.rickmorty.ui.fragment.characters.CharactersDiffCallback
 import avila.daniel.rickmorty.ui.model.CharactersSource
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.activity_characters_from.*
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class CharactersFromActivity : BaseActivity() {
@@ -25,22 +19,17 @@ class CharactersFromActivity : BaseActivity() {
 
     private lateinit var charactersSource: CharactersSource
 
-    private val characterList = mutableListOf<Character>()
-    private val adapter:  CharactersAdapter by inject()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        (binding as ActivityCharactersFromBinding).viewModel = charactersFromViewModel
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         setListener()
 
-        adapter.onClickListener = { id ->
-            charactersFromViewModel.openCharacterDetail(characterList.find { it.id == id }!!)
-        }
-
-        list_characters.adapter = adapter
+        list_characters.adapter = CharactersAdapter(charactersFromViewModel)
 
         intent.extras?.run {
             charactersSource = getParcelable(CHARACTERS_SOURCE)!!
@@ -62,13 +51,6 @@ class CharactersFromActivity : BaseActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            onBackPressed()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     override fun onResume() {
         super.onResume()
         if (charactersSource == CharactersSource.FAVORITES) {
@@ -77,21 +59,11 @@ class CharactersFromActivity : BaseActivity() {
     }
 
     private fun setListener() {
-        charactersFromViewModel.charactersLiveData.observe(this, Observer { resource ->
-            resource?.run {
-                managementResourceState(status, message)
-                if (status == ResourceState.SUCCESS) {
-                    data?.run {
-                        characterList.clear()
-                        characterList.addAll(this)
-                        adapter.update(characterList)
-                        no_favorite.visibility = if (this.isEmpty()) View.VISIBLE else View.GONE
-                    }
-                }
-            }
-        })
+        charactersFromViewModel.charactersLiveData.observe(
+            this,
+            Observer { resource -> resource?.run { managementResourceState(status, message) } })
 
-        charactersFromViewModel.characterParcelabeLiveData.observe(
+        charactersFromViewModel.characterParcelableLiveData.observe(
             this,
             Observer
             { resource ->
@@ -102,9 +74,9 @@ class CharactersFromActivity : BaseActivity() {
                             startActivity(
                                 Intent(
                                     this@CharactersFromActivity,
-                                    CharacterActivity::class.java
+                                    CharacterDetailActivity::class.java
                                 ).apply {
-                                    putExtra(CharacterActivity.CHARACTER, it)
+                                    putExtra(CharacterDetailActivity.CHARACTER, it)
                                 })
                         }
                     }

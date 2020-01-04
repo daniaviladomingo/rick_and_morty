@@ -1,6 +1,6 @@
 package avila.daniel.repository.cache.model.compose
 
-enum class CharacterFilterGenderParameter {
+enum class CharacterGenderFilter {
     MALE,
     FEMALE,
     GENDERLESS,

@@ -1,7 +1,6 @@
 package avila.daniel.rickmorty.ui.util
 
-interface IReloadData {
+interface IDataChanged {
     fun reload()
     fun refresh()
-
 }

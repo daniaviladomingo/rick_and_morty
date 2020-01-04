@@ -1,5 +1,6 @@
 package avila.daniel.rickmorty.base
 
+import androidx.lifecycle.MutableLiveData
 import avila.daniel.domain.interactor.type.SingleUseCaseWithParameter
 import avila.daniel.domain.model.mapper.Mapper
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
@@ -11,13 +12,15 @@ abstract class PaginationViewModel<T, U>(
     private val initialPage: Int
 ) : BaseViewModel() {
 
+    private val dataList = mutableListOf<U>()
+
     private var isLoading = false
     private var currentPage = initialPage
     private var totalPage = initialPage
-    private var currentSearchFilter = ""
-    private var clear = false
+    private var currentSearchText = ""
 
-    val itemsLiveData = SingleLiveEvent<Resource<Pair<Boolean, List<U>>>>()
+    val itemsLiveData = SingleLiveEvent<Resource<List<U>>>()
+    val items = MutableLiveData<List<U>>().apply { value = emptyList() }
 
     fun scrollEnd() {
         if (!isLoading) {
@@ -26,15 +29,15 @@ abstract class PaginationViewModel<T, U>(
         }
     }
 
-    fun updateSearchFilter(newSearchFilter: String) {
-        if (newSearchFilter != currentSearchFilter) {
-            currentSearchFilter = newSearchFilter
+    fun searchText(searchText: String) {
+        if (searchText != currentSearchText) {
+            currentSearchText = searchText
             clearNReload()
         }
     }
 
     protected fun clearNReload() {
-        clear = true
+        dataList.clear()
         currentPage = initialPage
         totalPage = initialPage
         load()
@@ -44,19 +47,14 @@ abstract class PaginationViewModel<T, U>(
         if (currentPage <= totalPage) {
             itemsLiveData.value = Resource.loading()
             dispose()
-            addDisposable(query().execute(Pair(currentSearchFilter, currentPage))
+            addDisposable(query().execute(Pair(currentSearchText, currentPage++))
                 .observeOn(scheduleProvider.ui())
                 .subscribeOn(scheduleProvider.io())
-                .subscribe({ items ->
-                    itemsLiveData.value = Resource.success(
-                        Pair(
-                            clear,
-                            mapper()?.map(items.second) ?: items.second as List<U>
-                        )
-                    )
-                    clear = false
-                    totalPage = items.first
-                    currentPage++
+                .subscribe({ data ->
+                    itemsLiveData.value = Resource.loadingFinish()
+                    dataList.addAll(mapper()?.map(data.second) ?: data.second as List<U>)
+                    items.value = dataList
+                    totalPage = data.first
                     isLoading = false
                 }) {
                     isLoading = false
@@ -68,6 +66,4 @@ abstract class PaginationViewModel<T, U>(
     protected abstract fun query(): SingleUseCaseWithParameter<Pair<String, Int>, Pair<Int, List<T>>>
 
     protected open fun mapper(): Mapper<T, U>? = null
-
-
 }

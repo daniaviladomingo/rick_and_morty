@@ -1,13 +1,15 @@
 package avila.daniel.rickmorty.base
 
 import android.os.Bundle
-import android.view.View
+import android.view.MenuItem
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.activity_base.*
@@ -15,7 +17,7 @@ import kotlinx.android.synthetic.main.view_error.*
 
 abstract class BaseActivity : AppCompatActivity() {
 
-    private lateinit var activityView: View
+    protected lateinit var binding: ViewDataBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,14 +28,23 @@ abstract class BaseActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_base)
 
-        activityView = layoutInflater.inflate(getLayoutId(), null)
+        binding = DataBindingUtil.inflate<ViewDataBinding>(layoutInflater, getLayoutId(), null, false)
+        binding.lifecycleOwner = this
+
         (view as FrameLayout).addView(
-            activityView,
+            binding.root,
             LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
         )
 
         view_empty.emptyListener = checkAgain()
         view_error.errorListener = tryAgain()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     protected abstract fun getLayoutId(): Int
@@ -45,6 +56,12 @@ abstract class BaseActivity : AppCompatActivity() {
                 view_error.visibility = GONE
                 view_empty.visibility = GONE
                 view_progress.visibility = VISIBLE
+            }
+            ResourceState.LOADING_FINISH -> {
+                view.visibility = VISIBLE
+                view_error.visibility = GONE
+                view_empty.visibility = GONE
+                view_progress.visibility = GONE
             }
             ResourceState.SUCCESS -> {
                 view.visibility = VISIBLE

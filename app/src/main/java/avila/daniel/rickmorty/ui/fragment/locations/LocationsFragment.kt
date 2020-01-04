@@ -6,36 +6,34 @@ import android.os.Parcelable
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import avila.daniel.repository.cache.model.LocationFilterParameter
-import avila.daniel.repository.cache.model.compose.CharacterFilterParameter
 import avila.daniel.rickmorty.R
-import avila.daniel.rickmorty.base.InitialLoadFragment
-import avila.daniel.rickmorty.di.qualifiers.SearchFilterCharacters
+import avila.daniel.rickmorty.base.BaseFragment
+import avila.daniel.rickmorty.databinding.FragmentLocationsBinding
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.CHARACTERS_SOURCE
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.ID
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.TITLE
-import avila.daniel.rickmorty.ui.fragment.characters.CharactersDiffCallback
 import avila.daniel.rickmorty.ui.model.CharactersSource
-import avila.daniel.rickmorty.ui.model.LocationUI
-import avila.daniel.rickmorty.ui.util.ISearch
-import avila.daniel.rickmorty.ui.util.data.ResourceState
+import avila.daniel.rickmorty.ui.util.ISearchText
 import kotlinx.android.synthetic.main.fragment_locations.*
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class LocationsFragment : InitialLoadFragment(), ISearch {
+class LocationsFragment : BaseFragment(), ISearchText {
 
     private val locationsViewModel: LocationsViewModel by viewModel()
 
-    private val locationsList = mutableListOf<LocationUI>()
-    private val adapter: LocationsAdapter by inject()
+    private lateinit var adapter: LocationsAdapter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        setListener()
+        (binding as FragmentLocationsBinding).viewModel = locationsViewModel
 
+        locationsViewModel.itemsLiveData.observe(
+            viewLifecycleOwner,
+            Observer { resource -> resource?.run { managementResourceState(status, message) } })
+
+        adapter = LocationsAdapter(locationsViewModel)
         adapter.onClickListener = { id, name ->
             startActivity(
                 Intent(
@@ -61,31 +59,12 @@ class LocationsFragment : InitialLoadFragment(), ISearch {
                 }
             }
         })
-    }
 
-    private fun setListener() {
-        locationsViewModel.itemsLiveData.observe(viewLifecycleOwner, Observer { resource ->
-            resource?.run {
-                managementResourceState(status, message)
-                if (status == ResourceState.SUCCESS) {
-                    data?.run {
-                        if (this.first) {
-                            locationsList.clear()
-                        }
-                        locationsList.addAll(this.second)
-                        adapter.update(locationsList)
-                    }
-                }
-            }
-        })
-    }
-
-    override fun initialLoad() {
         locationsViewModel.load()
     }
 
-    override fun updateFilter(newFilter: String) {
-        locationsViewModel.updateSearchFilter(newFilter)
+    override fun searchText(searchText: String) {
+        locationsViewModel.searchText(searchText)
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_locations

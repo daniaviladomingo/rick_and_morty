@@ -19,7 +19,7 @@ import avila.daniel.domain.IRepository
 import avila.daniel.domain.interactor.*
 import avila.daniel.repository.RepositoryImp
 import avila.daniel.repository.cache.IDataCache
-import avila.daniel.repository.cache.model.compose.CharacterFilterParameter
+import avila.daniel.repository.cache.model.compose.CharacterSearchFilter
 import avila.daniel.repository.remote.IDataRemote
 import avila.daniel.repository.remote.model.mapper.CharacterApiMapper
 import avila.daniel.repository.remote.model.mapper.EpisodeApiMapper
@@ -31,21 +31,15 @@ import avila.daniel.rickmorty.di.qualifiers.*
 import avila.daniel.rickmorty.di.qualifiers.Any
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
 import avila.daniel.rickmorty.schedulers.ScheduleProviderImp
-import avila.daniel.rickmorty.ui.activity.character.CharacterViewModel
+import avila.daniel.rickmorty.ui.activity.character.CharacterDetailViewModel
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromViewModel
-import avila.daniel.rickmorty.ui.fragment.characters.CharactersAdapter
-import avila.daniel.rickmorty.ui.fragment.characters.CharactersDiffCallback
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersViewModel
-import avila.daniel.rickmorty.ui.fragment.episodes.EpisodesAdapter
-import avila.daniel.rickmorty.ui.fragment.episodes.EpisodesDiffCallback
 import avila.daniel.rickmorty.ui.fragment.episodes.EpisodesViewModel
-import avila.daniel.rickmorty.ui.fragment.locations.LocationsAdapter
-import avila.daniel.rickmorty.ui.fragment.locations.LocationsDiffCallback
 import avila.daniel.rickmorty.ui.fragment.locations.LocationsViewModel
 import avila.daniel.rickmorty.ui.model.mapper.CharacterParcelableMapper
 import avila.daniel.rickmorty.ui.model.mapper.EpisodeUIMapper
 import avila.daniel.rickmorty.ui.model.mapper.LocationUIMapper
-import avila.daniel.rickmorty.ui.util.IReloadData
+import avila.daniel.rickmorty.ui.util.IDataChanged
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -60,16 +54,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-var characterReload: IReloadData? = null
+lateinit var characterReload: IDataChanged
 
 val appModule = module {
     single { PreferenceManager.getDefaultSharedPreferences(androidContext()) }
 
-    single { CharactersDiffCallback() }
-    single { EpisodesDiffCallback() }
-    single { LocationsDiffCallback() }
-
-    single { CharacterFilterParameter.NAME }
+    single { CharacterSearchFilter.NAME }
 }
 
 val activityModule = module {
@@ -77,20 +67,18 @@ val activityModule = module {
         //        LifecycleManager(get(), lifecycle)
         Unit
     }
-    single { { characterReload?.reload() } }
-
-    single(RefreshData) { { characterReload?.refresh() } }
-}
-
-val adapterModule = module {
-    factory { CharactersAdapter(get(), get(SearchFilterCharacters)) }
-    factory { EpisodesAdapter(get()) }
-    factory { LocationsAdapter(get()) }
+    single { characterReload }
 }
 
 val viewModelModule = module {
     viewModel {
-        CharactersViewModel(get(), get(), get(), get(InitialPage)).apply {
+        CharactersViewModel(
+            get(),
+            get(),
+            get(SearchFilterCharacters),
+            get(),
+            get(InitialPage)
+        ).apply {
             characterReload = this
         }
     }
@@ -102,10 +90,11 @@ val viewModelModule = module {
             get(),
             get(),
             get(),
+            get(SearchFilterCharacters),
             get()
         )
     }
-    viewModel { CharacterViewModel(get(), get(), get(), get(), get()) }
+    viewModel { CharacterDetailViewModel(get(), get(), get(), get(), get()) }
 
     single(InitialPage) { 1 }
 }
@@ -236,8 +225,7 @@ val dataCacheDbModule = module {
     }
 
     single {
-        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "db")
-            .allowMainThreadQueries().build()
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "RickNMorty.db").build()
     }
 }
 

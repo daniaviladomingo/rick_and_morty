@@ -7,37 +7,28 @@ import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import avila.daniel.rickmorty.R
-import avila.daniel.rickmorty.di.qualifiers.RefreshData
+import avila.daniel.rickmorty.base.BaseActivity
+import avila.daniel.rickmorty.ui.util.IDataChanged
 import kotlinx.android.synthetic.main.activity_settings.*
 import org.koin.android.ext.android.inject
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
-        supportFragmentManager
-            .beginTransaction()
-            .replace(
-                R.id.settings,
-                SettingsFragment()
-            )
-            .commit()
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            onBackPressed()
-        }
-        return super.onOptionsItemSelected(item)
-    }
+    override fun getLayoutId(): Int = R.layout.activity_settings
+
+    override fun checkAgain(): () -> Unit = {}
+
+    override fun tryAgain(): () -> Unit = {}
 
     class SettingsFragment : PreferenceFragmentCompat() {
 
-        private val reloadData: () -> Unit by inject()
-        private val refreshData: () -> Unit by inject(RefreshData)
+        private val dataChanged: IDataChanged by inject()
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -53,7 +44,7 @@ class SettingsActivity : AppCompatActivity() {
                 if (newValue as Boolean) {
                     preferenceTypeCharacter?.isChecked = false
                     preferenceSpecieCharacter?.isChecked = false
-                    refreshData()
+                    dataChanged.refresh()
                     true
                 } else {
                     false
@@ -64,7 +55,7 @@ class SettingsActivity : AppCompatActivity() {
                 if (newValue as Boolean) {
                     preferenceNameCharacter?.isChecked = false
                     preferenceSpecieCharacter?.isChecked = false
-                    refreshData()
+                    dataChanged.refresh()
                     true
                 } else {
                     false
@@ -75,7 +66,7 @@ class SettingsActivity : AppCompatActivity() {
                 if (newValue as Boolean) {
                     preferenceTypeCharacter?.isChecked = false
                     preferenceNameCharacter?.isChecked = false
-                    refreshData()
+                    dataChanged.refresh()
                     true
                 } else {
                     false
@@ -93,7 +84,7 @@ class SettingsActivity : AppCompatActivity() {
                 if (newValue as Boolean) {
                     keyTypeLocation?.isChecked = false
                     keyDimension?.isChecked = false
-                    refreshData()
+                    dataChanged.refresh()
                     true
                 } else {
                     false
@@ -104,7 +95,7 @@ class SettingsActivity : AppCompatActivity() {
                 if (newValue as Boolean) {
                     keyNameLocation?.isChecked = false
                     keyDimension?.isChecked = false
-                    refreshData()
+                    dataChanged.refresh()
                     true
                 } else {
                     false
@@ -115,7 +106,7 @@ class SettingsActivity : AppCompatActivity() {
                 if (newValue as Boolean) {
                     keyNameLocation?.isChecked = false
                     keyTypeLocation?.isChecked = false
-                    refreshData()
+                    dataChanged.refresh()
                     true
                 } else {
                     false
@@ -124,7 +115,7 @@ class SettingsActivity : AppCompatActivity() {
 
             findPreference<ListPreference>(getString(R.string.key_gender))?.setOnPreferenceChangeListener { prefecence, newValue ->
                 if ((prefecence as ListPreference).value != newValue) {
-                    reloadData()
+                    dataChanged.reload()
                     true
                 } else {
                     false
@@ -133,7 +124,7 @@ class SettingsActivity : AppCompatActivity() {
 
             findPreference<ListPreference>(getString(R.string.key_status))?.setOnPreferenceChangeListener { prefecence, newValue ->
                 if ((prefecence as ListPreference).value != newValue) {
-                    reloadData()
+                    dataChanged.reload()
                     true
                 } else {
                     false

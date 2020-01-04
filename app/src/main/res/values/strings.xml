@@ -25,6 +25,10 @@
     <string name="characters">Nº Characters:</string>
     <string name="title_activity_settings">Settings</string>
 
+    <string name="type_item">Type:</string>
+    <string name="dimension">Dimension:</string>
+    <string name="population">Population:</string>
+
     <!-- Preferences -->
     <string name="key_name_characters">key_name_characters</string>
     <string name="key_status">key_status</string>

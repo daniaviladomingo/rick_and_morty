@@ -1,6 +1,6 @@
 package avila.daniel.repository.cache.model.compose
 
-enum class CharacterFilterStatusParameter {
+enum class CharacterStatusFilter {
     ALIVE,
     DEAD,
     UNKNOWN,

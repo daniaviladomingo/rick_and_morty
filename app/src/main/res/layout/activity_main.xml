@@ -1,59 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_content"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/toolbar_container"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            <FrameLayout
+                android:id="@+id/toolbar_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary"
-                android:minHeight="?attr/actionBarSize"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:title="@string/app_name" />
+                app:layout_scrollFlags="scroll|enterAlways">
 
-            <avila.daniel.searchview_test.SimpleSearchView
-                android:id="@+id/search_view"
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/colorPrimary"
+                    android:minHeight="?attr/actionBarSize"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:title="@string/app_name" />
+
+                <avila.daniel.searchview_test.SimpleSearchView
+                    android:id="@+id/search_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorPrimary"
+                    android:hint="@string/search" />
+            </FrameLayout>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimary"
-                android:hint="@string/search" />
-        </FrameLayout>
+                android:layout_height="wrap_content"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="@android:color/white"
+                app:tabMode="fixed"
+                app:tabTextColor="@android:color/white" />
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabGravity="fill"
-            app:tabIndicatorColor="@android:color/white"
-            app:tabMode="fixed"
-            app:tabTextColor="@android:color/white" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </RelativeLayout>
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

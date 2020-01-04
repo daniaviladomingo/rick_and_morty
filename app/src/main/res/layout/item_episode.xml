@@ -1,61 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="4dp"
-    android:layout_marginLeft="4dp"
-    android:layout_marginTop="4dp"
-    app:cardCornerRadius="2dp"
-    app:cardElevation="3dp"
-    app:cardUseCompatPadding="true">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <data>
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="episode"
+            type="avila.daniel.rickmorty.ui.model.EpisodeUI" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="5dp">
-
-        <TextView
-            android:id="@+id/name"
-            style="@style/LocationName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp" />
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:onClick="@{clickListener}"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="3dp"
+        app:cardUseCompatPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:padding="5dp">
 
             <TextView
-                style="@style/Label"
+                style="@style/LocationName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:text="@string/episode" />
-
-            <TextView
-                android:id="@+id/episode"
-                style="@style/Content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:text="@{episode.name}" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -64,43 +51,73 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="@string/on_air" />
+                    android:text="@string/episode" />
 
                 <TextView
-                    android:id="@+id/on_air"
                     style="@style/Content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginRight="5dp" />
+                    android:text="@{Integer.toString(episode.number)}" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
-                <TextView
-                    style="@style/Label"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="@string/characters" />
+                    android:layout_weight="3"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/characters"
-                    style="@style/Content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    <TextView
+                        style="@style/Label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/on_air" />
+
+                    <TextView
+                        style="@style/Content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="@{episode.airDate}" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/Label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/characters" />
+
+                    <TextView
+                        style="@style/Content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{Integer.toString(episode.characters)}" />
+
+                </LinearLayout>
 
             </LinearLayout>
-
         </LinearLayout>
-    </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+
+</layout>
 
 

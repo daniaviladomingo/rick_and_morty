@@ -5,32 +5,29 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import avila.daniel.domain.model.Character
 import avila.daniel.rickmorty.R
-import avila.daniel.rickmorty.base.InitialLoadFragment
-import avila.daniel.rickmorty.ui.activity.character.CharacterActivity
-import avila.daniel.rickmorty.ui.util.ISearch
+import avila.daniel.rickmorty.base.BaseFragment
+import avila.daniel.rickmorty.databinding.FragmentCharactersBinding
+import avila.daniel.rickmorty.ui.activity.character.CharacterDetailActivity
+import avila.daniel.rickmorty.ui.util.ISearchText
 import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.fragment_characters.*
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class CharactersFragment : InitialLoadFragment(), ISearch {
+class CharactersFragment : BaseFragment(), ISearchText {
 
     private val charactersViewModel: CharactersViewModel by viewModel()
 
-    private val characterList = mutableListOf<Character>()
-    private val adapter: CharactersAdapter by inject()
+    private lateinit var adapter: CharactersAdapter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        (binding as FragmentCharactersBinding).viewModel = charactersViewModel
+
         setListener()
 
-        adapter.onClickListener = { id ->
-            charactersViewModel.openCharacterDetail(characterList.find { it.id == id }!!)
-        }
-
+        adapter = CharactersAdapter(charactersViewModel)
         list_characters.adapter = adapter
         list_characters.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -44,34 +41,18 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
                 }
             }
         })
+
+        charactersViewModel.load()
     }
 
     private fun setListener() {
-        charactersViewModel.itemsLiveData.observe(viewLifecycleOwner, Observer { resource ->
-            resource?.run {
-                managementResourceState(status, message)
-                if (status == ResourceState.SUCCESS) {
-                    data?.run {
-                        if (this.first) {
-                            characterList.clear()
-                        }
-                        characterList.addAll(this.second)
-                        adapter.update(characterList)
-                    }
-                }
-            }
-        })
+        charactersViewModel.itemsLiveData.observe(
+            viewLifecycleOwner,
+            Observer { resource -> resource?.run { managementResourceState(status, message) } })
 
-        charactersViewModel.refreshLiveData.observe(viewLifecycleOwner, Observer { resource ->
-            resource?.run {
-                managementResourceState(status, message)
-                if (status == ResourceState.SUCCESS) {
-                    data?.run {
-                        adapter.refresh()
-                    }
-                }
-            }
-        })
+        charactersViewModel.refreshLiveData.observe(
+            viewLifecycleOwner,
+            Observer { adapter.refresh() })
 
         charactersViewModel.characterParcelabeLiveData.observe(
             viewLifecycleOwner,
@@ -83,9 +64,9 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
                             startActivity(
                                 Intent(
                                     activity,
-                                    CharacterActivity::class.java
+                                    CharacterDetailActivity::class.java
                                 ).apply {
-                                    putExtra(CharacterActivity.CHARACTER, it)
+                                    putExtra(CharacterDetailActivity.CHARACTER, it)
                                 })
                         }
                     }
@@ -93,12 +74,8 @@ class CharactersFragment : InitialLoadFragment(), ISearch {
             })
     }
 
-    override fun initialLoad() {
-        charactersViewModel.load()
-    }
-
-    override fun updateFilter(newFilter: String) {
-        charactersViewModel.updateSearchFilter(newFilter)
+    override fun searchText(searchText: String) {
+        charactersViewModel.searchText(searchText)
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_characters

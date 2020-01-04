@@ -1,79 +1,82 @@
 package avila.daniel.rickmorty.ui.fragment.characters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.domain.model.Character
-import avila.daniel.repository.cache.model.compose.CharacterFilterParameter
+import avila.daniel.repository.cache.model.compose.CharacterSearchFilter
 import avila.daniel.rickmorty.R
-import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.item_charter.view.*
+import avila.daniel.rickmorty.databinding.ItemCharterBinding
+import avila.daniel.rickmorty.ui.util.IDataSet
+import avila.daniel.rickmorty.ui.util.IViewModelManagementCharacter
 
 class CharactersAdapter(
-    private val diffCallback: CharactersDiffCallback,
-    private val searchFilter: () -> CharacterFilterParameter
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val viewModel: IViewModelManagementCharacter
+) : RecyclerView.Adapter<CharactersAdapter.ViewHolder>(), IDataSet<Character> {
 
-    private val characterList = mutableListOf<Character>()
+    private val data = mutableListOf<Character>()
+    private val diffCallback = object : DiffUtil.Callback() {
+        lateinit var listOld: List<Character>
+        lateinit var listNew: List<Character>
 
-    var onClickListener: ((Int) -> Unit)? = null
+        var currentFilter: CharacterSearchFilter? = null
+        var newFilter: CharacterSearchFilter? = null
 
-    fun update(newCharacters: List<Character>) {
-        diffCallback.listOld = characterList
-        diffCallback.listNew = newCharacters
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            listOld[oldItemPosition].id == listNew[newItemPosition].id
+
+        override fun getOldListSize(): Int = listOld.size
+
+        override fun getNewListSize(): Int = listNew.size
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            currentFilter == newFilter
+    }
+
+    override fun setData(newData: List<Character>) {
+        diffCallback.listOld = data
+        diffCallback.listNew = newData
         val diffResult = DiffUtil.calculateDiff(diffCallback)
 
-        characterList.clear()
-        characterList.addAll(newCharacters)
+        data.clear()
+        data.addAll(newData)
         diffResult.dispatchUpdatesTo(this)
     }
 
     fun refresh() {
-        diffCallback.newFilter = searchFilter()
+        diffCallback.newFilter = viewModel.searchFilter()
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         diffResult.dispatchUpdatesTo(this)
         diffCallback.currentFilter = diffCallback.newFilter
     }
 
-    override fun getItemCount(): Int = characterList.size
+    override fun getItemCount(): Int = data.size
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        UserViewHolder.create(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
+        DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            R.layout.item_charter, parent, false
+        )
+    )
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-        (holder as UserViewHolder).bin(characterList[position], onClickListener, searchFilter)
-}
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
+        holder.bin(viewModel, data[position])
 
-private class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bin(
-        character: Character,
-        onClickListener: ((Int) -> Unit)?,
-        searchFilter: () -> CharacterFilterParameter
-    ) {
-        itemView.run {
-            name.text =
-                when (searchFilter()) {
-                    CharacterFilterParameter.NAME -> character.name
-                    CharacterFilterParameter.SPECIES -> character.species
-                    CharacterFilterParameter.TYPE -> character.type
-                }.run { if (length > 20) substring(0..20) + "..." else if (this.isEmpty()) "???" else this }
+    class ViewHolder(private val binding: ItemCharterBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-            Glide.with(itemView).load(character.image).into(photo)
-            setOnClickListener {
-                onClickListener?.invoke(character.id)
+        fun bin(
+            viewModel: IViewModelManagementCharacter,
+            character: Character
+        ) {
+            with(binding) {
+                this.viewModel = viewModel
+                this.character = character
+                executePendingBindings()
             }
         }
     }
-
-    companion object {
-        fun create(parent: ViewGroup): UserViewHolder = UserViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.item_charter,
-                parent,
-                false
-            )
-        )
-    }
 }
+

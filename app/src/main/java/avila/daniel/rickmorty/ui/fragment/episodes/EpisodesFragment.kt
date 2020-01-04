@@ -7,32 +7,30 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import avila.daniel.rickmorty.R
-import avila.daniel.rickmorty.base.InitialLoadFragment
+import avila.daniel.rickmorty.base.BaseFragment
+import avila.daniel.rickmorty.databinding.FragmentEpisodesBinding
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.CHARACTERS_SOURCE
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.ID
 import avila.daniel.rickmorty.ui.activity.charactersfrom.CharactersFromActivity.Companion.TITLE
 import avila.daniel.rickmorty.ui.model.CharactersSource
-import avila.daniel.rickmorty.ui.model.EpisodeUI
-import avila.daniel.rickmorty.ui.util.ISearch
-import avila.daniel.rickmorty.ui.util.data.ResourceState
+import avila.daniel.rickmorty.ui.util.ISearchText
 import com.yuyang.stickyheaders.StickyLinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_episodes.*
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class EpisodesFragment : InitialLoadFragment(), ISearch {
+class EpisodesFragment : BaseFragment(), ISearchText {
 
     private val episodesViewModel: EpisodesViewModel by viewModel()
-
-    private val episodesList = mutableListOf<Any>()
-    private val adapter: EpisodesAdapter by inject()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        (binding as FragmentEpisodesBinding).viewModel = episodesViewModel
+
         setListener()
 
+        val adapter = EpisodesAdapter(episodesViewModel)
         adapter.onClickListener = { id, name ->
             startActivity(Intent(
                 activity,
@@ -59,56 +57,18 @@ class EpisodesFragment : InitialLoadFragment(), ISearch {
                 }
             }
         })
-    }
 
-    private fun setListener() {
-        episodesViewModel.itemsLiveData.observe(viewLifecycleOwner, Observer { resource ->
-            resource?.run {
-                managementResourceState(status, message)
-                if (status == ResourceState.SUCCESS) {
-                    data?.run {
-                        if (this.first) {
-                            episodesList.clear()
-                        }
-                        managementHeaders(this.second)
-                        adapter.update(episodesList)
-                    }
-                }
-            }
-        })
-    }
-
-    private fun managementHeaders(episodes: List<EpisodeUI>) {
-        if (episodesList.size == 0) {
-            episodesList.add(ItemHeader("${episodes[0].season}"))
-        } else {
-            val lastItem = episodesList[episodesList.size - 1] as EpisodeUI
-            val firstItem = episodes[0]
-            if (lastItem.season != firstItem.season) {
-                episodesList.add(ItemHeader("${firstItem.season}"))
-            }
-        }
-
-        episodes.forEachIndexed { index, _ ->
-            if (index > 0) {
-                val item0 = episodes[index - 1]
-                val item1 = episodes[index]
-                if (item0.season != item1.season) {
-                    episodesList.add(ItemHeader("${item1.season}"))
-                }
-                episodesList.add(item1)
-            } else {
-                episodesList.add(episodes[0])
-            }
-        }
-    }
-
-    override fun initialLoad() {
         episodesViewModel.load()
     }
 
-    override fun updateFilter(newFilter: String) {
-        episodesViewModel.updateSearchFilter(newFilter)
+    private fun setListener() {
+        episodesViewModel.itemsLiveData.observe(
+            viewLifecycleOwner,
+            Observer { resource -> resource?.run { managementResourceState(status, message) } })
+    }
+
+    override fun searchText(searchText: String) {
+        episodesViewModel.searchText(searchText)
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_episodes

@@ -22,7 +22,7 @@
             android:name=".ui.activity.charactersfrom.CharactersFromActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.character.CharacterActivity"
+            android:name=".ui.activity.character.CharacterDetailActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.MainActivity"

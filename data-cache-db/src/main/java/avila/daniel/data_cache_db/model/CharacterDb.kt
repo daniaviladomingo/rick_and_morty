@@ -9,7 +9,7 @@ import avila.daniel.domain.model.compose.Status
 
 @Entity(
     tableName = "character",
-    indices = [Index(value = [COLUMN_NAME_ID])],
+    indices = [Index(value = [COLUMN_NAME_ID]), Index(value = [COLUMN_NAME_ID_LOCATION]), Index(value = [COLUMN_NAME_ID_ORIGIN])],
     foreignKeys = [ForeignKey(
         entity = OriginDb::class,
         childColumns = [COLUMN_NAME_ID_ORIGIN],

@@ -18,6 +18,5 @@ data class OriginDb(
 ) {
     companion object {
         const val COLUMN_NAME_NAME = "name"
-
     }
 }

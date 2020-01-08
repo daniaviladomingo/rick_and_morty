@@ -24,8 +24,6 @@ class SettingsActivity : BaseActivity() {
 
     override fun tryAgain(): () -> Unit = {}
 
-    override fun vm(): Nothing? = null
-
     class SettingsFragment : PreferenceFragmentCompat() {
 
         private val dataChanged: IDataChanged by inject()

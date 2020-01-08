@@ -54,7 +54,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     protected abstract fun getLayoutId(): Int
 
-    abstract fun vm(): BaseViewModel?
+    protected open fun vm(): BaseViewModel? = null
 
     abstract fun checkAgain(): () -> Unit
 

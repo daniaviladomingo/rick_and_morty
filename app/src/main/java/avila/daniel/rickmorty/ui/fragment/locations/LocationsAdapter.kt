@@ -14,7 +14,7 @@ class LocationsAdapter(
     private val viewModel: LocationsViewModel
 ) : RecyclerView.Adapter<LocationsAdapter.ViewHolder>(), IDataSet<LocationUI> {
     private val data = mutableListOf<LocationUI>()
-    var onClickListener: ((Int, String) -> Unit)? = null
+
     private val diffCallback = object : DiffUtil.Callback() {
         lateinit var listOld: List<LocationUI>
         lateinit var listNew: List<LocationUI>
@@ -34,13 +34,13 @@ class LocationsAdapter(
         DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
             R.layout.item_location, parent, false
-        ),
-        onClickListener
+        )
     )
 
     override fun getItemCount(): Int = data.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(data[position])
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
+        holder.bind(viewModel, data[position])
 
     override fun setData(newData: List<LocationUI>) {
         diffCallback.listOld = data
@@ -53,22 +53,12 @@ class LocationsAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
-    class ViewHolder(
-        private val binding: ItemLocationBinding,
-        var onClickListener: ((Int, String) -> Unit)?
-    ) :
+    class ViewHolder(private val binding: ItemLocationBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        init {
-            binding.setClickListener {
-                binding.location?.let {
-                    onClickListener?.invoke(it.id, it.name)
-                }
-            }
-        }
-
-        fun bind(location: LocationUI) {
+        fun bind(viewModel: LocationsViewModel, location: LocationUI) {
             with(binding) {
+                this.viewModel = viewModel
                 this.location = location
                 executePendingBindings()
             }

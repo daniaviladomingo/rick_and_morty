@@ -28,19 +28,7 @@ class EpisodesFragment : BaseFragment(), ISearchText {
 
         (binding as FragmentEpisodesBinding).viewModel = episodesViewModel
 
-        setListener()
-
         val adapter = EpisodesAdapter(episodesViewModel)
-        adapter.onClickListener = { id, name ->
-            startActivity(Intent(
-                activity,
-                CharactersFromActivity::class.java
-            ).apply {
-                putExtra(CHARACTERS_SOURCE, CharactersSource.EPISODE as Parcelable)
-                putExtra(ID, id)
-                putExtra(TITLE, name)
-            })
-        }
 
         list_episodes.layoutManager =
             StickyLinearLayoutManager(activity, adapter).apply { elevateHeaders(5) }
@@ -58,13 +46,20 @@ class EpisodesFragment : BaseFragment(), ISearchText {
             }
         })
 
-        episodesViewModel.load()
-    }
-
-    private fun setListener() {
-        episodesViewModel.itemsLiveData.observe(
+        episodesViewModel.navigateCharactersEpisodeLiveData.observe(
             viewLifecycleOwner,
-            Observer { resource -> resource?.run { managementResourceState(status, message) } })
+            Observer { resource ->
+                startActivity(Intent(
+                    activity,
+                    CharactersFromActivity::class.java
+                ).apply {
+                    putExtra(CHARACTERS_SOURCE, CharactersSource.EPISODE as Parcelable)
+                    putExtra(ID, resource.first)
+                    putExtra(TITLE, resource.second)
+                })
+            })
+
+        episodesViewModel.load()
     }
 
     override fun searchText(searchText: String) {
@@ -80,6 +75,8 @@ class EpisodesFragment : BaseFragment(), ISearchText {
     override fun tryAgain(): () -> Unit = {
         episodesViewModel.load()
     }
+
+    override fun vm(): Nothing? = null
 
     companion object {
         @JvmStatic

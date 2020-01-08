@@ -19,7 +19,6 @@ class EpisodesAdapter(
     IDataSet<EpisodeUI> {
 
     private val data = mutableListOf<Any>()
-    var onClickListener: ((Int, String) -> Unit)? = null
     private val diffCallback = object : DiffUtil.Callback() {
         lateinit var listOld: List<Any>
         lateinit var listNew: List<Any>
@@ -104,7 +103,7 @@ class EpisodesAdapter(
                 DataBindingUtil.inflate(
                     LayoutInflater.from(parent.context),
                     R.layout.item_episode, parent, false
-                ), onClickListener
+                )
             )
         } else {
             HeaderViewHolder(
@@ -118,7 +117,7 @@ class EpisodesAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = data[position]
         if (item is EpisodeUI) {
-            (holder as EpisodeViewHolder).bin(data[position] as EpisodeUI)
+            (holder as EpisodeViewHolder).bin(viewModel, data[position] as EpisodeUI)
         } else if (item is StickyHeaderModel) {
             (holder as HeaderViewHolder).bin(data[position] as ItemHeader)
         }
@@ -136,20 +135,12 @@ class EpisodesAdapter(
     data class ItemHeader(val title: String) : StickyHeaderModel
 
     class EpisodeViewHolder(
-        private val binding: ItemEpisodeBinding,
-        onClickListener: ((Int, String) -> Unit)?
+        private val binding: ItemEpisodeBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        init {
-            binding.setClickListener {
-                binding.episode?.let {
-                    onClickListener?.invoke(it.id, it.name)
-                }
-            }
-        }
-
-        fun bin(episode: EpisodeUI) {
+        fun bin(viewModel: EpisodesViewModel, episode: EpisodeUI) {
             with(binding) {
+                this.viewModel = viewModel
                 this.episode = episode
                 executePendingBindings()
             }

@@ -10,6 +10,7 @@ import avila.daniel.domain.model.compose.Status
 import avila.daniel.repository.cache.model.compose.CharacterSearchFilter
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.ui.util.IDataSet
+import avila.daniel.rickmorty.ui.util.custom.ErrorView
 import com.bumptech.glide.Glide
 
 @BindingAdapter("imageUrl")
@@ -66,4 +67,10 @@ fun bindLocation(view: View, location: String) {
 @BindingAdapter("items")
 fun <T> setItems(recyclerView: RecyclerView, items: List<T>) {
     (recyclerView.adapter as IDataSet<T>).setData(items)
+}
+
+
+@BindingAdapter("message")
+fun message(errorView: ErrorView, message: String?) {
+    errorView.setMessage(message)
 }

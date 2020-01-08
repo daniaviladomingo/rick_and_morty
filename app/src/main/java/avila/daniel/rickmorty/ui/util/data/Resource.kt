@@ -12,8 +12,8 @@ class Resource<out T> private constructor(val status: ResourceState, val data: T
         fun <T> loading(): Resource<T> =
             Resource(ResourceState.LOADING, null, null)
 
-        fun <T> loadingFinish(): Resource<T> =
-            Resource(ResourceState.LOADING_FINISH, null, null)
+//        fun <T> loadingFinish(): Resource<T> =
+//            Resource(ResourceState.LOADING_FINISH, null, null)
 
         fun <T> empty(): Resource<T> =
             Resource(ResourceState.EMPTY, null, null)

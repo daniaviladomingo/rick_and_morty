@@ -1,10 +1,8 @@
 package avila.daniel.rickmorty.base
 
-import androidx.lifecycle.MutableLiveData
 import avila.daniel.domain.interactor.type.SingleUseCaseWithParameter
 import avila.daniel.domain.model.mapper.Mapper
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
-import avila.daniel.rickmorty.ui.util.data.Resource
 import avila.daniel.rickmorty.util.SingleLiveEvent
 
 abstract class PaginationViewModel<T, U>(
@@ -12,15 +10,13 @@ abstract class PaginationViewModel<T, U>(
     private val initialPage: Int
 ) : BaseViewModel() {
 
-    private val dataList = mutableListOf<U>()
-
     private var isLoading = false
     private var currentPage = initialPage
     private var totalPage = initialPage
     private var currentSearchText = ""
 
-    val itemsLiveData = SingleLiveEvent<Resource<List<U>>>()
-    val items = MutableLiveData<List<U>>().apply { value = emptyList() }
+    private val dataList = mutableListOf<U>()
+    val items = SingleLiveEvent<List<U>>().apply { value = emptyList() }
 
     fun scrollEnd() {
         if (!isLoading) {
@@ -45,20 +41,23 @@ abstract class PaginationViewModel<T, U>(
 
     fun load() {
         if (currentPage <= totalPage) {
-            itemsLiveData.value = Resource.loading()
+            loadingState()
             dispose()
             addDisposable(query().execute(Pair(currentSearchText, currentPage++))
                 .observeOn(scheduleProvider.ui())
                 .subscribeOn(scheduleProvider.io())
                 .subscribe({ data ->
-                    itemsLiveData.value = Resource.loadingFinish()
                     dataList.addAll(mapper()?.map(data.second) ?: data.second as List<U>)
+
+                    successState()
+
                     items.value = dataList
+
                     totalPage = data.first
                     isLoading = false
                 }) {
                     isLoading = false
-                    itemsLiveData.value = Resource.error(it.localizedMessage)
+                    errorState(it.localizedMessage)
                 })
         }
     }

@@ -126,6 +126,8 @@ class MainActivity : BaseActivity() {
 
     override fun tryAgain(): () -> Unit = {}
 
+    override fun vm(): Nothing? = null
+
     private fun searchText(filter: String) {
         (listFragmentTabs[viewpager.currentItem] as ISearchText).searchText(filter)
     }

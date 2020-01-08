@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="avila.daniel.rickmorty.ui.util.data.ResourceState" />
+
+        <variable
+            name="viewModel"
+            type="avila.daniel.rickmorty.base.BaseViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{viewModel.state == ResourceState.EMPTY || viewModel.state == ResourceState.ERROR ? View.GONE : View.VISIBLE}" />
+
+        <ProgressBar
+            android:id="@+id/view_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.state == ResourceState.LOADING ? View.VISIBLE : View.GONE}" />
+
+        <avila.daniel.rickmorty.ui.util.custom.EmptyView
+            android:id="@+id/view_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{viewModel.state == ResourceState.EMPTY ? View.VISIBLE : View.GONE}" />
+
+        <avila.daniel.rickmorty.ui.util.custom.ErrorView
+            android:id="@+id/view_error"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{viewModel.state == ResourceState.ERROR ? View.VISIBLE : View.GONE}"
+            app:message="@{viewModel.message}" />
+
+    </FrameLayout>
+</layout>

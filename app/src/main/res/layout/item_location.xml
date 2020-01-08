@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="clickListener"
-            type="android.view.View.OnClickListener" />
+            name="viewModel"
+            type="avila.daniel.rickmorty.ui.fragment.locations.LocationsViewModel" />
 
         <variable
             name="location"
@@ -19,7 +19,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginTop="4dp"
-        android:onClick="@{clickListener}"
+        android:onClick="@{() -> viewModel.navigateToCharactersLocation(location.id, location.name)}"
         app:cardCornerRadius="2dp"
         app:cardElevation="3dp"
         app:cardUseCompatPadding="true">

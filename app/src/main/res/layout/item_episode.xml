@@ -5,13 +5,12 @@
     <data>
 
         <variable
-            name="clickListener"
-            type="android.view.View.OnClickListener" />
+            name="viewModel"
+            type="avila.daniel.rickmorty.ui.fragment.episodes.EpisodesViewModel" />
 
         <variable
             name="episode"
             type="avila.daniel.rickmorty.ui.model.EpisodeUI" />
-
     </data>
 
     <androidx.cardview.widget.CardView
@@ -20,7 +19,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginTop="4dp"
-        android:onClick="@{clickListener}"
+        android:onClick="@{() -> viewModel.navigateToCharactersEpisode(episode.id, episode.name)}"
         app:cardCornerRadius="2dp"
         app:cardElevation="3dp"
         app:cardUseCompatPadding="true">

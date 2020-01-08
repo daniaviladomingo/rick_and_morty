@@ -3,7 +3,6 @@ package avila.daniel.rickmorty.ui.activity.character
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseActivity
@@ -34,11 +33,11 @@ class CharacterDetailActivity : BaseActivity() {
         super.onResume()
         characterDetailViewModel.isFavoriteLiveData.observe(this, Observer { resource ->
             menuFavorite = resource
-            Toast.makeText(
-                this@CharacterDetailActivity,
-                if (menuFavorite) R.string.favorite_added else R.string.favorite_removed,
-                Toast.LENGTH_SHORT
-            ).show()
+//            Toast.makeText(
+//                this@CharacterDetailActivity,
+//                if (menuFavorite) R.string.favorite_added else R.string.favorite_removed,
+//                Toast.LENGTH_SHORT
+//            ).show()
             invalidateOptionsMenu()
         })
     }

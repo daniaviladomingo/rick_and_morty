@@ -10,8 +10,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import avila.daniel.rickmorty.R
-import avila.daniel.rickmorty.databinding.ActivityBaseBindingBinding
-import kotlinx.android.synthetic.main.fragment_base.view.*
+import avila.daniel.rickmorty.databinding.ViewBaseBindingBinding
+import kotlinx.android.synthetic.main.view_base.view.*
 
 abstract class BaseFragment : Fragment() {
 
@@ -27,16 +27,10 @@ abstract class BaseFragment : Fragment() {
             throw RuntimeException("Invalid Layout ID")
         }
 
-//        val resourceView = inflater.inflate(R.layout.fragment_base, container, false)
-
-//        val resourceView = DataBindingUtil.inflate<ActivityBaseBinding>(layoutInflater, getLayoutId(), null, false).apply {
-//            viewModel = viewModel()
-//        }.root
-
         val resourceView = vm()?.let {
-            DataBindingUtil.inflate<ActivityBaseBindingBinding>(
+            DataBindingUtil.inflate<ViewBaseBindingBinding>(
                 layoutInflater,
-                R.layout.activity_base_binding,
+                R.layout.view_base_binding,
                 null,
                 false
             )
@@ -44,7 +38,7 @@ abstract class BaseFragment : Fragment() {
                     lifecycleOwner = this@BaseFragment.viewLifecycleOwner
                     viewModel = it
                 }.root
-        } ?: inflater.inflate(R.layout.activity_base, container, false)
+        } ?: inflater.inflate(R.layout.view_base, container, false)
 
 
         binding =
@@ -65,49 +59,6 @@ abstract class BaseFragment : Fragment() {
     }
 
     protected abstract fun getLayoutId(): Int
-
-//    protected fun managementResourceState(resourceState: ResourceState, message: String?) {
-//        when (resourceState) {
-//            ResourceState.LOADING -> {
-//                binding.root.visibility = VISIBLE
-//                view_error.visibility = GONE
-//                view_empty.visibility = GONE
-//                view_progress.visibility = VISIBLE
-//            }
-////            ResourceState.LOADING_FINISH -> {
-////                binding.root.visibility = VISIBLE
-////                view_error.visibility = GONE
-////                view_empty.visibility = GONE
-////                view_progress.visibility = GONE
-////            }
-//            ResourceState.SUCCESS -> {
-//                binding.root.visibility = VISIBLE
-//                view_error.visibility = GONE
-//                view_empty.visibility = GONE
-//                view_progress.visibility = GONE
-//            }
-//            ResourceState.EMPTY -> {
-//                binding.root.visibility = GONE
-//                view_error.visibility = GONE
-//                view_empty.visibility = VISIBLE
-//                view_progress.visibility = GONE
-//            }
-//            ResourceState.ERROR -> {
-//                binding.root.visibility = GONE
-//                view_error.visibility = VISIBLE
-//                error_message.text = message ?: ""
-//                view_empty.visibility = GONE
-//                view_progress.visibility = GONE
-//            }
-//        }
-//    }
-
-//    protected fun revertResourceState() {
-//        this.binding.root.visibility = VISIBLE
-//        view_error.visibility = GONE
-//        view_empty.visibility = GONE
-//        view_progress.visibility = GONE
-//    }
 
     abstract fun vm(): BaseViewModel?
 

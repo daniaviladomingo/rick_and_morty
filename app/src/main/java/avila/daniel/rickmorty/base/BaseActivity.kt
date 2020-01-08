@@ -11,8 +11,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.DataBindingUtil.setContentView
 import androidx.databinding.ViewDataBinding
 import avila.daniel.rickmorty.R
-import avila.daniel.rickmorty.databinding.ActivityBaseBindingBinding
-import kotlinx.android.synthetic.main.activity_base_binding.*
+import avila.daniel.rickmorty.databinding.ViewBaseBindingBinding
+import kotlinx.android.synthetic.main.view_base_binding.*
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -26,11 +26,11 @@ abstract class BaseActivity : AppCompatActivity() {
         }
 
         vm()?.let {
-            setContentView<ActivityBaseBindingBinding>(this, R.layout.activity_base_binding).apply {
+            setContentView<ViewBaseBindingBinding>(this, R.layout.view_base_binding).apply {
                 lifecycleOwner = this@BaseActivity
                 viewModel = it
             }
-        } ?: setContentView(R.layout.activity_base)
+        } ?: setContentView(R.layout.view_base)
 
         binding =
             DataBindingUtil.inflate<ViewDataBinding>(layoutInflater, getLayoutId(), null, false)
@@ -53,42 +53,6 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     protected abstract fun getLayoutId(): Int
-
-//    protected fun managementResourceState(resourceState: ResourceState, message: String?) {
-//        when (resourceState) {
-//            ResourceState.LOADING -> {
-//                view.visibility = VISIBLE
-//                view_error.visibility = GONE
-//                view_empty.visibility = GONE
-//                view_progress.visibility = VISIBLE
-//            }
-////            ResourceState.LOADING_FINISH -> {
-////                view.visibility = VISIBLE
-////                view_error.visibility = GONE
-////                view_empty.visibility = GONE
-////                view_progress.visibility = GONE
-////            }
-//            ResourceState.SUCCESS -> {
-//                view.visibility = VISIBLE
-//                view_error.visibility = GONE
-//                view_empty.visibility = GONE
-//                view_progress.visibility = GONE
-//            }
-//            ResourceState.EMPTY -> {
-//                view.visibility = GONE
-//                view_error.visibility = GONE
-//                view_empty.visibility = VISIBLE
-//                view_progress.visibility = GONE
-//            }
-//            ResourceState.ERROR -> {
-//                view.visibility = GONE
-//                view_error.visibility = VISIBLE
-//                error_message.text = message ?: "An error has occurred"
-//                view_empty.visibility = GONE
-//                view_progress.visibility = GONE
-//            }
-//        }
-//    }
 
     abstract fun vm(): BaseViewModel?
 

@@ -5,11 +5,11 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseActivity
+import avila.daniel.rickmorty.base.BaseViewModel
 import avila.daniel.rickmorty.databinding.ActivityCharactersFromBinding
 import avila.daniel.rickmorty.ui.activity.character.CharacterDetailActivity
 import avila.daniel.rickmorty.ui.fragment.characters.CharactersAdapter
 import avila.daniel.rickmorty.ui.model.CharactersSource
-import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.activity_characters_from.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -17,7 +17,7 @@ class CharactersFromActivity : BaseActivity() {
 
     private val charactersFromViewModel: CharactersFromViewModel by viewModel()
 
-    private lateinit var charactersSource: CharactersSource
+    private var isFavoriteSource = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,14 +27,25 @@ class CharactersFromActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        setListener()
-
         list_characters.adapter = CharactersAdapter(charactersFromViewModel)
 
+        charactersFromViewModel.characterParcelableLiveData.observe(
+            this,
+            Observer
+            { resource ->
+                startActivity(
+                    Intent(
+                        this@CharactersFromActivity,
+                        CharacterDetailActivity::class.java
+                    ).apply {
+                        putExtra(CharacterDetailActivity.CHARACTER, resource)
+                    })
+            })
+
         intent.extras?.run {
-            charactersSource = getParcelable(CHARACTERS_SOURCE)!!
-            when (charactersSource) {
+            when (getParcelable<CharactersSource>(CHARACTERS_SOURCE)) {
                 CharactersSource.FAVORITES -> {
+                    isFavoriteSource = true
                     charactersFromViewModel.loadCharactersFromFavorite()
                 }
                 CharactersSource.LOCATION -> {
@@ -53,35 +64,9 @@ class CharactersFromActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (charactersSource == CharactersSource.FAVORITES) {
+        if (isFavoriteSource) {
             charactersFromViewModel.loadCharactersFromFavorite()
         }
-    }
-
-    private fun setListener() {
-        charactersFromViewModel.charactersLiveData.observe(
-            this,
-            Observer { resource -> resource?.run { managementResourceState(status, message) } })
-
-        charactersFromViewModel.characterParcelableLiveData.observe(
-            this,
-            Observer
-            { resource ->
-                resource?.run {
-                    managementResourceState(status, message)
-                    if (status == ResourceState.SUCCESS) {
-                        data?.let {
-                            startActivity(
-                                Intent(
-                                    this@CharactersFromActivity,
-                                    CharacterDetailActivity::class.java
-                                ).apply {
-                                    putExtra(CharacterDetailActivity.CHARACTER, it)
-                                })
-                        }
-                    }
-                }
-            })
     }
 
     override fun getLayoutId(): Int = R.layout.activity_characters_from
@@ -89,6 +74,8 @@ class CharactersFromActivity : BaseActivity() {
     override fun checkAgain(): () -> Unit = {}
 
     override fun tryAgain(): () -> Unit = {}
+
+    override fun vm(): BaseViewModel = charactersFromViewModel
 
     companion object {
         const val ID = "id"

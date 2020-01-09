@@ -29,22 +29,21 @@ class LocationsFragment : BaseFragment(), ISearchText {
 
         (binding as FragmentLocationsBinding).viewModel = locationsViewModel
 
-        locationsViewModel.itemsLiveData.observe(
+        locationsViewModel.navigateCharactersLocationLiveData.observe(
             viewLifecycleOwner,
-            Observer { resource -> resource?.run { managementResourceState(status, message) } })
+            Observer { resource ->
+                startActivity(
+                    Intent(
+                        activity,
+                        CharactersFromActivity::class.java
+                    ).apply {
+                        putExtra(CHARACTERS_SOURCE, CharactersSource.LOCATION as Parcelable)
+                        putExtra(ID, resource.first)
+                        putExtra(TITLE, resource.second)
+                    })
+            })
 
         adapter = LocationsAdapter(locationsViewModel)
-        adapter.onClickListener = { id, name ->
-            startActivity(
-                Intent(
-                    activity,
-                    CharactersFromActivity::class.java
-                ).apply {
-                    putExtra(CHARACTERS_SOURCE, CharactersSource.LOCATION as Parcelable)
-                    putExtra(ID, id)
-                    putExtra(TITLE, name)
-                })
-        }
 
         list_locations.adapter = adapter
         list_locations.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -76,6 +75,8 @@ class LocationsFragment : BaseFragment(), ISearchText {
     override fun tryAgain(): () -> Unit = {
         locationsViewModel.load()
     }
+
+    override fun vm(): Nothing? = null
 
     companion object {
         @JvmStatic

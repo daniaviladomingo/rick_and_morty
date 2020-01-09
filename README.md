@@ -19,7 +19,7 @@ Use [Clean Architecture]
 
 * [SOLID]
 * [Repository]
-* MVVM: [ViewModel]
+* MVVM: [ViewModel] + [Databinding]
 * Dependency Inversion: [Koin]
 * Observable: [ReactiveX], [LiveData]
 
@@ -61,6 +61,7 @@ Use [Clean Architecture]
 [LiveData]: https://developer.android.com/topic/libraries/architecture/livedata
 [ReactiveX]: http://reactivex.io
 [ViewModel]: https://developer.android.com/topic/libraries/architecture/viewmodel
+[Databinding]: https://developer.android.com/topic/libraries/data-binding
 [Repository]: https://martinfowler.com/eaaCatalog/repository.html
 [SOLID]: https://en.wikipedia.org/wiki/SOLID
 [Koin]: https://insert-koin.io/

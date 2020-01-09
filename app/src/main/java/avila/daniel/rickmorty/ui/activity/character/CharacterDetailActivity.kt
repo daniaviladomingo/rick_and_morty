@@ -3,19 +3,18 @@ package avila.daniel.rickmorty.ui.activity.character
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import avila.daniel.rickmorty.R
 import avila.daniel.rickmorty.base.BaseActivity
+import avila.daniel.rickmorty.base.BaseViewModel
 import avila.daniel.rickmorty.databinding.ActivityCharacterBinding
-import avila.daniel.rickmorty.ui.util.data.ResourceState
 import kotlinx.android.synthetic.main.activity_character.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class CharacterDetailActivity : BaseActivity() {
     private val characterDetailViewModel: CharacterDetailViewModel by viewModel()
 
-    private var favorite = false
+    private var menuFavorite = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,45 +24,21 @@ class CharacterDetailActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        setListener()
-
         intent.extras?.run {
             characterDetailViewModel.getCharacter(getParcelable(CHARACTER)!!)
         }
     }
 
-    private fun setListener() {
-        characterDetailViewModel.characterLiveData.observe(
-            this,
-            Observer { resource -> resource?.run { managementResourceState(status, message) } })
-
-        characterDetailViewModel.favoriteLiveData.observe(this, Observer { resource ->
-            resource?.run {
-                managementResourceState(status, message)
-                if (status == ResourceState.SUCCESS) {
-                    data!!.run {
-                        favorite = this
-                        invalidateOptionsMenu()
-                        Toast.makeText(
-                            this@CharacterDetailActivity,
-                            if (this) R.string.favorite_added else R.string.favorite_removed,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            }
-        })
-
+    override fun onResume() {
+        super.onResume()
         characterDetailViewModel.isFavoriteLiveData.observe(this, Observer { resource ->
-            resource?.run {
-                managementResourceState(status, message)
-                if (status == ResourceState.SUCCESS) {
-                    data!!.run {
-                        favorite = this
-                        invalidateOptionsMenu()
-                    }
-                }
-            }
+            menuFavorite = resource
+//            Toast.makeText(
+//                this@CharacterDetailActivity,
+//                if (menuFavorite) R.string.favorite_added else R.string.favorite_removed,
+//                Toast.LENGTH_SHORT
+//            ).show()
+            invalidateOptionsMenu()
         })
     }
 
@@ -81,7 +56,10 @@ class CharacterDetailActivity : BaseActivity() {
         }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(if (favorite) R.menu.menu_favorite else R.menu.menu_unfavorite, menu)
+        menuInflater.inflate(
+            if (menuFavorite) R.menu.menu_favorite else R.menu.menu_unfavorite,
+            menu
+        )
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -90,6 +68,8 @@ class CharacterDetailActivity : BaseActivity() {
     override fun checkAgain(): () -> Unit = {}
 
     override fun tryAgain(): () -> Unit = {}
+
+    override fun vm(): BaseViewModel = characterDetailViewModel
 
     companion object {
         const val CHARACTER = "character"

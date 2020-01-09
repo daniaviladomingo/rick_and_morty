@@ -67,10 +67,7 @@ class CharactersAdapter(
     class ViewHolder(private val binding: ItemCharterBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bin(
-            viewModel: IViewModelManagementCharacter,
-            character: Character
-        ) {
+        fun bin(viewModel: IViewModelManagementCharacter, character: Character) {
             with(binding) {
                 this.viewModel = viewModel
                 this.character = character

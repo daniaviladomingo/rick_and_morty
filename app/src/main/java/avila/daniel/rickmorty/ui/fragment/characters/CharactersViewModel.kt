@@ -10,7 +10,6 @@ import avila.daniel.rickmorty.ui.model.CharacterParcelable
 import avila.daniel.rickmorty.ui.model.mapper.CharacterParcelableMapper
 import avila.daniel.rickmorty.ui.util.IDataChanged
 import avila.daniel.rickmorty.ui.util.IViewModelManagementCharacter
-import avila.daniel.rickmorty.ui.util.data.Resource
 import avila.daniel.rickmorty.util.SingleLiveEvent
 
 class CharactersViewModel(
@@ -22,7 +21,7 @@ class CharactersViewModel(
 ) : PaginationViewModel<Character, Character>(scheduleProvider, initialPage), IDataChanged,
     IViewModelManagementCharacter {
 
-    val characterParcelabeLiveData = SingleLiveEvent<Resource<CharacterParcelable>>()
+    val characterParcelableLiveData = SingleLiveEvent<CharacterParcelable>()
     val refreshLiveData = SingleLiveEvent<Void>()
 
     override fun reload() {
@@ -37,8 +36,7 @@ class CharactersViewModel(
         getCharactersUseCase
 
     override fun openDetail(character: Character) {
-        characterParcelabeLiveData.value =
-            Resource.success(characterParcelableMapper.map(character))
+        characterParcelableLiveData.value = characterParcelableMapper.map(character)
     }
 
     override fun searchFilter(): CharacterSearchFilter = searchFilter.invoke()

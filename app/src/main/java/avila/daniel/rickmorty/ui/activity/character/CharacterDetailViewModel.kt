@@ -1,8 +1,8 @@
 package avila.daniel.rickmorty.ui.activity.character
 
-import avila.daniel.domain.interactor.AddCharacterToFavoriteUseCase
-import avila.daniel.domain.interactor.IsFavoriteUseCase
-import avila.daniel.domain.interactor.RemoveCharacterFromFavoriteUseCase
+import avila.daniel.domain.interactor.AddFavoriteCharacterUseCase
+import avila.daniel.domain.interactor.IsCharacterFavoriteUseCase
+import avila.daniel.domain.interactor.RemoveFavoriteCharacterUseCase
 import avila.daniel.domain.model.Character
 import avila.daniel.rickmorty.base.BaseViewModel
 import avila.daniel.rickmorty.schedulers.IScheduleProvider
@@ -11,9 +11,9 @@ import avila.daniel.rickmorty.ui.model.mapper.CharacterParcelableMapper
 import avila.daniel.rickmorty.util.SingleLiveEvent
 
 class CharacterDetailViewModel(
-    private val addCharacterToFavoriteUseCase: AddCharacterToFavoriteUseCase,
-    private val removeCharacterFromFavoriteUseCase: RemoveCharacterFromFavoriteUseCase,
-    private val isFavoriteUseCase: IsFavoriteUseCase,
+    private val addFavoriteCharacterUseCase: AddFavoriteCharacterUseCase,
+    private val removeFavoriteCharacterUseCase: RemoveFavoriteCharacterUseCase,
+    private val isCharacterFavoriteUseCase: IsCharacterFavoriteUseCase,
     private val characterParcelableMapper: CharacterParcelableMapper,
     private val scheduleProvider: IScheduleProvider
 ) : BaseViewModel() {
@@ -24,7 +24,7 @@ class CharacterDetailViewModel(
     fun getCharacter(characterParcelable: CharacterParcelable) {
         loadingState()
         characterLive.value = characterParcelableMapper.inverseMap(characterParcelable)
-        addDisposable(isFavoriteUseCase.execute(characterLive.value!!.id)
+        addDisposable(isCharacterFavoriteUseCase.execute(characterLive.value!!.id)
             .observeOn(scheduleProvider.ui())
             .subscribeOn(scheduleProvider.io()).subscribe({ isFavorite ->
                 isFavoriteLiveData.value = isFavorite
@@ -36,7 +36,7 @@ class CharacterDetailViewModel(
 
     fun addFavorite() {
         loadingState()
-        addDisposable(addCharacterToFavoriteUseCase.execute(characterLive.value!!)
+        addDisposable(addFavoriteCharacterUseCase.execute(characterLive.value!!)
             .observeOn(scheduleProvider.ui())
             .subscribeOn(scheduleProvider.io())
             .subscribe({
@@ -49,7 +49,7 @@ class CharacterDetailViewModel(
 
     fun removeFavorite() {
         loadingState()
-        addDisposable(removeCharacterFromFavoriteUseCase.execute(characterLive.value!!.id)
+        addDisposable(removeFavoriteCharacterUseCase.execute(characterLive.value!!.id)
             .observeOn(scheduleProvider.ui())
             .subscribeOn(scheduleProvider.io())
             .subscribe({

@@ -18,8 +18,8 @@ interface IRepository {
     fun getEpisode(id: Int): Single<Episode>
     fun getEpisodeCharacters(idEpisode: Int): Single<List<Character>>
 
-    fun getCharactersFavorites(): Single<List<Character>>
-    fun addCharacterFavorite(character: Character): Completable
-    fun removeCharacterFavorite(id: Int): Completable
+    fun getFavoriteCharacters(): Single<List<Character>>
+    fun addFavoriteCharacter(character: Character): Completable
+    fun removeFavoriteCharacter(id: Int): Completable
     fun isFavorite(id: Int): Single<Boolean>
 }

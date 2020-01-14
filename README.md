@@ -22,6 +22,11 @@ Use [Clean Architecture]
 * MVVM: [ViewModel] + [Databinding]
 * Dependency Inversion: [Koin]
 * Observable: [ReactiveX], [LiveData]
+* Testing: Unit Test, Integration Test, UI Test
+    - [JUnit]
+    - [Mockito]
+    - [Robolectric]
+    - [Espresso]
 
 <br/>
 <br/>
@@ -65,6 +70,10 @@ Use [Clean Architecture]
 [Repository]: https://martinfowler.com/eaaCatalog/repository.html
 [SOLID]: https://en.wikipedia.org/wiki/SOLID
 [Koin]: https://insert-koin.io/
+[JUnit]: https://junit.org/junit5/
+[Mockito]: https://site.mockito.org/
+[Robolectric]: http://robolectric.org/
+[Espresso]: https://developer.android.com/training/testing/espresso
 
 [The Rick and Morty Api]: https://rickandmortyapi.com/
 [Alex Fuhrmann]: https://axelfuhrmann.com/

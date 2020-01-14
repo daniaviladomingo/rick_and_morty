@@ -92,13 +92,13 @@ class RepositoryImp(
             getCharactersFrom(episode.characters)
         }
 
-    override fun getCharactersFavorites(): Single<List<Character>> =
+    override fun getFavoriteCharacters(): Single<List<Character>> =
         dataCache.getCharactersFavorites()
 
-    override fun addCharacterFavorite(character: Character): Completable =
+    override fun addFavoriteCharacter(character: Character): Completable =
         dataCache.addCharacterFavorite(character)
 
-    override fun removeCharacterFavorite(id: Int): Completable =
+    override fun removeFavoriteCharacter(id: Int): Completable =
         dataCache.removeCharacterFavorite(id)
 
     override fun isFavorite(id: Int): Single<Boolean> = dataCache.isFavorite(id)

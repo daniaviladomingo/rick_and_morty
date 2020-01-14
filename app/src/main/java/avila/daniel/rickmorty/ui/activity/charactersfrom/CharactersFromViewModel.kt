@@ -1,6 +1,6 @@
 package avila.daniel.rickmorty.ui.activity.charactersfrom
 
-import avila.daniel.domain.interactor.GetCharactersFavoriteUseCase
+import avila.daniel.domain.interactor.GetFavoriteCharactersUseCase
 import avila.daniel.domain.interactor.GetEpisodeCharactersUseCase
 import avila.daniel.domain.interactor.GetLocationCharactersUseCase
 import avila.daniel.domain.model.Character
@@ -15,7 +15,7 @@ import avila.daniel.rickmorty.util.SingleLiveEvent
 class CharactersFromViewModel(
     private val getLocationCharactersUseCase: GetLocationCharactersUseCase,
     private val getEpisodeCharactersUseCase: GetEpisodeCharactersUseCase,
-    private val getCharactersFavoriteUseCase: GetCharactersFavoriteUseCase,
+    private val getFavoriteCharactersUseCase: GetFavoriteCharactersUseCase,
     private val characterParcelableMapper: CharacterParcelableMapper,
     private val searchFilter: () -> CharacterSearchFilter,
     private val scheduleProvider: IScheduleProvider
@@ -53,7 +53,7 @@ class CharactersFromViewModel(
     fun loadCharactersFromFavorite() {
         loadingState()
         addDisposable(
-            getCharactersFavoriteUseCase.execute()
+            getFavoriteCharactersUseCase.execute()
                 .observeOn(scheduleProvider.ui())
                 .subscribeOn(scheduleProvider.io())
                 .subscribe({ characters ->

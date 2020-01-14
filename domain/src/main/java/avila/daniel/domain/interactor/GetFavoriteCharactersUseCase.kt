@@ -5,8 +5,8 @@ import avila.daniel.domain.interactor.type.SingleUseCase
 import avila.daniel.domain.model.Character
 import io.reactivex.Single
 
-class GetCharactersFavoriteUseCase(private val repository: IRepository) :
+class GetFavoriteCharactersUseCase(private val repository: IRepository) :
     SingleUseCase<List<Character>>{
-    override fun execute(): Single<List<Character>> = repository.getCharactersFavorites()
+    override fun execute(): Single<List<Character>> = repository.getFavoriteCharacters()
 
 }

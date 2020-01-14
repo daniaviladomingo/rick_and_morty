@@ -105,10 +105,10 @@ val useCaseModule = module {
     single { GetLocationCharactersUseCase(get()) }
     single { GetEpisodesUseCase(get()) }
     single { GetEpisodeCharactersUseCase(get()) }
-    single { AddCharacterToFavoriteUseCase(get()) }
-    single { RemoveCharacterFromFavoriteUseCase(get()) }
-    single { IsFavoriteUseCase(get()) }
-    single { GetCharactersFavoriteUseCase(get()) }
+    single { AddFavoriteCharacterUseCase(get()) }
+    single { RemoveFavoriteCharacterUseCase(get()) }
+    single { IsCharacterFavoriteUseCase(get()) }
+    single { GetFavoriteCharactersUseCase(get()) }
 }
 
 val repositoryModule = module {

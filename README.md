@@ -3,7 +3,7 @@
 App show info from [The Rick and Morty Api]
 
 [![License Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=true)](http://www.apache.org/licenses/LICENSE-2.0)
-![minSdkVersion 16](https://img.shields.io/badge/minSdkVersion-16-red.svg?style=true)
+![minSdkVersion 19](https://img.shields.io/badge/minSdkVersion-19-red.svg?style=true)
 ![compileSdkVersion 29](https://img.shields.io/badge/compileSdkVersion-29-yellow.svg?style=true)
 
 ![alt text](./Screenshot_20191219-153743.png) &nbsp; &nbsp; ![alt text](./Screenshot_20191219-153800.png)

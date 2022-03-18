@@ -33,7 +33,7 @@ abstract class BaseActivity : AppCompatActivity() {
         } ?: setContentView(R.layout.view_base)
 
         binding =
-            DataBindingUtil.inflate<ViewDataBinding>(layoutInflater, getLayoutId(), null, false)
+            DataBindingUtil.inflate(layoutInflater, getLayoutId(), null, false)
         binding.lifecycleOwner = this
 
         (view as FrameLayout).addView(
